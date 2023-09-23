@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
+
+body,html{
+    height: 100%;
+    width: 100%;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 18px;
+}
+
+.container{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.container > .login{
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.container > .signup{
+    width: 100%;
+    max-width: 400px;
+    min-width: 800px;
+    border-radius: 20px;
+}
+.ingresa{
+    color: #77bbbe;
+   font-weight: bolder;
+    text-align: center;
+    margin: 15px 0;
+}
+.user-icon, .pass-icon, .google-icon{
+    height: 1.5rem;
+}
+
+.input-group-text{
+    background-color: #92E0E4;
+}
+
+.logo-login {
+    display: flex;
+    justify-content: center;
+}
+.logo-login img{
+    height: 7rem;
+}
+
+.forgot{
+    display: flex;
+    justify-content: space-around;
+
+    align-items: center; /* Centra verticalmente */
+}
+.remember{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.recover-pass{
+    display: flex; /* Establece el div como un contenedor flexible */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  }
+  .recover-pass a{
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bolder;
+    font-style: italic;
+    color: #77bbbe;
+  }
+  .forgot-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-info{
+    color: white;
+    width: 100%;
+}
+
+.create-account{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.create-account a{
+    color: #77bbbe;
+    text-decoration: none;
+    font-weight: bolder;
+
+  }
+
+  .btnGoogle{
+    display: flex;
+    gap: 15px;
+   justify-content: center;
+  }
+  .btnGoogle a{
+    text-decoration: none;
+    font-weight: bolder;
+    color: #77bbbe;
+  }

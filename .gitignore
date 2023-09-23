@@ -1,0 +1,5 @@
+/vendor
+/app
+.env
+cs.json
+notas.txt
