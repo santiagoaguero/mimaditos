@@ -2,9 +2,9 @@
 require_once 'vendor/autoload.php';
 
 // init configuration
-$clientID = '213735222223-k25ac704ncjic8ql8iv53capbrrdskp2.apps.googleusercontent.com';
-$clientSecret = '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';
-$redirectUri = 'http://localhost/reservet/index.php?vista=home';
+$clientID = '203049535631-ep1qalm55b58iafbcu5l363137jr6arv.apps.googleusercontent.com';
+$clientSecret = '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';
+$redirectUri = 'http://localhost/reservet/index.php?vista=authg';
 
 // create Client Request to access Google API
 

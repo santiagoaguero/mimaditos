@@ -1,0 +1,75 @@
+<?php
+    $modulo_buscador = limpiar_cadena($_POST["modulo_buscador"]);
+
+    $modulos=["servicio", "categoria", "proveedor", "cliente", "usuario", "factura_producto", "factura", "familia", "compra"];
+
+    if(in_array($modulo_buscador, $modulos)){
+
+        $modulos_url=[
+            "servicio"=>"servicio_search",
+            "categoria"=>"category_search",
+            "proveedor"=>"provee_search",
+            "cliente"=>"client_search",
+            "usuario"=>"user_search",
+            "factura_producto"=>"factur_new",
+            "factura"=>"factur_search",
+            "familia"=>"family_search",
+            "compra"=>"compra_search"
+        ];
+
+        $modulos_url=$modulos_url[$modulo_buscador];
+
+        $modulo_buscador="busqueda_".$modulo_buscador;
+
+
+        //iniciar busqueda
+        if(isset($_POST["txt_buscador"])){
+
+            $txt=limpiar_cadena($_POST["txt_buscador"]);
+            
+            if($txt == ""){
+                echo '
+                <div class="alert alert-danger" role="alert">
+                    <strong>¡Ocurrió un error inesperado!</strong><br>
+                    Introduzca un termino de búsqueda.
+                </div>
+                ';
+            } else {
+                if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ -]{1,30}", $txt)){//true encontró errores
+                    echo '
+                    <div class="alert alert-danger" role="alert">
+                        <strong>¡Ocurrió un error inesperado!</strong><br>
+                        Término de búsqueda no coincide con el formato esperado.
+                    </div>
+                    ';
+                } else {
+                    $_SESSION[$modulo_buscador]=$txt;
+                    
+                    echo'
+                    <script>
+                        window.location="index.php?vista='.$modulos_url.'"
+                    </script>
+                    ';
+                    exit();
+                }
+            }
+        }
+
+        //eliminar busqueda
+        if(isset($_POST["eliminar_buscador"])){
+            unset($_SESSION[$modulo_buscador]);
+            echo'
+            <script>
+                window.location="index.php?vista='.$modulos_url.'"
+            </script>
+            ';
+            exit();
+        }
+
+    } else {
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            No se pudo procesar la operación.
+        </div>';
+    }

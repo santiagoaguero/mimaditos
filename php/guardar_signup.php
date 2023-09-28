@@ -1,6 +1,10 @@
 <?php
 include_once("main.php");
 
+//ya que se utilizan varias llamadas a con() esto puede generar una nueva instancia de pdo
+//por lo que aseguramos que se use siempre la misma y no genere errores en las inserciones
+$pdo = con();
+
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
@@ -8,7 +12,7 @@ $telefono=limpiar_cadena($_POST["telefono"]);
 $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
 $mascota=limpiar_cadena($_POST["mascota"]);
-$tamaño=limpiar_cadena($_POST["tamaño"]);
+$tipo=(int)limpiar_cadena($_POST["tipo"]);
 $email=limpiar_cadena($_POST["email"]);
 $contraseña=limpiar_cadena($_POST["contraseña"]);
 $contraseña2=limpiar_cadena($_POST["contraseña2"]);
@@ -71,7 +75,7 @@ if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$contraseña) || verificar_datos("[a
     echo '
     <div class="notification is-danger is-light">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        LAS CLAVES no coincide con el formato esperado.
+        La contraseña no coincide con el formato esperado.
     </div>';
     exit();
 }
@@ -86,33 +90,72 @@ if($contraseña != $contraseña2){
     exit();
 } else {
     $contraseña = password_hash($contraseña, PASSWORD_BCRYPT, ["cost"=>10]);
+    $contraseña2 = password_hash($contraseña2, PASSWORD_BCRYPT, ["cost"=>10]);
+}
+
+if($tipo=="0" || $tipo > 4){
+    $tipo = "4";//asegurar siempre que sea 'Otro/Sin Especificar'
 }
 
 //guardando datos
-$guardar_cliente = con();
-//prepare: prepara la consulta antes de insertar directo a la bd. variables sin comillas ni $
-$guardar_cliente = $guardar_cliente->prepare("INSERT INTO
-    cliente(cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad)
-    VALUES(:nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad)");
+$guardar_cliente_query = $pdo->prepare("INSERT INTO
+    cliente(cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id)
+    VALUES(:nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad, :rol)");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad];
+    ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4];
 
-$guardar_cliente->execute($marcadores);
+$guardar_cliente_query->execute($marcadores);
 
-if($guardar_cliente->rowCount()==1){// 1 usuario nuevo insertado
-        echo '
-        <div class="notification is-success is-light">
-            <strong>Cuenta registrada!</strong><br>
-            Su cuenta se creó exitosamente.
-        </div>';
+if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
+
+        //variables de sesion
+        $_SESSION["id"]=$cliente_id;
+        $_SESSION["nombre"]=$nombre;
+        $_SESSION["apellido"]=$apellido;
+        $_SESSION["email"]=$email;
+        $_SESSION["cuenta"]="local";
+        $_SESSION["signup"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+
+    // Obtener el último ID insertado
+    $cliente_id = $pdo->lastInsertId();
+
+    // Ahora puedes insertar la mascota asociada al cliente
+    $guardar_mascota_query = $pdo->prepare("INSERT INTO mascota (mascota_nombre, mascota_tipo_id, mascota_raza, mascota_edad, cliente_id, mascota_tamano, mascota_notas) VALUES (:mascota, :tipo, :raza, :edad, :cliente, :tamano, :notas)");
+						
+    $marcadores_mascota = [
+        ":mascota" => $mascota,
+        ":tipo" => $tipo,
+        ":raza" => "",
+        ":edad" => 1,
+        ":cliente" => $cliente_id,
+        ":tamano" => "",
+        ":notas" => ""
+    ];
+
+    $guardar_mascota_query->execute($marcadores_mascota);
+
+    // Verifica si se ha insertado la mascota
+    if ($guardar_mascota_query->rowCount() == 1) {
+
+        $_SESSION["crea_mascota"]= true;//
+
+        header("Location: index.php?vista=signup_exito");
+
+    } else {
+
+        $_SESSION["crea_mascota"]= false;// se creó el cliente pero no su mascota
+
+        header("Location: index.php?vista=signup_error2");
     }
- else {
-    echo '
-    <div class="notification is-danger is-light">
-        <strong>¡Ocurrió un error inesperado!</strong><br>
-        No se pudo crear su cuenta, intentelo nuevamente.
-    </div>';
+
+} else {
+
+    $_SESSION["signup"]= false;//para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+
+    header("Location: index.php?vista=signup_error");
 }
-$guardar_cliente=null; //cerrar conexion;
+$guardar_cliente_query = null;
+/*
+Para obtener el último ID insertado después de una inserción en PDO se hace sobre el objeto PDO original, no sobre la variable $guardar_cliente sobreescrita con una instancia de PDOStatement*/

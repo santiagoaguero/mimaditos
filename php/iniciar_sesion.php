@@ -7,7 +7,7 @@ $clave=limpiar_cadena($_POST["login_clave"]);
 //verifica campos obligatorios
 if($usuario == "" || $clave == "" ){
     echo '
-    <div class="bg-danger">
+    <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
         No has llenado todos los campos que son obligatorios
     </div>';
@@ -40,11 +40,12 @@ if($usuario != ""){
 }
 */
 
-if(verificar_datos("[a-zA-Z0-9$@.-]{7,100}",$clave)){
+if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$clave)){
     echo '
-    <div class="notification is-danger is-light">
+    <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        La CLAVE no coincide con el formato esperado.
+        La contraseña no coincide con el formato esperado.<br>
+        La contraseña debe contener mínimo 6 caracteres.
     </div>';
     exit();
 }
@@ -55,17 +56,16 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
  cliente_email='$usuario'");
 
  if($check_user->rowCount()==1){//user found
-    echo "uusario encontrado";
     $check_user=$check_user->fetch();//fetch only one user. fetchAll fetchs all users
-    if($check_user["usuario_email"] == $usuario && password_verify($clave, $check_user["usuario_clave"])){//hashea y compara con las claves guardadas
-        echo "claves coiniciden";
-        echo (password_verify($clave, $check_user["usuario_clave"]));
+    if($check_user["cliente_email"] == $usuario && password_verify($clave, $check_user["cliente_clave"])){//hashea y compara con las claves guardadas
 
-        //variables de sesion
-            $_SESSION["id"]=$check_user["usuario_id"];
-            $_SESSION["nombre"]=$check_user["usuario_nombre"];
-            $_SESSION["apellido"]=$check_user["usuario_apellido"];
-            $_SESSION["email"]=$check_user["usuario_email"];
+        //variables de sesion local
+            $_SESSION["id"]=$check_user["cliente_id"];
+            $_SESSION["nombre"]=$check_user["cliente_nombre"];
+            $_SESSION["apellido"]=$check_user["cliente_apellido"];
+            $_SESSION["email"]=$check_user["cliente_email"];
+            $_SESSION["cuenta"]="local";
+            $_SESSION["signin"]= true;//
 
 
             if(headers_sent()){//si ya se enviaron headers se redirecciona con js porque con php da errores.  
@@ -80,20 +80,19 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
             }
 
     } else {
-        echo "claves no coiniciden";
         echo (password_verify($clave, $check_user["usuario_clave"]));
         echo '
-        <div class="text-bg-danger bg-gradient">
+        <<div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>
-            Usuario o clave incorrecto.
+            Contraseña incorrecta.
         </div>';
     }
 
  } else {
-    echo ' usuario no encontraro...
-    <div class="bg-danger-subtle text-white">
+    echo '
+    <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        Usuario o clave incorrecto.
+        no se encontró el correo.
     </div>';
  }
 

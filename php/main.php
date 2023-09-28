@@ -70,19 +70,30 @@ function renombrar_fotos($nombre){
 
 //paginacion
 function paginador($pagina, $Npaginas, $url, $botones){
-	$tabla='<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">';
-
+	$tabla='
+			<nav aria-label="Page navigation example">
+			';
 	if($pagina<=1){//primera pagina
-		$tabla.='
-		<a class="pagination-previous is-disabled" disabled >Anterior</a>
-		<ul class="pagination-list">';
+		$tabla.='	
+				<ul class="pagination justify-content-center">
+					<li class=" disabled">
+						<a class="page-link ">Anterior</a>
+					</li>
+				';
 	}else{
 		$tabla.='
-		<a class="pagination-previous" href="'.$url.($pagina-1).'" >Anterior</a>
-		<ul class="pagination-list">
-			<li><a class="pagination-link" href="'.$url.'1">1</a></li>
-			<li><span class="pagination-ellipsis">&hellip;</span></li>
-		';
+				<ul class="pagination justify-content-center">
+				<li class="page-item">
+					<a class="page-link" href="'.$url.($pagina-1).'">Anterior</a>
+				</li>
+
+				<li class="page-item">
+					<a class="page-link" href="'.$url.'1">1</a>
+				</li>
+				<li class="page-item">
+					<span class="page-ellipsis">...</span>
+				</li>
+				';
 	}
 
 	$ci=0;//contador de paginas
@@ -91,37 +102,41 @@ function paginador($pagina, $Npaginas, $url, $botones){
 			break;
 		}
 		if($pagina==$i){
-			$tabla.='<li><a class="pagination-link is-current" href="'.$url.$i.'">'.$i.'</a></li>';
+			$tabla.='
+					<li class="page-item">
+						<a class="page-link active" href="'.$url.$i.'">'.$i.'</a>
+					</li>';
 		}else{
-			$tabla.='<li><a class="pagination-link" href="'.$url.$i.'">'.$i.'</a></li>';
+			$tabla.='
+					<li class="page-item">
+						<a class="page-link" href="'.$url.$i.'">'.$i.'</a>
+					</li>';
 		}
 		$ci++;
 	}
 
 	if($pagina==$Npaginas){//ultima pagina
 		$tabla.='
-		</ul>
-		<a class="pagination-next is-disabled" disabled >Siguiente</a>
+				<li class="page-item">
+					<a class="page-link disabled ">Siguiente</a>
+				</li>
 		';
 	}else{
 		$tabla.='
-			<li><span class="pagination-ellipsis">&hellip;</span></li>
-			<li><a class="pagination-link" href="'.$url.$Npaginas.'">'.$Npaginas.'</a></li>
-		</ul>
-		<a class="pagination-next" href="'.$url.($pagina+1).'" >Siguiente</a>
-		';
+				<li class="page-item">
+					<span class="page-ellipsis">...</span>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="'.$url.$Npaginas.'">'.$Npaginas.'</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="'.$url.($pagina+1).'" >Siguiente</a>
+				</link>
+			';
 	}
 
-	$tabla.='</nav>';
+	$tabla.='
+			</ul>
+		</nav>';
 	return $tabla;
-}
-
-function getFechaES(){//17 de Julio del 2023
-	$meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-
- 	return date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-}
-
-function getFechaFact(){//2023-07-17 11:16:01 - formato que acepta Mysql
- 	return date("Y-m-d H:i:s");
 }
