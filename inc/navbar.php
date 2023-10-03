@@ -45,8 +45,11 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?vista=mimadito_list">Lista de Mimaditos</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="index.php?vista=tipo_mimadito">Nuevo Tipo de Mimaditos</a></li>
-                        <li><a class="dropdown-item" href="index.php?vista=tipo_mimadito">Lista de Tipo de Mimaditos</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=raza">Nueva Raza de Mimaditos</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=raza_list">Lista de Razas de Mimaditos</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="index.php?vista=tipo">Nuevo Tipo de Mimaditos</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=tipo_list">Lista de Tipo de Mimaditos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -66,15 +69,16 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
                         <li><a class="dropdown-item" href="#">Horarios</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
                     </ul>
                 </li>
             </ul>
         <div class="d-flex">
-            <a class="btn btn-outline-info" href="#" role="button">Mi Perfil</a>
+            <!-- <a class="btn btn-outline-info" href="#" role="button">Mi Perfil</a> -->
 
-            <!-- <a href="index.php?vista=user_update&user_id_upd=<?php echo $_SESSION['id']?>" class="btn btn-secondary">
+            <a href="index.php?vista=perfil&user_id=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
                 Mi Perfil
-            </a> -->
+            </a>
             <a href="index.php?vista=logout" class="btn btn-outline-secondary" role="button">
                 Salir
             </a>

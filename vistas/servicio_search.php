@@ -18,7 +18,7 @@
 ?>
 
     <div class="text-center">
-        <form action="" method="POST" autocomplete="off" >
+        <form action="" method="POST" autocomplete="off" data-form-id="servicioSearch" >
             <input type="hidden" name="modulo_buscador" value="servicio">
                 <div class="">
                     <p class="control">

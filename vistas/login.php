@@ -22,7 +22,7 @@
                 <label for="inputPassword4">Contraseña</label>
             </div>
         </div>
-        <button class="btn btn-info mt-2" type="submit">Iniciar Sesión</button>
+        <button class="btn btn-info mt-2" type="submit" onclick=showLoader()>Iniciar Sesión</button>
         <div class="forgot-container">
             <div class="forgot" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
                 <div class="remember">
@@ -47,15 +47,9 @@
             <img src="./img/google-icon.png" alt="google-icon" class="pass-icon">
             <?php
             require_once './php/g-config.php';
-
-            //if (isset($_SESSION['id'])) {
-            //    header("Location: index.php?vista=home");
-            //} else {
                 echo "
-                
                     <a class='' href='" . $client->createAuthUrl() . "' onclick='showLoader()'>inicia sesión con tu cuenta Google</a>
                 ";
-            // }
            ?>
         </div>
         <?php 

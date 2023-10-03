@@ -3,3 +3,5 @@
 .env
 cs.json
 notas.txt
+000webhost.txt
+.verificaToken.php

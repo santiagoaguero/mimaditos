@@ -8,11 +8,6 @@
 	<div class="form-rest mb-6 mt-6"></div>
     <?php 
         require_once("./php/main.php");
-
-        //ELIMINAR Servicios
-        if(isset($_GET["horario_id_del"])){
-            require_once("./php/horario_eliminar.php");
-        }
         
         if(!isset($_GET["page"])){
             $pagina = 1;

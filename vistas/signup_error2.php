@@ -1,6 +1,6 @@
 <?php
     if (isset($_SESSION['signup']) && $_SESSION['signup']){//se creo el cliente
-        if(isset($_SESSION['crea_mascota']) && $_SESSION['crea_mascota'] == false) {//no mascota
+        if((!isset($_SESSION["crea_mascota"])) || isset($_SESSION['crea_mascota']) && $_SESSION['crea_mascota'] == false) {//no mascota
             echo '
                 <div class="signup-error2-container">
                     <div class="signup-error2 card text-bg-warning mb-3 text-center shadow">
@@ -17,6 +17,24 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    let seconds = 15;
+                    let countdownElement = document.getElementById("countdown");
+                    
+                    function updateCountdown() {
+                        countdownElement.textContent = seconds;
+                        seconds--;
+
+                        if (seconds < 0) {
+                            window.location.href = "index.php?vista=home";
+                        } else {
+                            setTimeout(updateCountdown, 1000); // Actualizar cada 1 segundo
+                        }
+                    }
+
+                    updateCountdown();
+                </script>
+
         ';
         //si por algun motivo se crea el cliente y mascota y llega acá se le lleva a home
         } else if(isset($_SESSION['crea_mascota']) && $_SESSION['crea_mascota']){
@@ -31,21 +49,3 @@
         header("Location: index.php?vista=signup_error");
     }
 ?>
-
-<script>
-    let seconds = 15;
-    let countdownElement = document.getElementById("countdown");
-    
-    function updateCountdown() {
-        countdownElement.textContent = seconds;
-        seconds--;
-
-        if (seconds < 0) {
-            window.location.href = "index.php?vista=home";
-        } else {
-            setTimeout(updateCountdown, 1000); // Actualizar cada 1 segundo
-        }
-    }
-
-    updateCountdown();
-</script>

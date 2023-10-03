@@ -9,11 +9,6 @@
     <?php 
         require_once("./php/main.php");
 
-        //ELIMINAR Servicios
-        if(isset($_GET["servic_id_del"])){
-            require_once("./php/servicio_eliminar.php");
-        }
-        
         if(!isset($_GET["page"])){
             $pagina = 1;
         } else {

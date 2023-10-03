@@ -13,6 +13,23 @@
                     </div>
                 </div>
             </div>
+            <script>
+                let seconds = 15;
+                let countdownElement = document.getElementById("countdown");
+                
+                function updateCountdown() {
+                    countdownElement.textContent = seconds;
+                    seconds--;
+
+                    if (seconds < 0) {
+                        window.location.href = "index.php?vista=signup";
+                    } else {
+                        setTimeout(updateCountdown, 1000); // Actualizar cada 1 segundo
+                    }
+                }
+
+                updateCountdown();
+            </script>
         ';
     } else if (isset($_SESSION['signin']) && $_SESSION['signin']){//usuario inicio sesion
         
@@ -24,20 +41,3 @@
 
 
 ?>
-<script>
-    let seconds = 15;
-    let countdownElement = document.getElementById("countdown");
-    
-    function updateCountdown() {
-        countdownElement.textContent = seconds;
-        seconds--;
-
-        if (seconds < 0) {
-            window.location.href = "index.php?vista=signup";
-        } else {
-            setTimeout(updateCountdown, 1000); // Actualizar cada 1 segundo
-        }
-    }
-
-    updateCountdown();
-</script>

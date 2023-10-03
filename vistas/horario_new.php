@@ -5,9 +5,10 @@
 
 <div class="forms">
 
-	<div class="form-rest mb-6 mt-6"></div>
+    <form action="./php/horario_guardar.php" method="POST" class="row g-3 formularioAjax" autocomplete="off" data-form-id="horarioNew" >
 
-    <form action="./php/horario_guardar.php" method="POST" class="row g-3 formularioAjax" autocomplete="off" >
+        <div class="form-rest mb-6 mt-6"></div>
+
         <div class="col-md-4 form-floating">
             <input type="number" class="form-control" id="floatingPos" name="horario_posicion" placeholder="servicio" title="Posición del Horario" pattern="[0-9]{1,11}" required >
             <label for="floatingPos">Posición</label>

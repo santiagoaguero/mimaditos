@@ -42,7 +42,10 @@ $tabla.='
                             <a href="index.php?vista=horario_update&horario_id_upd='.$row["horario_id"].'" class="btn btn-primary">Actualizar</a>
                         </td>
                         <td>
-                            <a href="'.$url.$pagina.'&horario_id_del='.$row["horario_id"].'" class="btn btn-danger">Eliminar</a>
+                            <form action="./php/horario_eliminar.php" method="POST" class="confirmarDelete">
+                                <input type="hidden" name="eliminar" value="'.$row["horario_id"].'">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 ';
@@ -55,3 +58,4 @@ $tabla.='
 $conexion=null;
 echo $tabla;
 
+//<a href="'.$url.$pagina.'&horario_id_del='.$row["horario_id"].'" class="btn btn-danger">Eliminar</a>

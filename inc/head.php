@@ -3,8 +3,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- BS framework -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<!-- Bulma framework 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">-->
+<!-- BS icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <!-- CSS -->
 <link rel="stylesheet" href="./css/style.css">
 <link rel="icon" href="./img/favicon.png" type="image/ico">
@@ -18,4 +18,4 @@
 <!-- complemento español -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/locales-all.js"></script>
 
-<title>RESERVET</title>
+<title>MIMADITOS PETSHOP</title>

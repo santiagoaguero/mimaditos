@@ -5,9 +5,11 @@
 
 <div class="forms">
 
-	<div class="form-rest mb-6 mt-6"></div>
 
     <form action="./php/servicio_guardar.php" method="POST" class="row g-3 formularioAjax" autocomplete="off" >
+
+	    <div class="form-rest mb-6 mt-6"></div>
+
         <div class="col-md-4 form-floating">
             <input type="text" class="form-control" id="floatingNombre" name="servicio_nombre" placeholder="servicio" title="Nombre del Servicio a ofrecer" pattern="^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,40}$" required>
             <label for="floatingNombre">Nombre</label>

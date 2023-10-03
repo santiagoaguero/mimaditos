@@ -1,13 +1,13 @@
 <?php
     $modulo_buscador = limpiar_cadena($_POST["modulo_buscador"]);
 
-    $modulos=["servicio", "categoria", "proveedor", "cliente", "usuario", "factura_producto", "factura", "familia", "compra"];
+    $modulos=["servicio", "perfil", "proveedor", "cliente", "usuario", "factura_producto", "factura", "familia", "compra"];
 
     if(in_array($modulo_buscador, $modulos)){
 
         $modulos_url=[
             "servicio"=>"servicio_search",
-            "categoria"=>"category_search",
+            "perfil"=>"perfil",
             "proveedor"=>"provee_search",
             "cliente"=>"client_search",
             "usuario"=>"user_search",

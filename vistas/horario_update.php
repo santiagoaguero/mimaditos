@@ -19,9 +19,10 @@
         $datos=$check_horario->fetch();
 ?>
 
-	<div class="form-rest mb-6 mt-6"></div>
-
     <form action="./php/horario_actualizar.php" method="POST" class="row g-3 formularioAjax" autocomplete="off" >
+    
+        <div class="form-rest mb-6 mt-6"></div>
+
         <input type="hidden" name="horario_id" value="<?php echo $datos["horario_id"];?>" required >
         <div class="col-md-4 form-floating">
             <input type="number" min="1" class="form-control" id="floatingPos" name="horario_posicion" placeholder="servicio" title="Posición del Horario" pattern="[0-9]{1,11}" required value="<?php echo $datos["horario_posicion"]?>">

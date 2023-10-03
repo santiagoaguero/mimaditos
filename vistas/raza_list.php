@@ -1,6 +1,6 @@
 <div class="container-fluid mb-6">
-	<h1 class="title">Clientes</h1>
-	<h2 class="subtitle">Lista de Clientes</h2>
+	<h1 class="title">Razas de Mimaditos</h1>
+	<h2 class="subtitle">Lista de Razas</h2>
 </div>
 
 <div class="forms">
@@ -19,10 +19,10 @@
         }
 
         $pagina = limpiar_cadena($pagina);
-        $url= "index.php?vista=cliente_list&page=";
+        $url= "index.php?vista=raza_list&page=";
         $registros=5;//cantidad de registros por pagina
-        $busqueda="";//de cliente
-        require_once("./php/cliente_lista.php");
+        $busqueda="";//de horario
+        require_once("./php/raza_lista.php");
 
     ?>
 

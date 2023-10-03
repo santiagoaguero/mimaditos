@@ -1,11 +1,11 @@
-const formAjax = document.querySelectorAll(".formularioAjax");
+const formConfirmarDelete = document.querySelectorAll(".confirmarDelete");
 
-function enviarForm (evt){
+function btnDelete (evt){
     evt.preventDefault();
 
-    let enviar=confirm("quieres enviar este formulario?")
+    let eliminar=confirm("Realmente quieres eliminar?")
 
-    if(enviar){
+    if(eliminar){
         let data = new FormData(this);
 
         let method = this.getAttribute("method");
@@ -24,13 +24,13 @@ function enviarForm (evt){
         fetch(action, config)
         .then(response => response.text())
         .then(response => {
-            let contenedor = this.querySelector(".form-rest");
+            let contenedor = document.querySelector(".form-rest");
             contenedor.innerHTML = response;
         } );
     }
 
 }
 
-formAjax.forEach(form =>{
-    form.addEventListener("submit", enviarForm)
+formConfirmarDelete.forEach(form =>{
+    form.addEventListener("submit", btnDelete)
 });

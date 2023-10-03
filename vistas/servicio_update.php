@@ -19,9 +19,10 @@
         $datos=$check_servicio->fetch();
 ?>
 
-	<div class="form-rest mb-6 mt-6"></div>
-
     <form action="./php/servicio_actualizar.php" method="POST" class="row g-3 formularioAjax" autocomplete="off" >
+
+	    <div class="form-rest mb-6 mt-6"></div>
+
         <input type="hidden" name="servicio_id" value="<?php echo $datos["servicio_id"];?>" required >
         <div class="col-md-4 form-floating">
             <input type="text" class="form-control" id="floatingNombre" name="servicio_nombre" placeholder="servicio" title="Nombre del Servicio a ofrecer" pattern="^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]{3,40}$" required value="<?php echo $datos["servicio_nombre"]?>">
