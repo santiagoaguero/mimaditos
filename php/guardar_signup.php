@@ -13,6 +13,7 @@ $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
 $mascota=limpiar_cadena($_POST["mascota"]);
 $tipo=(int)limpiar_cadena($_POST["tipo"]);
+$sexo=limpiar_cadena($_POST["sexo"]);
 $edad=(int)limpiar_cadena($_POST["edad"]);
 $tamaño=(int)limpiar_cadena($_POST["tamaño"]);
 $email=limpiar_cadena($_POST["email"]);
@@ -121,6 +122,10 @@ if($tipo=="0" || $tipo > 4){
     $tipo = "4";//asegurar siempre que sea 'Otro/Sin Especificar'
 }
 
+if($sexo != "Macho" && $sexo  != "Hembra"){
+    $sexo = "Sin especificar";
+}
+
 if($tamaño=="0" || $tamaño > 4){
     $tamaño = "2";//asegurar siempre que sea 'Mediano'
 }
@@ -143,6 +148,7 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
 
         //variables de sesion
         $_SESSION["id"]=$cliente_id;
+        $_SESSION["rol"]=4;
         $_SESSION["nombre"]=$nombre;
         $_SESSION["apellido"]=$apellido;
         $_SESSION["email"]=$email;
@@ -151,12 +157,13 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
 
         $crea_cliente = true;
 
-    // Ahora puedes insertar la mascota asociada al cliente
-    $guardar_mascota_query = $pdo->prepare("INSERT INTO mascota (mascota_nombre, mascota_tipo_id, mascota_raza_id, mascota_edad, cliente_id, mascota_tamano_id, mascota_notas, mascota_estado) VALUES (:mascota, :tipo, :raza, :edad, :cliente, :tamano, :notas, :estado)");
+    // inserta la mascota asociada al cliente
+    $guardar_mascota_query = $pdo->prepare("INSERT INTO mascota (mascota_nombre, mascota_tipo_id, mascota_sexo, mascota_raza_id, mascota_edad, cliente_id, mascota_tamano_id, mascota_notas, mascota_estado) VALUES (:mascota, :tipo, :sexo, :raza, :edad, :cliente, :tamano, :notas, :estado)");
 						
     $marcadores_mascota = [
         ":mascota" => $mascota,
         ":tipo" => $tipo,
+        ":sexo" => $sexo,
         ":raza" => 9,//9->sin especificar
         ":edad" => $edad,
         ":cliente" => $cliente_id,

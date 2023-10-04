@@ -8,7 +8,7 @@
 
         $cliente_id=(isset($_GET["user_id"])) ? $_GET["user_id"] : 0;
 
-        if($cliente_id == $_SESSION["id"]){
+        if($cliente_id == $_SESSION["id"] || $_SESSION["rol"] == 4){
 
             $check_mascota = con();
             $check_mascota = $check_mascota->query("SELECT mascota.*, cliente.cliente_nombre, cliente.cliente_apellido FROM mascota INNER JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.cliente_id = '$cliente_id' AND mascota.mascota_id = '$mascota_id'");
@@ -21,8 +21,7 @@
 
     <div class="container">
         <form class="formularioAjax row g-3 shadow" method="POST" action="./php/mascota_actualizar.php" autocomplete="off" >
-            <input type="hidden" name="mascota_id" value="<?php echo $datos["mascota_id"];?>" required >
-            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
+
             <h2 class="subtitle text-center">Información de Mimadito</h2>
 
             <div class="mb-3 row">
@@ -31,11 +30,11 @@
                     <input type="text" readonly class="form-control-plaintext" id="dueñoMascota" value="<?php echo $datos["cliente_nombre"] . " ". $datos["cliente_apellido"];?>">
                 </div>
             </div>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <input type="text" class="form-control" id="inputMascota" name="nombre" placeholder="Mimadito" value="<?php echo $datos["mascota_nombre"];?>" required>
                 <label for="inputMascota">Nombre de mimadito</label>
             </div>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control" id="inputTipo" name="tipo" placeholder="Mimadito" required>
                 <?php
                     $tipos = con();
@@ -57,7 +56,7 @@
                 </select>
                 <label for="inputTipo">Es un ?</label>
             </div>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control" id="inputTamaño" name="tamaño" placeholder="Mimadito" required>
                 <?php
                     $tam = con();
@@ -79,6 +78,14 @@
                 </select>
                 <label for="inputTamaño">Tamaño</label>
             </div>
+            <div class="col-md-3 form-floating">
+            <select class="form-control" id="inputSexo" name="sexo" placeholder="Mimadito">
+                <option value="<?php echo $datos["mascota_sexo"];?>" ><?php echo $datos["mascota_sexo"];?> (Actual)</option>
+                <option value="Macho">Macho</option>
+                <option value="Hembra">Hembra</option>
+            </select>
+            <label for="inputSexo">Es</label>
+        </div>
             <div class="col-md-4 form-floating">
                 <select class="form-control" id="inputRaza" name="raza" placeholder="Mimadito">
                 <?php
@@ -124,6 +131,8 @@
                 }
             ?>
         </div>
+            <input type="hidden" name="mascota_id" value="<?php echo $datos["mascota_id"];?>" required >
+            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary">Actualizar</button>

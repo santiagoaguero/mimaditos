@@ -7,28 +7,30 @@
         $id=(isset($_GET["user_id"])) ? $_GET["user_id"] : 0;
         $id=limpiar_cadena($id);
 
-        $check_client = con();
-        $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
+        if($id == $_SESSION["id"]){
 
-        if($check_client->rowCount()>0){
-            $datos=$check_client->fetch();
+            $check_client = con();
+            $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
+
+            if($check_client->rowCount()>0){
+                $datos=$check_client->fetch();
+            }
     ?>
 
     <div class="container">
         <form class="formularioAjax row g-3 shadow" method="POST" action="./php/perfil_actualizar.php" autocomplete="off">
-            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
             <h2 class="subtitle text-center">Información Personal</h2>
             <div class="col-md-6 form-floating">
                 <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value=" <?php echo $datos["cliente_nombre"];?> ">
-                <label for="inputName">Nombre</label>
+                <label for="inputName" class="is-required">Nombre</label>
             </div>
             <div class="col-md-6 form-floating">
                 <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value=" <?php echo $datos["cliente_apellido"];?> ">
-                <label for="inputApellido">Apellido</label>
+                <label for="inputApellido" class="is-required">Apellido</label>
             </div>
             <div class="col-md-6 form-floating">
                 <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" required value=" <?php echo $datos["cliente_telefono"];?> ">
-                <label for="inputTelefono">Teléfono</label>
+                <label for="inputTelefono" class="is-required">Teléfono</label>
             </div>
             <div class="col-md-6 form-floating">
                 <input type="text" class="form-control" id="inputCiudad" name="ciudad" placeholder="Ciudad" value=" <?php echo $datos["cliente_ciudad"];?> ">
@@ -40,11 +42,13 @@
             </div>
             <div class="col-md-12 form-floating">
                 <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="name@example.com" required value=" <?php echo $datos["cliente_email"];?> ">
-                <label for="inputEmail4">Email</label>
+                <label for="inputEmail4" class="is-required">Email</label>
             </div>
+            <p class="text-body-secondary text-center fst-italic mt-4 mb-0">si no desea cambiar su contraseña, deje los campos vacíos
+            </p>
             <div class="col-12 form-floating">
                 <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" title="si no desea cambiar su contraseña, deje los campos vacíos">
-                <label for="inputPassword" class="form-label">Contraseña</label>
+                <label for="inputPassword" class="form-label is-required">Contraseña</label>
                 <div class="col-auto">
                     <span id="passwordHelpInline" class="form-text">
                     La contraseña debe tener mínimo 6 carácteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ - .
@@ -53,8 +57,9 @@
             </div>
             <div class="col-12 form-floating">
                 <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" title="si no desea cambiar su contraseña, deje los campos vacíos">
-                <label for="inputPassword2" class="form-label">Confirme su contraseña</label>
+                <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
             </div>
+            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
@@ -62,9 +67,7 @@
         </form>
             
         <h2 class="subtitle text-center mt-5 mb-2">Información de su Mimadito</h2>
-        <p class="text-body-secondary fst-italic">
-        <span class="text-primary fw-bold">mimaditos</span> de color azul son tus mimaditos presentes, <span class="text-secondary fw-bold">mimaditos</span> de color gris son tus mimaditos que ya no estan presentes 💕
-        </p>
+
 
         <?php 
         $check_mascota = con();
@@ -73,7 +76,13 @@
         if($check_mascota->rowCount()>0){
             $datos=$check_mascota->fetchAll();
 
-            echo '<div class="list-group w-75 text-center mb-5">';
+            echo '
+            <p class="text-body-secondary fst-italic">
+                <span class="text-primary fw-bold">mimaditos</span> de color azul son tus mimaditos presentes, <span class="text-secondary fw-bold">mimaditos</span> de color gris son tus mimaditos que ya no estan presentes 💕
+            </p>
+
+            <div class="list-group w-75 text-center mb-5">
+            ';
 
             foreach($datos as $mascota){
                 if($mascota["mascota_estado"] == 'on'){
@@ -92,20 +101,11 @@
             }
             $check_mascota=null;
         ?>
-
-
     </div>
 
 
-	<?php 
-    } else {
-        include("./inc/error_alert.php");
-    }
-    $check_client=null;
-?>
-
-    <div class="d-grid gap-2 justify-content-center">
-        <h2 class="subtitle mt-5">Tenes un nuevo mimadito?</h2>
+    <div class="d-grid gap-2 justify-content-center mb-5">
+        <h2 class="subtitle mt-5">Tenés un nuevo mimadito?</h2>
         <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseNew">
                 <span><i class="bi bi-plus-circle mx-2"></i>Queremos conocerle !!</span>
         </button>
@@ -113,11 +113,11 @@
     <div class="container collapse mt-5" id="collapseNew">
         <form class="formularioAjax row g-3 shadow" method="POST" action="./php/mascota_guardar.php" autocomplete="off">
             <h2 class="subtitle text-center">Nuevo Mimadito</h2>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <input type="text" class="form-control" id="inputMascota" name="nombre" placeholder="Mimadito" required>
-                <label for="inputMascota">Nombre de tu mimadito</label>
+                <label for="inputMascota" class="is-required">Nombre de tu mimadito</label>
             </div>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
                 <select class="form-control" id="inputTipo" name="tipo" placeholder="Mimadito" required>
                     <option value="0" selected="">Seleccione una opción</option>
 
@@ -145,9 +145,17 @@
                         $tipos = null;
                 ?>
                 </select>
-                <label for="inputTipo">Es un ?</label>
+                <label for="inputTipo" class="is-required">Es un ?</label>
             </div>
-            <div class="col-md-4 form-floating">
+            <div class="col-md-3 form-floating">
+                <select class="form-control" id="inputSexo" name="sexo" placeholder="Mimadito" required>
+                    <option value="0" selected="">Seleccione una opción</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Hembra">Hembra</option>
+                </select>
+                <label for="inputSexo">Es</label>
+            </div>
+            <div class="col-md-3 form-floating">
                 <select class="form-control" id="inputTamaño" name="tamaño" placeholder="Mimadito" required>
                     <option value="0" selected="">Seleccione una opción</option>
                     <option value="1">Pequeño</option>
@@ -155,7 +163,7 @@
                     <option value="3">Grande</option>
                     <option value="4">Enorme</option>
                 </select>
-                <label for="inputTamaño">Tamaño</label>
+                <label for="inputTamaño" class="is-required">Tamaño</label>
             </div>
             <div class="col-md-4 form-floating">
                 <select class="form-control" id="inputRaza" name="raza" placeholder="Mimadito">
@@ -188,18 +196,60 @@
                 <label for="inputRaza">Raza</label>
             </div>
             <div class="col-md-4 form-floating">
-                <input type="number" class="form-control" id="floatingEdad" name="edad" placeholder="Edad" min="0" title="Edad de tu mimadito" pattern="[0-9]{1,11}" >
+                <input type="number" class="form-control" id="floatingEdad" name="edad" placeholder="Edad" min="0" title="Edad de tu mimadito" pattern="[0-9]{1,11}" required >
                 <label for="floatingEdad">Edad</label>
             </div>
             <div class="col-md-4 form-floating">
                 <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}"></textarea>
                 <label for="inputNotas">Notas de mimadito</label>
             </div>
+            <input type="hidden" name="user" value="<?php echo $id;?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
             </div>
         </form>
     </div>
+
+    <div class="d-grid gap-2 justify-content-center">
+        <h2 class="fs-4 mt-5 text-secondary">Querés desactivar tu cuenta?</h2>
+        <button class="btn btn-outline-danger " type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelete" aria-expanded="false" aria-controls="collapseDelete">
+                <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
+        </button>
+    </div>
+    
+    <div class="card border-danger collapse mt-5 shadow " id="collapseDelete">
+        <form class="" method="POST" action="./php/desactivar_cuenta.php" autocomplete="off">
+            <div class="card-header">
+                Lamentamos que decidas desactivar tu cuenta :(
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Esperamos que vuelvas pronto para brindarle la mejor atención a tu mimadito 🥰</h5>
+                <p class="card-text">Toda tu información y la de tus mimaditos se eliminarán.</p>
+                <p class="card-text">Si realmente quieres desactivar tu cuenta, por favor introduce tu contraseña para confirmarlo.</p>
+                <div class="col-12 form-floating">
+                    <input type="password" class="form-control" id="deletePassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+                    <label for="deletePassword" class="form-label is-required">Contraseña</label>
+                </div>
+                <div class="col-12 form-floating">
+                    <input type="password" class="form-control" id="deletePassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+                    <label for="deletePassword2" class="form-label is-required">Confirme su contraseña</label>
+                </div>
+                <input type="hidden" name="user" value="<?php echo $id;?>" required >
+
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-outline-secondary">Cerrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+
+    <?php 
+        } else {
+            include("./inc/error_alert.php");
+        }
+        $check_client=null;
+    ?>
 
 </div>

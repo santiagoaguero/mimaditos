@@ -23,6 +23,7 @@ $check_mascota=null;
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $tipo=limpiar_cadena($_POST["tipo"]);
+$sexo=limpiar_cadena($_POST["sexo"]);
 $raza=limpiar_cadena($_POST["raza"]);
 $edad=limpiar_cadena($_POST["edad"]);
 $tamaño=limpiar_cadena($_POST["tamaño"]);
@@ -62,6 +63,10 @@ if(verificar_datos("[0-9]{1,11}",$tipo)){
         La duración del servicio no coincide con el formato esperado.
     </div>';
     exit();
+}
+
+if($sexo != "Macho" && $sexo  != "Hembra"){
+    $sexo = "Sin especificar";
 }
 
 if($tipo < 1 && $tipo > 4){
@@ -112,11 +117,12 @@ if($nombre != $datos["mascota_nombre"]){
 
 //Actualizando datos
 $actualizar_mascota = con();
-$actualizar_mascota = $actualizar_mascota->prepare("UPDATE mascota SET mascota_nombre = :nombre, mascota_tipo_id = :tipo, mascota_raza_id = :raza, mascota_edad = :edad, cliente_id = :c_id, mascota_tamano_id = :tamano, mascota_notas = :notas, mascota_estado = :estado WHERE mascota_id = :m_id AND cliente_id = :c_id");
+$actualizar_mascota = $actualizar_mascota->prepare("UPDATE mascota SET mascota_nombre = :nombre, mascota_tipo_id = :tipo, mascota_sexo = :sexo, mascota_raza_id = :raza, mascota_edad = :edad, cliente_id = :c_id, mascota_tamano_id = :tamano, mascota_notas = :notas, mascota_estado = :estado WHERE mascota_id = :m_id AND cliente_id = :c_id");
 
 $marcadores=[
     "nombre"=>$nombre,
     "tipo"=>$tipo,
+    "sexo"=>$sexo,
     "raza"=>$raza,
     "edad"=>$edad,
     "c_id"=>$cliente_id,

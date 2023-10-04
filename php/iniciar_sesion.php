@@ -61,6 +61,7 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
 
         //variables de sesion local
             $_SESSION["id"]=$check_user["cliente_id"];
+            $_SESSION["rol"]=$check_user["rol_id"];;
             $_SESSION["nombre"]=$check_user["cliente_nombre"];
             $_SESSION["apellido"]=$check_user["cliente_apellido"];
             $_SESSION["email"]=$check_user["cliente_email"];

@@ -120,6 +120,14 @@ body,html{
     margin-top: 25px;
 }
 
+.is-required:after {
+    content: '*';
+    font-size: 15px;
+    margin-left: 3px;
+    color: red;
+    font-weight: bold;
+  }
+
 .signup-exito-container, .signup-error-container, .signup-error2-container{
     height: 100vh;
     display: grid;

@@ -65,7 +65,7 @@ if($total>=1 && $pagina <= $Npaginas){
                     <a href="index.php?vista=cliente_update&cliente_id_upd='.$row["cliente_id"].'" class="btn btn-outline-primary">Ver Cliente</a>
                 </td>
                 <td>
-                    <a href="index.php?vista=mascota_update&mascota_id_upd='.$row["mascota_id"].'" class="btn btn-outline-primary">Ver Mimadito</a>
+                    <a href="index.php?vista=mascota_update&mascota_id='.$row["mascota_id"].'&user_id='.$row["cliente_id"].'" class="btn btn-outline-primary">Ver Mimadito</a>
                 </td>
             </tr>
         ';
