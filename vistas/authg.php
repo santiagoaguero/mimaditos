@@ -21,14 +21,90 @@ if (isset($_GET['code'])) {
 
             // Verificar si se obtuvo la información del perfil correctamente
             if ($google_account_info) {
-                // Establecer variables de sesión
-                $_SESSION["id"] = $google_account_info['id'];
-                $_SESSION["nombre"] = $google_account_info['givenName'];
-                $_SESSION["apellido"] = $google_account_info['familyName'];
-                $_SESSION["email"] = $google_account_info['email'];
-                $_SESSION["cuenta"]="google";
-                $_SESSION["token"]=$token['access_token'];
-                $_SESSION["signin"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+
+                //cambiamos el token access por el google id
+                $gid = $google_account_info['id'];
+
+                $nombre = $google_account_info['givenName'];
+                $apellido = $google_account_info['familyName'];
+                $email = $google_account_info['email'];
+
+                require_once("./php/main.php");
+                $pdo = con();
+                $check_user = $pdo->query("SELECT * FROM cliente WHERE
+                 google_id = '".$google_account_info['id']."' ");
+
+                 //ya ingreso antes
+                 if($check_user->rowCount() == 1){
+                    $check_user= $check_user->fetch();
+                    // Establecer variables de sesión
+                    $_SESSION["id"] = $check_user["cliente_id"];
+                    $_SESSION["gid"] = $check_user["google_id"];
+                    $_SESSION["rol"]=$check_user["rol_id"];
+                    $_SESSION["nombre"] = $check_user["cliente_nombre"];
+                    $_SESSION["apellido"] = $check_user["cliente_apellido"];
+                    $_SESSION["email"] = $check_user["cliente_email"];
+                    $_SESSION["cuenta"]="google";
+                    $_SESSION["token"]=$token['access_token'];
+                    $_SESSION["signin"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+
+
+                    // Redirigir a la vista 'home'
+                    if (!headers_sent()) {
+                        header("Location: index.php?vista=home");
+                    } else {
+                        echo '
+                        <script>
+                            window.location.href="index.php?vista=home";
+                        </script>
+                        ';
+                    }
+                } else {
+                    //crear nuevo usuario
+                    $contraseña = "";
+                    $telefono = 0000;
+                    $direccion = "";
+                    $ciudad = "";
+
+                    //usaremos google id en vez del token en sí
+                    //guardando datos
+                    $guardar_cliente_query = $pdo->prepare("INSERT INTO
+                    cliente(google_id, cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
+                    VALUES(:gid, :nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
+
+                    //evitando inyecciones sql xss
+                    $marcadores=[
+                    ":gid"=>$gid, ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
+
+                    $guardar_cliente_query->execute($marcadores);
+
+                    if($guardar_cliente_query->rowCount() == 1){
+                        $id = $pdo->lastInsertId();
+                        // Establecer variables de sesión
+                        $_SESSION["id"] = $id;
+                        $_SESSION["gid"] = $gid;
+                        $_SESSION["rol"]=4;
+                        $_SESSION["nombre"] = $nombre;
+                        $_SESSION["apellido"] = $apellido;
+                        $_SESSION["email"] = $email;
+                        $_SESSION["cuenta"]="google";
+                        $_SESSION["token"]=$token['access_token'];
+                        $_SESSION["signup"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+
+                        // Redirigir a la vista 'exito'
+                        if (!headers_sent()) {
+                            header("Location: index.php?vista=signup_exito");
+                        } else {
+                            echo '
+                            <script>
+                                window.location.href="index.php?vista=signup_exito";
+                            </script>
+                            ';
+                        }
+                    }
+                    $guardar_cliente_query = null;
+                }
+
             } else {
                 // Manejo de error: No se pudo obtener la información del perfil
                 echo "Error: No se pudo obtener la información del perfil de Google.";
@@ -43,14 +119,4 @@ if (isset($_GET['code'])) {
     }
 }
 
-// Redirigir a la vista 'home'
-if (!headers_sent()) {
-    header("Location: index.php?vista=home");
-} else {
-    echo '
-    <script>
-        window.location.href="index.php?vista=home";
-    </script>
-    ';
-}
 ?>

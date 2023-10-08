@@ -1,36 +1,40 @@
 <?php
 require_once("main.php");
 
-$id = limpiar_cadena($_POST["cliente_id"]);//input hidden
+$id = limpiar_cadena($_POST["user"]);//input hidden
 
 //verificar en bd
-$check_cliente = con();
-$check_cliente = $check_cliente->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
+$check_empleado = con();
+$check_empleado = $check_empleado->query("SELECT * FROM empleado WHERE empleado_id = '$id'");
 
-if($check_cliente->rowCount()<=0){//no existe id
+if($check_empleado->rowCount()<=0){//no existe id
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        No se encontró el cliente.
+        No se encontró el Usuario.
     </div>';
     exit();
 } else {
-    $datos = $check_cliente->fetch();
+    $datos = $check_empleado->fetch();
 }
-$check_cliente=null;
+$check_empleado=null;
 
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
-$ciudad=limpiar_cadena($_POST["ciudad"]);
-$direccion=limpiar_cadena($_POST["direccion"]);
+$rol=limpiar_cadena($_POST["rol"]);
 $email=limpiar_cadena($_POST["email"]);
 $contraseña=limpiar_cadena($_POST["contraseña"]);
 $contraseña2=limpiar_cadena($_POST["contraseña2"]);
 
+//checkbox no marcados no se envian en el form
+//se verifica para darle un valor y poder guardar
+$estado = isset($_POST["estado"]) ? 
+    (limpiar_cadena($_POST["estado"])) : 0;
+
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || $email == ""){
+if($nombre == "" || $apellido == "" || $telefono == "" || $email == "" || $rol == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -82,16 +86,33 @@ if($contraseña != "" || $contraseña2 != ""){
         }
     }
 } else {
-    $contraseña = $datos["cliente_clave"];//si no actualiza mantiene su misma clave
+    $contraseña = $datos["empleado_clave"];//si no actualiza mantiene su misma clave
+}
+
+if($rol==0 || $rol > 4){
+    $rol = 3;//asegurar siempre que sea 'Empleado' 
+}
+
+if($estado == "" && $estado != "on"){
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        No se pudo establecer el estado del Servicio.
+    </div>';
+    exit();
+}
+
+if($estado == 'on'){
+    $estado = 1;
 }
 
 
 //verifica email
-if($email != "" && $email != $datos["cliente_email"]){
+if($email != "" && $email != $datos["empleado_email"]){
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         $check_email=con();
-        $check_email=$check_email->query("SELECT cliente_email FROM cliente 
-        WHERE cliente_email = '$email'");//checks if email exists
+        $check_email=$check_email->query("SELECT empleado_email FROM empleado 
+        WHERE empleado_email = '$email'");//checks if email exists
         if($check_email->rowCount()>0){//email found and emails gotta be unique
             echo '
             <div class="alert alert-danger" role="alert">
@@ -112,28 +133,27 @@ if($email != "" && $email != $datos["cliente_email"]){
 }
 
 //Actualizando datos
-$actualizar_cliente = con();
-$actualizar_cliente = $actualizar_cliente->prepare("UPDATE cliente SET 
-cliente_nombre = :nombre, cliente_apellido = :apellido, cliente_clave = :clave, cliente_email = :email, cliente_telefono = :telefono, cliente_direccion = :direccion, cliente_ciudad = :ciudad, rol_id = :rol, cliente_estado = :estado WHERE cliente_id = :id");
+$actualizar_empleado = con();
+$actualizar_empleado = $actualizar_empleado->prepare("UPDATE empleado SET 
+empleado_nombre = :nombre, empleado_apellido = :apellido, empleado_clave = :clave, empleado_email = :email, empleado_telefono = :telefono, rol_id = :rol, empleado_estado = :estado WHERE empleado_id = :id");
 
 //evitando inyecciones sql xss
 $marcadores=[
     ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, 
-    ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, 
-    ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1, "id" => $id];
+    ":email"=>$email, ":telefono"=>$telefono, ":rol"=> $rol, ":estado"=> $estado, "id" => $id];
 
-if($actualizar_cliente->execute($marcadores)){
+if($actualizar_empleado->execute($marcadores)){
     echo '
     <div class="alert alert-success" role="alert">
-        <strong>Perfil actualizado!</strong><br>
-        Su perfil se actualizó exitosamente.
+        <strong>Usuario actualizado!</strong><br>
+        El Usuario se actualizó exitosamente.
     </div>';
 } else {
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        No se pudo actualizar el perfil, inténtelo nuevamente.
+        No se pudo actualizar el Usuario, inténtelo nuevamente.
     </div>';   
 }
 
-$actualizar_cliente=null;
+$actualizar_empleado=null;

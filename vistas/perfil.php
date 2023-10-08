@@ -1,3 +1,17 @@
+<?php // Verificar los permisos del usuario para esta página
+	include("./inc/check_rol.php");
+	if (isset($_SESSION['rol']) && isset($_GET['vista'])) {
+		$vistaSolicitada = $_GET['vista'];
+		$rolUsuario = $_SESSION['rol'];
+	
+		check_rol($vistaSolicitada, $rolUsuario);
+		
+	} else {
+        header("Location: login.php");
+        exit();
+    }
+?>
+
 <div class="forms">
     <?php 
         include("./inc/btn_back.php");
@@ -47,7 +61,7 @@
             <p class="text-body-secondary text-center fst-italic mt-4 mb-0">si no desea cambiar su contraseña, deje los campos vacíos
             </p>
             <div class="col-12 form-floating">
-                <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" title="si no desea cambiar su contraseña, deje los campos vacíos">
+                <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="^[a-zA-Z0-9$@.\-]{6,100}$" title="si no desea cambiar su contraseña, deje los campos vacíos">
                 <label for="inputPassword" class="form-label is-required">Contraseña</label>
                 <div class="col-auto">
                     <span id="passwordHelpInline" class="form-text">
@@ -56,7 +70,7 @@
                 </div>
             </div>
             <div class="col-12 form-floating">
-                <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" title="si no desea cambiar su contraseña, deje los campos vacíos">
+                <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="^[a-zA-Z0-9$@.\-]{6,100}$" title="si no desea cambiar su contraseña, deje los campos vacíos">
                 <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
             </div>
             <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
@@ -206,45 +220,18 @@
             <input type="hidden" name="user" value="<?php echo $id;?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
+                <button type="submit" class="btn btn-primary mb-3">Agregar</button>
             </div>
         </form>
     </div>
 
-    <div class="d-grid gap-2 justify-content-center">
+    <div class="d-grid gap-2 justify-content-center mt-5">
         <h2 class="fs-4 mt-5 text-secondary">Querés desactivar tu cuenta?</h2>
-        <button class="btn btn-outline-danger " type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelete" aria-expanded="false" aria-controls="collapseDelete">
-                <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
-        </button>
+        <a type="button" class="btn btn-outline-danger " href="index.php?vista=desactivar&id=<?php echo $id; ?>">
+            <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
+        </a>
     </div>
     
-    <div class="card border-danger collapse mt-5 shadow " id="collapseDelete">
-        <form class="" method="POST" action="./php/desactivar_cuenta.php" autocomplete="off">
-            <div class="card-header">
-                Lamentamos que decidas desactivar tu cuenta :(
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">Esperamos que vuelvas pronto para brindarle la mejor atención a tu mimadito 🥰</h5>
-                <p class="card-text">Toda tu información y la de tus mimaditos se eliminarán.</p>
-                <p class="card-text">Si realmente quieres desactivar tu cuenta, por favor introduce tu contraseña para confirmarlo.</p>
-                <div class="col-12 form-floating">
-                    <input type="password" class="form-control" id="deletePassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
-                    <label for="deletePassword" class="form-label is-required">Contraseña</label>
-                </div>
-                <div class="col-12 form-floating">
-                    <input type="password" class="form-control" id="deletePassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
-                    <label for="deletePassword2" class="form-label is-required">Confirme su contraseña</label>
-                </div>
-                <input type="hidden" name="user" value="<?php echo $id;?>" required >
-
-                <div class="card-footer text-center">
-                    <button type="submit" class="btn btn-outline-secondary">Cerrar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-
     <?php 
         } else {
             include("./inc/error_alert.php");

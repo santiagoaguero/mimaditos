@@ -4,6 +4,10 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <?php 
+            if($_SESSION["rol"] >= 1 && $_SESSION["rol"] <= 3)
+            {
+        ?>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
@@ -57,9 +61,9 @@
                     Usuarios
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Nuevo</a></li>
-                        <li><a class="dropdown-item" href="#">Lista</a></li>
-                        <li><a class="dropdown-item" href="#"> Buscar </a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=user_new">Nuevo</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=user_list">Lista</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=user_search"> Buscar </a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -68,15 +72,13 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
-                        <li><a class="dropdown-item" href="#">Horarios</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=horario_list">Horarios</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
                     </ul>
                 </li>
             </ul>
         <div class="d-flex">
-            <!-- <a class="btn btn-outline-info" href="#" role="button">Mi Perfil</a> -->
-
-            <a href="index.php?vista=perfil&user_id=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
+            <a href="index.php?vista=user&user_id=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
                 Mi Perfil
             </a>
             <a href="index.php?vista=logout" class="btn btn-outline-secondary" role="button">
@@ -84,5 +86,46 @@
             </a>
         </div>
     </div>
+    <?php 
+    } else if($_SESSION["rol"] == 4)
+        {
+    ?>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <li class="nav-item dropdown">
+                <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page" aria-expanded="false">
+                Dashboard
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
+                    <li><a class="dropdown-item" href="index.php?vista=horario">Horarios</a></li>
+                    <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
+                </ul>
+            </li>
+        </ul>
+    <div class="d-flex">
+        <a href="index.php?vista=perfil&user_id=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
+            Mi Perfil
+        </a>
+        <a href="index.php?vista=logout" class="btn btn-outline-secondary" role="button">
+            Salir
+        </a>
+    </div>
+</div>
+<?php
+
+    } else {
+        if(headers_sent()){//si ya se enviaron headers se redirecciona con js porque con php da errores.  
+            echo '
+            <script>
+                window.location.href="index.php?vista=logout"
+            </script>
+            ';
+        } else {
+            header("Location: index.php?vista=logout");
+        }
+    }
+    ?>
     </div>
 </nav>

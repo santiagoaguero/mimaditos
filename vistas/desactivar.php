@@ -1,47 +1,94 @@
-<?php
-    if (isset($_SESSION['signup']) && $_SESSION['signup']){//se creo el cliente
-        if(isset($_SESSION['crea_mascota']) && $_SESSION['crea_mascota']) {//se creo la mascota
-            echo '
-            <div class="signup-exito-container">
-                <div class="card w-100 signup-exito border-0 text-center text-info-emphasis">
-                    <div class="card-body">
-                        <h5 class="card-title fs-1">Hola ' . $_SESSION["nombre"] . '!</h5>
-                        <h6 class="card-subtitle mb-2 fs-3">Gracias por elegirnos para cuidar a tu mimadito 💖</h6>
-                        <p class="card-text fs-6">Recordá que una vez accedas podrás completar más información sobre vos o tu mimadito 🐾</p>
-                        <a href="index.php?vista=calendar" class="btn btn-outline-primary">Solicita un servicio ahora!</a>
-                    </div>
-                    <div class="card-footer text-body-secondary">
-                        o serás redireccionado en <span id="countdown">15</span> segundos 
-                    </div>
-                </div>
+<?php // Verificar los permisos del usuario para esta página
+	include("./inc/check_rol.php");
+	if (isset($_SESSION['rol']) && isset($_GET['vista'])) {
+		$vistaSolicitada = $_GET['vista'];
+		$rolUsuario = $_SESSION['rol'];
+	
+		check_rol($vistaSolicitada, $rolUsuario);
+		
+	} else {
+        header("Location: login.php");
+        exit();
+    }
+
+    include_once("./inc/btn_back.php");
+    require_once("./php/main.php");
+    $id=(isset($_GET["id"])) ? $_GET["id"] : 0;
+    $id=limpiar_cadena($id);
+
+    if($id == $_SESSION["id"]){
+
+    ?>
+<div class="forms">   
+   <div class="card shadow " id="collapseDelete">
+        <form class="" method="POST" action="" autocomplete="off">
+            <div class="card-header">
+                Lamentamos que decidas desactivar tu cuenta :(
             </div>
-            <script>
-                let seconds = 15;
-                let countdownElement = document.getElementById("countdown");
-                
-                function updateCountdown() {
-                    countdownElement.textContent = seconds;
-                    seconds--;
-
-                    if (seconds < 0) {
-                        window.location.href = "index.php?vista=calendar";
-                    } else {
-                        setTimeout(updateCountdown, 1000); // Actualizar cada 1 segundo
+            <?php 
+                    if($_SESSION["cuenta"] == 'local'){
+            ?>
+            <div class="card-body">
+                <h5 class="card-title">Esperamos que vuelvas pronto para brindarle la mejor atención a tu mimadito 🥰</h5>
+                <p class="card-text">Toda tu información y la de tus mimaditos se eliminarán.</p>
+                <p class="card-text">Si realmente quieres desactivar tu cuenta, por favor introduce tu contraseña para confirmarlo.</p>
+                <div class="col-12 form-floating">
+                    <input type="password" class="form-control" id="deletePassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+                    <label for="deletePassword" class="form-label is-required">Contraseña</label>
+                </div>
+                <div class="col-12 form-floating">
+                    <input type="password" class="form-control" id="deletePassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+                    <label for="deletePassword2" class="form-label is-required">Confirme su contraseña</label>
+                </div>
+                <input type="hidden" name="user" value="<?php echo $id;?>" required >
+                <input type="hidden" name="gid" value="off" required >
+                <div class="form-rest mb-6 mt-6"></div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-outline-secondary">Desactivar</button>
+                </div>
+                <?php 
+                    if(isset($_POST["contraseña"]) && isset($_POST["contraseña"]) &&
+                    isset($_POST["contraseña2"]) && isset($_POST["contraseña2"])){
+                        require_once("./php/desactivar_cuenta.php");
                     }
-                }
-
-                updateCountdown();
-            </script>
-        ';
+                ?>
+            </div>
+                <?php 
+                    } else if($_SESSION["cuenta"] == 'google'){ ?>
+                        <div class="card-body">
+                        <h5 class="card-title">Esperamos que vuelvas pronto para brindarle la mejor atención a tu mimadito 🥰</h5>
+                        <p class="card-text">Ya que has ingresado con tu cuenta Google, solamente deberás confirmar tu correo para que podamos desvincular toda tu información y la de tus mimaditos.</p>
+                        <p class="card-text">Si realmente quieres desactivar tu cuenta, por favor introduce tu correo electrónico para confirmarlo.</p>
+                        <div class="col-12 form-floating">
+                        <input type="email" class="form-control" id="deleteEmail"  placeholder="name@example.com" name="email" required>
+                            <label for="deleteEmail" class="is-required">Email</label>
+                        </div>
+                        <div class="col-12 form-floating">
+                        <input type="email" class="form-control" id="deleteEmail2"  placeholder="name@example.com" name="email2" required>
+                            <label for="deleteEmail2" class="is-required">Confirmar Email</label>
+                        </div>
+                        <input type="hidden" name="user" value="<?php echo $id;?>" required >
+                        <input type="hidden" name="gid" value="on" required >
+                        <div class="form-rest mb-6 mt-6"></div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-outline-secondary">Desactivar</button>
+                        </div>
+                        <?php 
+                            if(isset($_POST["email"]) && isset($_POST["email"]) &&
+                            isset($_POST["email2"]) && isset($_POST["email2"])){
+                                require_once("./php/desactivar_cuenta.php");
+                            }
+                        ?>
+                    </div>
+                <?php
+                    }
+                ?>
+        </form>
+    </div>
+    <?php 
         } else {
-            header("Location: index.php?vista=signup_error2");
+            include("./inc/error_alert.php");
         }
-    } else if (isset($_SESSION['signin']) && $_SESSION['signin']){//usuario inicio sesion
-    
-        header("Location: index.php?vista=home");
-    }
-    
-    else {// no se creo el cliente
-        header("Location: index.php?vista=signup_error");
-    }
-?>
+        $check_client=null;
+    ?>
+</div>

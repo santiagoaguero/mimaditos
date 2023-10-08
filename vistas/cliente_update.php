@@ -1,3 +1,17 @@
+<?php // Verificar los permisos del usuario para esta página
+	include("./inc/check_rol.php");
+	if (isset($_SESSION['rol']) && isset($_GET['vista'])) {
+		$vistaSolicitada = $_GET['vista'];
+		$rolUsuario = $_SESSION['rol'];
+	
+		check_rol($vistaSolicitada, $rolUsuario);
+		
+	} else {
+        header("Location: login.php");
+        exit();
+    }
+?>
+
 <div class="forms">
     <?php 
         include("./inc/btn_back.php");
@@ -52,9 +66,7 @@
         </form>
             
         <h2 class="subtitle text-center mt-5 mb-2">Información de su Mimadito</h2>
-        <p class="text-body-secondary fst-italic">
-        <span class="text-primary fw-bold">mimaditos</span> de color azul son tus mimaditos presentes, <span class="text-secondary fw-bold">mimaditos</span> de color gris son tus mimaditos que ya no estan presentes 💕
-        </p>
+
 
         <?php 
         $check_mascota = con();
@@ -63,7 +75,13 @@
         if($check_mascota->rowCount()>0){
             $datos=$check_mascota->fetchAll();
 
-            echo '<div class="list-group w-75 text-center mb-5">';
+            echo '
+                <p class="text-body-secondary fst-italic">
+                <span class="text-primary fw-bold">mimaditos</span> de color azul son tus mimaditos presentes, <span class="text-secondary fw-bold">mimaditos</span> de color gris son tus mimaditos que ya no estan presentes 💕
+                </p>
+            
+                <div class="list-group w-75 text-center mb-5">
+            ';
 
             foreach($datos as $mascota){
                 if($mascota["mascota_estado"] == 'on'){
@@ -184,14 +202,19 @@
                 <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}"></textarea>
                 <label for="inputNotas">Notas de mimadito</label>
             </div>
-            <input type="hidden" name="user" value="<?php echo $id;?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
+                <button type="submit" class="btn btn-primary mb-3">Agregar</button>
             </div>
         </form>
     </div>
-
+    <div class="d-grid gap-2 justify-content-center mt-5">
+        <h2 class="fs-4 mt-5 text-secondary">Querés desactivar tu cuenta?</h2>
+        <a type="button" class="btn btn-outline-danger " href="index.php?vista=desactivar&id=<?php echo $id; ?>">
+            <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
+        </a>
+    </div>
+    
     <?php 
         } else {
             include("./inc/error_alert.php");

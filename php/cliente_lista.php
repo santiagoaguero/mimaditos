@@ -6,13 +6,13 @@ $tabla = "";
 $campos = "cliente.cliente_id, cliente.cliente_nombre, cliente.cliente_apellido, cliente.cliente_telefono, cliente.cliente_ciudad, mascota.mascota_id, mascota.mascota_nombre";
 
 if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre cliente telefono
-    $consulta_datos = "SELECT $campos FROM cliente INNER JOIN mascota ON cliente.cliente_id = mascota.mascota_id WHERE cliente.cliente_nombre LIKE '%$busqueda%' OR cliente.cliente_telefono LIKE '%$busqueda%' ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT $campos FROM cliente LEFT JOIN mascota ON cliente.cliente_id = mascota.cliente_id WHERE cliente.cliente_nombre LIKE '%$busqueda%' OR cliente.cliente_telefono LIKE '%$busqueda%' ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
 
     $consulta_total = "SELECT COUNT(cliente_id) FROM cliente WHERE cliente_nombre LIKE '%$busqueda%' OR cliente_telefono LIKE '%$busqueda%'";
 }
 
 else {//busqueda total productos
-    $consulta_datos = "SELECT $campos FROM cliente INNER JOIN mascota ON cliente.cliente_id = mascota.mascota_id ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT $campos FROM cliente LEFT JOIN mascota ON cliente.cliente_id = mascota.cliente_id ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
 
      $consulta_total = "SELECT COUNT(cliente_id) FROM cliente";
 }
@@ -104,7 +104,7 @@ $tabla.='
 
 if($total>=1 && $pagina <= $Npaginas){
     $tabla.='
-        <p class="text-end">Mostrando clientes <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>
+        <p class="text-end">Mostrando mimaditos <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong> clientes</p>
     ';
     }
 

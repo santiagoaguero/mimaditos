@@ -7,6 +7,12 @@ body,html{
     font-size: 18px;
 }
 
+.img-404 {
+ display: grid;
+ place-items: center;
+ height: 100vh;
+}
+
 .container{
     height: 100%;
     width: 100%;

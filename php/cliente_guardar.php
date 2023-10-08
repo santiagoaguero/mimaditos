@@ -11,20 +11,25 @@ $apellido=limpiar_cadena($_POST["apellido"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
 $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
-$mascota=limpiar_cadena($_POST["mascota"]);
-$tipo=(int)limpiar_cadena($_POST["tipo"]);
-$sexo=limpiar_cadena($_POST["sexo"]);
-$edad=(int)limpiar_cadena($_POST["edad"]);
-$tamaño=(int)limpiar_cadena($_POST["tamaño"]);
 $email=limpiar_cadena($_POST["email"]);
 $contraseña=limpiar_cadena($_POST["contraseña"]);
 $contraseña2=limpiar_cadena($_POST["contraseña2"]);
 
+$mascota=limpiar_cadena($_POST["mascota"]);
+$tipo=(int)limpiar_cadena($_POST["tipo"]);
+$tamaño=(int)limpiar_cadena($_POST["tamaño"]);
+$sexo=limpiar_cadena($_POST["sexo"]);
+$raza=(int)limpiar_cadena($_POST["raza"]);
+$edad=(int)limpiar_cadena($_POST["edad"]);
+$notas=limpiar_cadena($_POST["notas"]);
+
 $crea_cliente = false;
 $crea_mascota = false;
 
+
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || $contraseña == "" || $contraseña2 == ""){
+if($nombre == "" || $apellido == "" || $telefono == "" || 
+    $contraseña == "" || $contraseña2 == "" || $email == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -38,7 +43,7 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$nombre)){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        El NOMBRE no coincide con el formato esperado.
+        El Nombre del Cliente no coincide con el formato esperado.
     </div>';
     exit();
 }
@@ -47,7 +52,7 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$apellido)){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        El APELLIDO no coincide con el formato esperado.
+        El Apellido del Cliente no coincide con el formato esperado.
     </div>';
     exit();
 }
@@ -96,6 +101,40 @@ if($email != ""){
     }
 }
 
+if($ciudad != ""){//al no ser obligatorio puede venir vacio
+    if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{0,40}",$ciudad)){
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            La Ciudad del Cliente no coincide con el formato esperado.
+        </div>';
+        exit();
+    }
+}
+
+if($direccion != ""){//al no ser obligatorio puede venir vacio
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,70}",$direccion)){
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            La Dirección del Cliente no coincide con el formato esperado.
+        </div>';
+        exit();
+    }
+}
+
+if($notas != ""){//al no ser obligatorio puede venir vacio
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}",$notas)){
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            La Dirección del Cliente no coincide con el formato esperado.
+        </div>';
+        exit();
+    }
+}
+
+
 if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$contraseña) || verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$contraseña2) ){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -118,8 +157,8 @@ if($contraseña != $contraseña2){
     $contraseña2 = password_hash($contraseña2, PASSWORD_BCRYPT, ["cost"=>10]);
 }
 
-if($tipo=="0" || $tipo > 4){
-    $tipo = "4";//asegurar siempre que sea 'Otro/Sin Especificar'
+if($tipo=="0" || !is_numeric($tipo)){
+    $tipo = "4";//asegurar siempre que sea 'Otro/Sin Especificar' este dato viene de bd(muchos)
 }
 
 if($sexo != "Macho" && $sexo  != "Hembra"){
@@ -143,19 +182,11 @@ $guardar_cliente_query->execute($marcadores);
 
 if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
 
-        // Obtener el último ID insertado
-        $cliente_id = $pdo->lastInsertId();
+    $crea_cliente = true;
 
-        //variables de sesion
-        $_SESSION["id"]=$cliente_id;
-        $_SESSION["rol"]=4;
-        $_SESSION["nombre"]=$nombre;
-        $_SESSION["apellido"]=$apellido;
-        $_SESSION["email"]=$email;
-        $_SESSION["cuenta"]="local";
-        $_SESSION["signup"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
+    // Obtener el último ID insertado
+    $cliente_id = $pdo->lastInsertId();
 
-        $crea_cliente = true;
 
     // inserta la mascota asociada al cliente
     $guardar_mascota_query = $pdo->prepare("INSERT INTO mascota (mascota_nombre, mascota_tipo_id, mascota_sexo, mascota_raza_id, mascota_edad, cliente_id, mascota_tamano_id, mascota_notas, mascota_estado) VALUES (:mascota, :tipo, :sexo, :raza, :edad, :cliente, :tamano, :notas, :estado)");
@@ -164,11 +195,11 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
         ":mascota" => $mascota,
         ":tipo" => $tipo,
         ":sexo" => $sexo,
-        ":raza" => 9,//9->sin especificar
+        ":raza" => $raza,
         ":edad" => $edad,
         ":cliente" => $cliente_id,
         ":tamano" => $tamaño,
-        ":notas" => "",
+        ":notas" => $notas,
         ":estado" => "on"
     ];
 
@@ -177,61 +208,37 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
     // Verifica si se ha insertado la mascota
     if ($guardar_mascota_query->rowCount() == 1) {
 
-        $_SESSION["crea_mascota"]= true;//
-
         $crea_mascota = true;
 
-        //header("Location: index.php?vista=signup_exito");
-
-    } else {
-
-        $_SESSION["crea_mascota"]= false;// se creó el cliente pero no su mascota
-
-        $crea_mascota = false;
-        //header("Location: index.php?vista=signup_error2");
     }
-
-} else {
-
-    $_SESSION["signup"]= false;//para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
 
 }
 
 $guardar_cliente_query = null;
-/*
-Para obtener el último ID insertado después de una inserción en PDO se hace sobre el objeto PDO original, no sobre la variable $guardar_cliente sobreescrita con una instancia de PDOStatement*/
 
 
 if($crea_cliente){//crea cliente
     if($crea_mascota){//crea mascota
-        if(headers_sent()){//si ya se enviaron headers se redirecciona con js porque con php da errores.  
-            echo '
-            <script>
-                window.location.href="index.php?vista=signup_exito"
-            </script>
-            ';
-        } else {
-            header("Location: index.php?vista=signup_exito");
-        }
+        echo '
+        <div class="alert alert-success" role="alert">
+            <strong>¡Cliente registrado!</strong><br>
+            El Cliente y su mimadito fueron registrados exitosamente.
+        </div>';
+        exit();
     } else {// no crea mascota
-        if(headers_sent()){//si ya se enviaron headers se redirecciona con js porque con php da errores.  
-            echo '
-            <script>
-                window.location.href="index.php?vista=signup_error2"
-            </script>
-            ';
-        } else {
-            header("Location: index.php?vista=signup_error2");
-        }
+        echo '
+        <div class="alert alert-info" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            El Cliente fue registrado exitosamente pero su mimadito no.<br>
+            Puede agregar su mimadito desde su perfil.
+        </div>';
+        exit();
     }
 } else {// no crea cliente
-    if(headers_sent()){//si ya se enviaron headers se redirecciona con js porque con php da errores.  
-        echo '
-        <script>
-            window.location.href="index.php?vista=signup_error"
-        </script>
-        ';
-    } else {
-        header("Location: index.php?vista=signup_error");
-    }
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        No se pudo crear el cliente.
+    </div>';
+    exit();
 };

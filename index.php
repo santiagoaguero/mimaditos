@@ -32,7 +32,7 @@
                  include("./vistas/logout.php");
                  exit();//para no cargar ningun archivo mas
              }
-             if ($_GET["vista"] == "signup_exito" || $_GET["vista"] == "signup_error" || $_GET["vista"] == "signup_error2"){
+             if ($_GET["vista"] == "signup_exito" || $_GET["vista"] == "signup_error" || $_GET["vista"] == "signup_error2" || $_GET["vista"] == "desactivar"){
                 //para estas vistas no mostrar el navbar ni nada, se cierran pasado 5 seg
                 include("./vistas/".$_GET["vista"].".php");
              } else {
