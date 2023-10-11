@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="index.php?vista=home">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <?php 
-            if($_SESSION["rol"] >= 1 && $_SESSION["rol"] <= 3)
+            if($_SESSION["user"] == "emp" && $_SESSION["rol"] >= 1 && $_SESSION["rol"] <= 3 )
             {
         ?>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -29,8 +29,14 @@
                         <li><a class="dropdown-item" href="index.php?vista=horario_list">Lista</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Reservas</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Reservas
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="index.php?vista=reserva_pen">Pendientes</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=reserva_con">Confirmados</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,7 +53,7 @@
                     Mimaditos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="index.php?vista=mimadito_list">Lista de Mimaditos</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=mascota_list">Lista de Mimaditos</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="index.php?vista=raza">Nueva Raza de Mimaditos</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=raza_list">Lista de Razas de Mimaditos</a></li>
@@ -67,7 +73,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page" aria-expanded="false">
                     Dashboard
                     </a>
                     <ul class="dropdown-menu">
@@ -78,7 +84,7 @@
                 </li>
             </ul>
         <div class="d-flex">
-            <a href="index.php?vista=user&user_id=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
+            <a href="index.php?vista=user_update&user_id_upd=<?php echo $_SESSION['id']?>" class="btn btn-outline-info">
                 Mi Perfil
             </a>
             <a href="index.php?vista=logout" class="btn btn-outline-secondary" role="button">
@@ -87,21 +93,19 @@
         </div>
     </div>
     <?php 
-    } else if($_SESSION["rol"] == 4)
+    } else if($_SESSION["user"] == "cli" && $_SESSION["rol"] == 4)
         {
     ?>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-current="page" aria-expanded="false">
-                Dashboard
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
-                    <li><a class="dropdown-item" href="index.php?vista=horario">Horarios</a></li>
-                    <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
-                </ul>
+            <li class="nav-item ">
+                <a class="nav-link active" aria-current="page" href="index.php?vista=calendar">Reservar</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link active" aria-current="page" href="index.php?vista=servicios">Servicios</a>
+            </li>
+            <li class="nav-item ">
+            <a class="nav-link active" aria-current="page" href="index.php?vista=horario">Horario</a>
             </li>
         </ul>
     <div class="d-flex">

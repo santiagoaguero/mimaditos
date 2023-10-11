@@ -21,14 +21,12 @@
         $id=(isset($_GET["cliente_id_upd"])) ? $_GET["cliente_id_upd"] : 0;
         $id=limpiar_cadena($id);
 
-        if($_SESSION["rol"] == 4){
+        $check_client = con();
+        $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
 
-            $check_client = con();
-            $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
+        if($check_client->rowCount()>0){
+            $datos=$check_client->fetch();
 
-            if($check_client->rowCount()>0){
-                $datos=$check_client->fetch();
-            }
     ?>
 
     <div class="container">

@@ -103,22 +103,68 @@ body,html{
     text-decoration: none;
     font-weight: bolder;
 
-  }
+}
 
-  .btnGoogle{
+.btnGoogle{
     display: flex;
     gap: 15px;
    justify-content: center;
-  }
+
+}
   .btnGoogle a{
     text-decoration: none;
     font-weight: bolder;
     color: #77bbbe;
-  }
+}
 
 .spinner-grow{
     position: absolute;
     display: none;
+}
+
+.welcome{
+    background-color: cyan;
+    height: 97vh;
+    display: grid;
+    place-items: center;
+
+}
+
+.w-header{
+    color: purple;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+
+.w-footer{
+    color: purple;
+    
+    font-weight: bold;
+}
+
+.middle{
+    height: 100%;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+
+.footer{
+    height: 100%;
+    background-color: cyan;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+
+.m-contact img, .footer img{
+    width: 50px;
+}
+
+.m-contact a, .footer a {
+    text-decoration: none;
+    color: purple
 }
 
 .forms{
@@ -158,3 +204,41 @@ body,html{
 
 
 .signup-exito, .signup-error, .signup-error2{animation:bounce-top .9s linear both} @keyframes bounce-top{0%{transform:translateY(-45px);animation-timing-function:ease-in;opacity:1}24%{opacity:1}40%{transform:translateY(-24px);animation-timing-function:ease-in}65%{transform:translateY(-12px);animation-timing-function:ease-in}82%{transform:translateY(-6px);animation-timing-function:ease-in}93%{transform:translateY(-4px);animation-timing-function:ease-in}25%,55%,75%,87%{transform:translateY(0);animation-timing-function:ease-out}100%{transform:translateY(0);animation-timing-function:ease-out;opacity:1}}
+
+
+
+
+
+
+
+
+
+/* Estilo para pantallas pequeñas */
+@media (max-width: 489px) {
+
+
+    .w-header .fs-1 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-2 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-3 {
+        font-size: 20px !important;
+    }
+    .w-header .fs-4, p, .middle .btn {
+        font-size: 16px !important;
+    }
+    
+    .m-contact img, .footer img{
+        width: 25px;
+    }
+    
+
+  }
+
+  
+  
+  
+  
+  

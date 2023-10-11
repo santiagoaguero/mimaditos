@@ -21,15 +21,12 @@
 
         $cliente_id=(isset($_GET["user_id"])) ? $_GET["user_id"] : 0;
 
-        if($cliente_id == $_SESSION["id"] || $_SESSION["rol"] == 4){
+        $check_mascota = con();
+        $check_mascota = $check_mascota->query("SELECT mascota.*, cliente.cliente_nombre, cliente.cliente_apellido FROM mascota INNER JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.cliente_id = '$cliente_id' AND mascota.mascota_id = '$mascota_id'");
+    
+        if($check_mascota->rowCount()>0){
+            $datos=$check_mascota->fetch();
 
-            $check_mascota = con();
-            $check_mascota = $check_mascota->query("SELECT mascota.*, cliente.cliente_nombre, cliente.cliente_apellido FROM mascota INNER JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.cliente_id = '$cliente_id' AND mascota.mascota_id = '$mascota_id'");
-        
-            if($check_mascota->rowCount()>0){
-                $datos=$check_mascota->fetch();
-
-            }
     ?>
 
     <div class="container">

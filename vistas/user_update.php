@@ -26,13 +26,11 @@
         $id=(isset($_GET["user_id_upd"])) ? $_GET["user_id_upd"] : 0;
         $id=limpiar_cadena($id);
 
-        if($_SESSION["rol"] == 4){
+        $check_client = con();
+        $check_client = $check_client->query("SELECT * FROM empleado WHERE empleado_id = '$id'");
 
-            $check_client = con();
-            $check_client = $check_client->query("SELECT * FROM empleado WHERE empleado_id = '$id'");
-
-            if($check_client->rowCount()>0){
-                $datos=$check_client->fetch();
+        if($check_client->rowCount()>0){
+            $datos=$check_client->fetch();
             
     ?>
 
@@ -118,10 +116,6 @@
         } else {
             include("./inc/error_alert.php");
         }
-        $check_client=null;
-    } else {
-        echo ' no eres admin';
-    }
     ?>
 
 
