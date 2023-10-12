@@ -1,48 +1,43 @@
 <div class="welcome">
-    <div class="w-header">
-        <p class="fs-1">Hola <?php echo ' '. $_SESSION["nombre"].' ';?>!</p>
-        <p class="fs-5 w-50">Nosotros nos encargamos de brindar la mejor experiencia para tu mimado</p>
-    </div>
+    <div id="carouselAuto" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner fw-bold mb-5 ">
+            <div class="carousel-item active text-center" style="background-image: url('./img/dog-look.jpg');">
 
-    <div id="carouselAuto" class="carousel slide w-100" data-bs-ride="carousel">
-        <div class="carousel-inner fw-bold mb-5">
-            <div class="carousel-item active text-center">
-                <div class="card d-inline-block" style="width: 20rem;">
-                    <img src="./img/atencion.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Atención y Confianza</p>
-                        <p class="card-text">Ofrecemos la mejor atención que tu mimadito se merece</p>
-                    </div>
+                <div class="carousel-caption first" >
+                    <h5>Nosotros nos encargamos de brindar la mejor experiencia para tu mimado</h5>
                 </div>
+                
             </div>
-            <div class="carousel-item text-center">
-                <div class="card d-inline-block" style="width: 20rem;">
-                    <img src="./img/baño.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Baños Medicados</p>
-                        <p class="card-text">Nuestro baño ayuda a la salud de la piel de tu mimadito</p>
-                    </div>
+            <div class="carousel-item text-center" style="background-image: url('./img/atencion.jpg');">
+
+                <div class="carousel-caption">
+                    <h5>Atención y Confianza</h5>
+                    <h5>Ofrecemos la mejor atención que tu mimadito se merece</h5>
                 </div>
+
             </div>
-            <div class="carousel-item text-center">
-                <div class="card d-inline-block" style="width: 20rem;">
-                    <img src="./img/corte.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Corte de Pelo</p>
-                        <p class="card-text">Dejamos el pelo de tu mimadito suave y cómodo</p>
-                    </div>
+            <div class="carousel-item text-center" style="background-image: url('./img/bañando.jpg');">
+
+                <div class="carousel-caption">
+                        <h5 class="">Baños</h5>
+                        <h5>Utilizamos distintos shampoos para cada tipo de piel</h5>
                 </div>
+           
             </div>
-            <div class="carousel-item text-center">
-                <div class="card d-inline-block" style="width: 20rem;">
-                    <img src="./img/mimado.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Mimados como en casa 💕</p>
-                    </div>
+            <div class="carousel-item text-center" style="background-image: url('./img/corte.jpg');">
+                <div class="carousel-caption">
+                        <h5>Corte de Pelo</h5>
+                        <h5>Dejamos el pelo de tu mimadito suave y cómodo</h5>
                 </div>
+
+            </div>
+            <div class="carousel-item text-center" style="background-image: url('./img/mimado.jpg');">
+                <div class="carousel-caption">
+                        <h5>Mimados como en casa 💕</h5>
+                </div>
+
             </div>
         </div>
-
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselAuto" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

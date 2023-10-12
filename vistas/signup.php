@@ -1,7 +1,7 @@
 <div class="container">
     <form class="signup row g-3 shadow" method="POST" action="" autocomplete="off" >
-        <div class="text-center">
-            <img src="./img/logo.png" alt="reservet"  class="img-logo">
+        <div class="text-center" class="">
+            <img src="./img/mimaditos-logo.png" alt="reservet"  class="w-50 img-fluid">
         </div>
         <h3 class="text-center">Bienvenido!</h3>
         <p class="text-center">Gracias por elegirnos para cuidar a tu mimado, por favor introduce tus datos para conocernos más</p>
@@ -86,6 +86,10 @@
             <button type="submit" class="btn btn-primary">Crear Cuenta</button>
         </div>
         <p class="text-center">Una vez acceda con su cuenta podrá registrar más datos sobre su mimadito ♥</p>
+
+            <p class="text-center text-secondary">Ya tenes una cuenta? <a href="index.php?vista=login" class="mt-0 btn btn-outline-primary btn-sm"> Ingresa acá !</a></p>
+
+
     </form>
     <?php 
             if(isset($_POST["contraseña"]) && isset($_POST["contraseña"]) &&

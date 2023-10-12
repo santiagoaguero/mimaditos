@@ -1,7 +1,7 @@
 <div class="container">
     <form class="login shadow text-secondary" action="" method="POST" autocomplete="off">
         <div class="logo-login">
-            <img src="./img/logo.png" alt="Mimaditos">
+            <img src="./img/mimaditos-logo.png" class="img-fluid" alt="Mimaditos">
         </div>
         <div class="ingresa">Ingresa para ver nuestros servicios! 🤗 </div>
         <div class="input-group">
