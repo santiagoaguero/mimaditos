@@ -9,8 +9,8 @@
                 <img src="./img/user-icon.png" alt="user-icon" class="user-icon">
             </div>
             <div class="col-12 form-floating">
-                <input type="email" class="form-control" id="inputEmail4"  placeholder="name@example.com" name="login_email" required>
-                <label for="inputEmail4">Email</label>
+                <input type="text" class="form-control" id="inputUser"  placeholder="name@example.com" name="login_user" required>
+                <label for="inputUser">Email o Usuario</label>
             </div>
         </div>
         <div class="input-group">
@@ -53,7 +53,7 @@
            ?>
         </div>
         <?php 
-            if(isset($_POST["login_email"]) && isset($_POST["login_clave"])){
+            if(isset($_POST["login_user"]) && isset($_POST["login_clave"])){
                 require_once("./php/main.php");
                 require_once("./php/iniciar_sesion.php");
             }

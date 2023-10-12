@@ -8,7 +8,8 @@
 <!-- CSS -->
 <link rel="stylesheet" href="./css/style.css">
 <link rel="icon" href="./img/favicon.png" type="image/ico">
-<!-- icons -->
+
+<!-- FAicons -->
 <script src="https://kit.fontawesome.com/cb22070f7a.js" crossorigin="anonymous"></script>
 
 <meta name="google-signin-client_id" content="1071821315028-v1tfjgsrkfg5vmok4gukn89kbsc23asq.apps.googleusercontent.com">

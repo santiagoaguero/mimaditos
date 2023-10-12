@@ -31,30 +31,40 @@
 
     <div class="container">
         <form class="formularioAjax row g-3 shadow" method="POST" action="./php/cliente_actualizar.php" autocomplete="off">
-            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
+            <input type="hidden" name="cliente_id" value="<?php echo $id;?>" required >
             <h2 class="subtitle text-center">Información Personal</h2>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value=" <?php echo $datos["cliente_nombre"];?> ">
+                <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos["cliente_nombre"];?>">
                 <label for="inputName" class="is-required">Nombre</label>
             </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value=" <?php echo $datos["cliente_apellido"];?> ">
+                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos["cliente_apellido"];?>">
                 <label for="inputApellido" class="is-required">Apellido</label>
             </div>
+            <div class="col-md-12 form-floating">
+                <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos["cliente_usuario"];?>">
+                <label for="inputUser" class="is-required">@ Usuario</label>
+                <div id="username-validation-message"></div>
+                <div class="col-auto">
+                    <span id="userHelpInline" class="form-text">
+                    El @ de usuario debe tener mínimo 4 caracteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ . _ Ej: lionel
+                    </span>
+                </div>
+            </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" required value=" <?php echo $datos["cliente_telefono"];?> ">
+                <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" required value="<?php echo $datos["cliente_telefono"];?>">
                 <label for="inputTelefono" class="is-required">Teléfono</label>
             </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputCiudad" name="ciudad" placeholder="Ciudad" value=" <?php echo $datos["cliente_ciudad"];?> ">
+                <input type="text" class="form-control" id="inputCiudad" name="ciudad" placeholder="Ciudad" value="<?php echo $datos["cliente_ciudad"];?>">
                 <label for="inputCiudad">Ciudad</label>
             </div>
             <div class="col-12 form-floating">
-                <input type="text" class="form-control" id="inputAddress" name="direccion" placeholder="Direccion" value=" <?php echo $datos["cliente_direccion"];?> ">
+                <input type="text" class="form-control" id="inputAddress" name="direccion" placeholder="Direccion" value="<?php echo $datos["cliente_direccion"];?>">
                 <label for="inputAddress" class="form-label">Dirección</label>
             </div>
             <div class="col-md-12 form-floating">
-                <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="name@example.com" required value=" <?php echo $datos["cliente_email"];?> ">
+                <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="name@example.com" required value="<?php echo $datos["cliente_email"];?>">
                 <label for="inputEmail4" class="is-required">Email</label>
             </div>
             <div class="form-rest mb-6 mt-6"></div>
@@ -200,6 +210,7 @@
                 <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}"></textarea>
                 <label for="inputNotas">Notas de mimadito</label>
             </div>
+            <input type="hidden" name="user" value="<?php echo $id;?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary mb-3">Agregar</button>

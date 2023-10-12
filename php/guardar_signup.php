@@ -8,6 +8,7 @@ $pdo = con();
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
+$usuario=limpiar_cadena($_POST["usuario"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
 $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
@@ -24,7 +25,7 @@ $crea_cliente = false;
 $crea_mascota = false;
 
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || $contraseña == "" || $contraseña2 == ""){
+if($nombre == "" || $apellido == "" || $usuario == "" || $telefono == "" || $contraseña == "" || $contraseña2 == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -38,7 +39,7 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$nombre)){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        El NOMBRE no coincide con el formato esperado.
+        El Nombre no coincide con el formato esperado.
     </div>';
     exit();
 }
@@ -47,10 +48,20 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$apellido)){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
-        El APELLIDO no coincide con el formato esperado.
+        El Apellido no coincide con el formato esperado.
     </div>';
     exit();
 }
+
+if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        El Usuario no coincide con el formato esperado.
+    </div>';
+    exit();
+}
+
 if(verificar_datos("[0-9]{1,11}",$edad)){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -96,7 +107,7 @@ if($email != ""){
     }
 }
 
-if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$contraseña) || verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$contraseña2) ){
+if(verificar_datos("[a-zA-Z0-9$@]{6,100}",$contraseña) || verificar_datos("[a-zA-Z0-9$@]{6,100}",$contraseña2) ){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -132,12 +143,12 @@ if($tamaño=="0" || $tamaño > 4){
 
 //guardando datos
 $guardar_cliente_query = $pdo->prepare("INSERT INTO
-    cliente(google_id, cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
-    VALUES(:gid, :nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
+    cliente(google_id, cliente_nombre, cliente_apellido, cliente_usuario, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
+    VALUES(:gid, :nombre, :apellido, :usuario, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":gid"=>0, ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
+    ":gid"=>0, ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$usuario, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
 
 $guardar_cliente_query->execute($marcadores);
 
@@ -149,6 +160,7 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
         //variables de sesion
         $_SESSION["id"]=$cliente_id;
         $_SESSION["rol"]=4;
+        $_SESSION["user"]= "cli";
         $_SESSION["nombre"]=$nombre;
         $_SESSION["apellido"]=$apellido;
         $_SESSION["email"]=$email;

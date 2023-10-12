@@ -12,16 +12,6 @@ $tamaño=limpiar_cadena($_POST["tamaño"]);
 $notas=limpiar_cadena($_POST["notas"]);
 $cliente=limpiar_cadena($_POST["user"]);
 
-//verificar que el input hidden no se haya manipulado
-if($cliente != $_SESSION["id"]){
-    echo '
-    <div class="alert alert-danger" role="alert">
-        <strong>¡Ocurrió un error inesperado!</strong><br>
-        No podemos añadir su mimadito a otro dueño que no sea usted.
-    </div>';
-    exit();
-}
-
 //verifica cliente exista
 $check_cliente=con();
 //query: inserta la consulta directo a la bd

@@ -69,12 +69,12 @@ if (isset($_GET['code'])) {
                     //usaremos google id en vez del token en sí
                     //guardando datos
                     $guardar_cliente_query = $pdo->prepare("INSERT INTO
-                    cliente(google_id, cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
-                    VALUES(:gid, :nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
+                    cliente(google_id, cliente_nombre, cliente_apellido, cliente_usuario, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
+                    VALUES(:gid, :nombre, :apellido, :usuario, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
 
                     //evitando inyecciones sql xss
                     $marcadores=[
-                    ":gid"=>$gid, ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
+                    ":gid"=>$gid, ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$email, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
 
                     $guardar_cliente_query->execute($marcadores);
 
@@ -84,6 +84,7 @@ if (isset($_GET['code'])) {
                         $_SESSION["id"] = $id;
                         $_SESSION["gid"] = $gid;
                         $_SESSION["rol"]=4;
+                        $_SESSION["user"]= "cli";
                         $_SESSION["nombre"] = $nombre;
                         $_SESSION["apellido"] = $apellido;
                         $_SESSION["email"] = $email;

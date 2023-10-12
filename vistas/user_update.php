@@ -44,6 +44,16 @@
             <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" value="<?php echo $datos["empleado_apellido"];?>" required >
             <label for="inputApellido" class="is-required">Apellido</label>
         </div>
+        <div class="col-md-12 form-floating">
+            <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos["empleado_apellido"];?>">
+            <label for="inputUser" class="is-required">@ Usuario</label>
+            <div id="username-validation-message"></div>
+            <div class="col-auto">
+                <span id="userHelpInline" class="form-text">
+                El @ de usuario debe tener mínimo 4 caracteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ . _ Ej: lionel
+                </span>
+            </div>
+        </div>
         <div class="col-md-6 form-floating">
             <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" patter="[0-9- ]{6,100}" value="<?php echo $datos["empleado_telefono"];?>" required >
             <label for="inputTelefono" class="is-required">Teléfono</label>

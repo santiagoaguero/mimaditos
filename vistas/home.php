@@ -51,12 +51,12 @@
 </div>
 
 
-<div class="middle mt-2">
+<div class="middle">
     <div class="w-header">
         <p class="fs-1">Nuestra Atención</p>
         <p class="fs-4 w-50">Para una mejor atención a tu mimadito, ofrecemos nuestros servicios bajo reserva de turnos</p>
         <p>Podes reservar un turno haciendo click abajo 😊</p>
-        <a class="btn btn-primary w-50" href="index.php?vista=calendar">Quiero reservar!</a>
+        <a class="btn btn-primary btn-sm w-50" href="index.php?vista=calendar">Quiero reservar!</a>
 
         <p class="fs-2 mt-5">Nuestro Contacto</p>
         <p class="fs-4 w-50">Podes seguirnos en nuestras redes sociales para enterarte de más promociones y novedades</p>

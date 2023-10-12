@@ -8,6 +8,7 @@ $pdo = con();
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
+$usuario=limpiar_cadena($_POST["usuario"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
 $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
@@ -28,7 +29,7 @@ $crea_mascota = false;
 
 
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || 
+if($nombre == "" || $apellido == "" || $usuario == "" || $telefono == "" || 
     $contraseña == "" || $contraseña2 == "" || $email == ""){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -56,6 +57,36 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$apellido)){
     </div>';
     exit();
 }
+
+//verifica user
+if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        El Usuario del Cliente no coincide con el formato esperado.
+    </div>';
+    exit();
+} else {
+    $buscar=con();
+
+    /* busca en clientes */
+    $cliente = $buscar->query("SELECT cliente_usuario FROM cliente WHERE cliente_usuario = '$usuario'");
+
+    /* busca en empleados */
+    $empleado = $buscar->query("SELECT empleado_usuario FROM empleado WHERE empleado_usuario = '$usuario'");
+
+    if($cliente->rowCount() > 0 || $empleado->rowCount() > 0){
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            El Usuario del Cliente ya está en uso, por favor elija otro.
+        </div>';
+        exit();
+    }
+    $buscar=null;//close db connection
+}
+
+
 if(verificar_datos("[0-9]{1,11}",$edad)){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -75,6 +106,8 @@ if(verificar_datos("[0-9- ]{6,100}",$telefono)){
     </div>';
     exit();
 }
+
+
 
 //verifica email
 if($email != ""){
@@ -158,25 +191,29 @@ if($contraseña != $contraseña2){
 }
 
 if($tipo=="0" || !is_numeric($tipo)){
-    $tipo = "4";//asegurar siempre que sea 'Otro/Sin Especificar' este dato viene de bd(muchos)
+    $tipo = 4;//asegurar siempre que sea 'Otro/Sin Especificar' este dato viene de bd(muchos)
 }
 
 if($sexo != "Macho" && $sexo  != "Hembra"){
     $sexo = "Sin especificar";
 }
 
-if($tamaño=="0" || $tamaño > 4){
-    $tamaño = "2";//asegurar siempre que sea 'Mediano'
+if($raza=="0" || !is_numeric($raza)){
+    $raza = 9;//asegurar siempre que sea 'Otro/Sin Especificar' este dato viene de bd(muchos)
+}
+
+if($tamaño==0 || $tamaño > 4){
+    $tamaño = 2;//asegurar siempre que sea 'Mediano'
 }
 
 //guardando datos
 $guardar_cliente_query = $pdo->prepare("INSERT INTO
-    cliente(google_id, cliente_nombre, cliente_apellido, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
-    VALUES(:gid, :nombre, :apellido, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
+    cliente(google_id, cliente_nombre, cliente_apellido, cliente_usuario, cliente_clave, cliente_email, cliente_telefono, cliente_direccion, cliente_ciudad, rol_id, cliente_estado)
+    VALUES(:gid, :nombre, :apellido, :usuario, :clave, :email, :telefono, :direccion, :ciudad, :rol, :estado)");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":gid"=>0, ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
+    ":gid"=>0, ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$usuario, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1];
 
 $guardar_cliente_query->execute($marcadores);
 

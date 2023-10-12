@@ -1,7 +1,7 @@
 <?php
 
 //almacenando datos
-$usuario=limpiar_cadena($_POST["login_email"]);
+$usuario=limpiar_cadena($_POST["login_user"]);
 $clave=limpiar_cadena($_POST["login_clave"]);
 
 //verifica campos obligatorios
@@ -10,6 +10,15 @@ if($usuario == "" || $clave == "" ){
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
         No has llenado todos los campos que son obligatorios
+    </div>';
+    exit();
+}
+
+if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        El Usuario no coincide con el formato esperado.
     </div>';
     exit();
 }
@@ -26,12 +35,12 @@ if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$clave)){
 
 //verificar en la bd
 $check_user=con();
-$check_user=$check_user->query("SELECT * from cliente WHERE
- cliente_email='$usuario'");
+$check_user=$check_user->query("SELECT * from cliente WHERE 
+cliente_usuario='$usuario' OR cliente_email='$usuario'  ");
 
  if($check_user->rowCount()==1){//user found
     $check_user=$check_user->fetch();//fetch only one user. fetchAll fetchs all users
-    if($check_user["cliente_email"] == $usuario && password_verify($clave, $check_user["cliente_clave"])){//hashea y compara con las claves guardadas
+    if( ($check_user["cliente_usuario"] == $usuario && password_verify($clave, $check_user["cliente_clave"])) || ($check_user["cliente_email"] == $usuario && password_verify($clave, $check_user["cliente_clave"]))){//hashea y compara con las claves guardadas
 
         //variables de sesion local
             $_SESSION["id"]=$check_user["cliente_id"];
@@ -56,7 +65,6 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
             }
 
     } else {
-        echo (password_verify($clave, $check_user["cliente_clave"]));
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -70,11 +78,11 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
     //verificar en la bd
     $check_user=con();
     $check_user=$check_user->query("SELECT * from empleado WHERE
-    empleado_email='$usuario' AND empleado_estado = 1");
+    empleado_usuario='$usuario' OR empleado_email='$usuario' AND empleado_estado = 1");
 
     if($check_user->rowCount()==1){//user found
         $check_user=$check_user->fetch();//fetch only one user. fetchAll fetchs all users
-        if($check_user["empleado_email"] == $usuario && password_verify($clave, $check_user["empleado_clave"])){//hashea y compara con las claves guardadas
+        if( ($check_user["empleado_usuario"] == $usuario && password_verify($clave, $check_user["empleado_clave"])) || ($check_user["empleado_email"] == $usuario && password_verify($clave, $check_user["empleado_clave"])) ){//hashea y compara con las claves guardadas
 
             //variables de sesion local
                 $_SESSION["id"]=$check_user["empleado_id"];
@@ -99,7 +107,6 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
                 }
 
         } else {
-            echo (password_verify($clave, $check_user["empleado_clave"]));
             echo '
             <div class="alert alert-danger" role="alert">
                 <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -111,7 +118,7 @@ $check_user=$check_user->query("SELECT * from cliente WHERE
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>
-            no encontramos el correo.
+            no encontramos el usuario.
         </div>';
     }
 }

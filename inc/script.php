@@ -4,3 +4,4 @@
 <script src="./js/confirmarDelete.js"></script>
 <script src="./js/confirmarReserva.js"></script>
 <script src="./js/cancelarReserva.js"></script>
+<script src="./js/validateUser.js"></script>

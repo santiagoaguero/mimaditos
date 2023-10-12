@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // days of week. an array of zero-based day of week integers (0=Sunday)
             daysOfWeek: [ 1, 2, 3, 4, 5], // Monday - Friday
           
-            startTime: '09:00', // a start time (09am in this project)
+            startTime: '08:00', // a start time (09am in this project)
             endTime: '16:00', // an end time (3pm in this project)
         },
         nowIndicator: true,

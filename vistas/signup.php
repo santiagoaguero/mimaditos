@@ -14,6 +14,16 @@
             <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required>
             <label for="inputApellido" class="is-required">Apellido</label>
         </div>
+        <div class="col-md-12 form-floating">
+            <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required>
+            <label for="inputUser" class="is-required">@ Usuario</label>
+            <div id="username-validation-message"></div>
+            <div class="col-auto">
+                <span id="userHelpInline" class="form-text">
+                El @ de usuario debe tener mínimo 4 caracteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ . _ Ej: lionel
+                </span>
+            </div>
+        </div>
         <div class="col-md-6 form-floating">
             <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" pattern="[0-9- ]{6,100}" required>
             <label for="inputTelefono" class="is-required">Teléfono</label>
@@ -69,16 +79,16 @@
         </div>
         <h4 class="text-center text-secondary mt-4 mb-0">Seguridad</h4>
         <div class="col-12 form-floating">
-            <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+            <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@]{6,100}" required>
             <label for="inputPassword" class="form-label is-required">Contraseña</label>
             <div class="col-auto">
                 <span id="passwordHelpInline" class="form-text">
-                La contraseña debe tener mínimo 6 carácteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ - .
+                La contraseña debe tener mínimo 6 carácteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @
                 </span>
             </div>
         </div>
         <div class="col-12 form-floating">
-            <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
+            <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@]{6,100}" required>
             <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
         </div>
         <div class="form-rest mb-6 mt-6"></div>
