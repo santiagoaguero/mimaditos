@@ -2,15 +2,34 @@
 require_once("main.php");
 require_once("../inc/session_start.php");
 
-/*(`reserva_id`, `cliente_id`, `mascota_id`, `servicio_id`, `horario_id`, `reserva_fecha`, `reserva_notas`, `estado_reserva_id`)*/
+var_dump($_POST);
 
 //almacenando datos
 $cliente=limpiar_cadena($_POST["cliente"]);
 $mascota=limpiar_cadena($_POST["mimadito"]);
-$servicio=limpiar_cadena($_POST["servicio"]);
 $horario=limpiar_cadena($_POST["horario"]);
 $fecha=limpiar_cadena($_POST["fecha"]);
 $notas=limpiar_cadena($_POST["notas"]);
+
+if(isset($_POST["servicios"])){
+    $servicios = $_POST["servicios"];
+} else {
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        No has seleccionado ningún Servicio.
+    </div>';
+    exit();
+}
+
+if($horario == '0'){
+    echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            No hay horarios disponibles para esta fecha
+        </div>' ;
+    exit();
+}
 
 //verificar que el input hidden no se haya manipulado
 if($cliente != $_SESSION["id"]){
@@ -38,7 +57,7 @@ if($check_cliente->rowCount()==0){//cliente found
 $check_cliente=null;//close db connection
 
 //verifica campos obligatorios
-if($mascota == "" || $servicio == "" || $horario == "" || $fecha == ""){
+if($mascota == "" || $horario == "" || $fecha == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -62,6 +81,12 @@ if($check_mascota->rowCount()==0){//cliente found
 }
 $check_mascota=null;//close db connection
 
+//checkbox no marcados no se envian en el form
+//se verifica para darle un valor y poder guardar
+$transporte = (isset($_POST["transporte"]) && $_POST["transporte"] == 'on') ? 
+    1 : 
+    0;
+
 
 if($notas != ""){//al no ser obligatorio puede venir vacio
     if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}",$notas)){
@@ -76,29 +101,42 @@ if($notas != ""){//al no ser obligatorio puede venir vacio
 
 
 //guardando datos
+$guarda = true;
 $guardar_reserva = con();
 //prepare: prepara la consulta antes de insertar directo a la bd. variables sin comillas ni $
 $guardar_reserva = $guardar_reserva->prepare("INSERT INTO
-    reserva(cliente_id, mascota_id, servicio_id, horario_id, reserva_fecha, reserva_notas, estado_reserva_id)
-    VALUES(:cliente, :mascota, :servicio, :horario, :fecha, :notas, :estado)");
+    reserva(cliente_id, mascota_id, servicio_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, estado_reserva_id)
+    VALUES(:cliente, :mascota, :servicio, :horario, :fecha, :transporte, :notas, :estado)");
 
-//evitando inyecciones sql xss
-$marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":servicio"=> $servicio, ":horario"=>$horario, ":fecha"=> $fecha, ":notas"=>$notas, ":estado"=> 1];
+foreach($servicios as $s){
+    //evitando inyecciones sql xss
+    $marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":servicio"=> $s, ":horario"=>$horario, ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 1];
 
-$guardar_reserva->execute($marcadores);
+    $guardar_reserva->execute($marcadores);
 
-if($guardar_reserva->rowCount()==1){// 1 prov nuevo insertado
-    echo '
+    if($guardar_reserva->rowCount() !=1 ){// 1 prov nuevo insertado
+        $guarda = false;
+        break;
+    }
+}
+$guardar_reserva=null; //cerrar conexion;
+
+
+if($guarda){
+    //esto recibe ajax y verifica el texto para redireccionar
+    //esto para seguir mostrando las demas alertas en el modal
+    echo'<strong>Reserva Solicitada!</strong>';
+
+    $_SESSION["reserva"] = '
     <div class="alert alert-success" role="alert">
         <strong>Reserva Solicitada!</strong><br>
         Hemos recibido tu solicitud y lo confirmaremos en unos instantes :)<br>
         Gracias por confiar en nosotros!
     </div>';
 } else {
-    echo '
+   echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
         No se pudo registrar la reserva, por favor inténtalo de nuevo
     </div>';
 }
-$guardar_reserva=null; //cerrar conexion;

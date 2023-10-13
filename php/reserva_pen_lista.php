@@ -8,7 +8,7 @@ if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
     $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
 
 } else {//busqueda total servicios
-    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, servicio.servicio_nombre, horario.*, estado_reserva.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN servicio ON reserva.servicio_id = servicio.servicio_id INNER JOIN horario ON reserva.horario_id = horario.horario_id INNER JOIN estado_reserva ON reserva.estado_reserva_id = estado_reserva.estado_reserva_id WHERE reserva.estado_reserva_id = 1 ORDER BY reserva_fecha DESC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, servicio.servicio_nombre, horario.*, estado_reserva.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN servicio ON reserva.servicio_id = servicio.servicio_id INNER JOIN horario ON reserva.horario_id = horario.horario_id INNER JOIN estado_reserva ON reserva.estado_reserva_id = estado_reserva.estado_reserva_id WHERE reserva.estado_reserva_id = 1 GROUP BY mascota.mascota_nombre, reserva.reserva_fecha DESC LIMIT $inicio, $registros";
 
      $consulta_total = "SELECT COUNT(reserva_id) FROM reserva  WHERE estado_reserva_id = 1";
 }
@@ -34,6 +34,7 @@ $tabla.='
                 <th>Servicio</th>
                 <th>Fecha</th>
                 <th>Horario</th>
+                <th>Transporte</th>
                 <th>Estado</th>
                 <th colspan="2">Opciones</th>
             </tr>
@@ -50,13 +51,22 @@ if($total>=1 && $pagina <= $Npaginas){
     foreach($datos as $row){
         
         $tabla.='
-            <tr class="text-center" >
+            <tr class="text-center align-middle" >
                 <td>'.$contador.'</td>
                 <td>'.$row["mascota_nombre"].'</td>
-                <td>'.$row["cliente_nombre"].' '.$row["cliente_apellido"].'</td>
+                <td><a href="index.php?vista=cliente_update&cliente_id_upd='.$row["cliente_id"].'" class="btn">'.$row["cliente_nombre"].' '.$row["cliente_apellido"].'</a></td>
                 <td>'.$row["servicio_nombre"].'</td>
                 <td>'.$row["reserva_fecha"].'</td>
-                <td>'.$row["horario_inicio"].' - '.$row["horario_fin"].'</td>
+                <td>'.$row["horario_inicio"].' - '.$row["horario_fin"].'</td>';
+
+                if($row["reserva_transporte"] == 1){
+                    $tabla.='
+                    <td><button type="button" class="btn btn-outline-info" disabled>SI</button></td>';
+                } else {
+                    $tabla.='
+                    <td><button type="button" class="btn btn-outline-secondary" disabled>no</button></td>';
+                }
+                $tabla.='
                 <td><button type="button" class="btn btn-outline-warning" disabled>Pendiente</button></td>
                 <td>
                     <form action="./php/reserva_pen_confirmar.php" method="POST" class="confirmarReserva">

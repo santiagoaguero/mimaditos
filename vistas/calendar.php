@@ -12,10 +12,22 @@
     }
 ?>
 
+<?php // Verificar los permisos del usuario para esta página
+  if(isset($_SESSION["reserva"])){
+		echo $_SESSION["reserva"];
+    unset($_SESSION["reserva"]);
+	}
+?>
 
+<div class="d-flex gap-5 justify-content-center">
+  <span class="" style="color:orange; font-size: 15px;">Reservas Pendientes</span>
+  <span class="" style="color:blue; font-size: 15px;">Reservas Confirmadas</span>
+</div>
 <div id="calendar" class="mt-3 mx-5"></div>
 
-
+<script>
+  var roleus = <?php echo $_SESSION['rol']; ?>;
+</script>
 
 <!-- Modal -->
 <div class="modal fade" id="calendarModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -27,29 +39,37 @@
       </div>
       <div class="modal-body">
         <form class="reserva" method="POST" action="./php/setReserva.php">
-          <p class="text-secondary">Dueño: <?php echo $_SESSION["nombre"] ." ". $_SESSION["apellido"]?></p>
-          <select id="servicio" name="servicio" class="form-select" aria-label="Default select example" required>
-            <option selected>Seleccione un servicio</option>
-            <?php 
-              require_once("./php/main.php");
-              $horario = con();
-              $horario = $horario->query("SELECT * FROM servicio WHERE servicio_disponible = 'on' ORDER BY servicio_nombre ASC");
-              if( $horario->rowCount() > 0){
-                $horario = $horario->fetchAll();
-                foreach($horario as $row){
-                  echo '
-                    <option value="'.$row["servicio_id"].'">'.$row["servicio_nombre"].'</option>
-                  ';
-                }
-              }
-            ?>
-          </select>
-          <select id="horario_disponible" name="horario" class="form-select" aria-label="Default select example" required>
+          <p class="mb-1 text-secondary">Dueño: <?php echo $_SESSION["nombre"] ." ". $_SESSION["apellido"]?></p>
+          <div class="container mb-2">
+            <p class="mb-1 text-secondary">Servicios Disponibles</p>
+            <div class="row row-cols-2 row-cols-sm-3">
+              
+                <?php 
+                  require_once("./php/main.php");
+                  $horario = con();
+                  $horario = $horario->query("SELECT * FROM servicio WHERE servicio_disponible = 'on' ORDER BY servicio_nombre ASC");
+                  if( $horario->rowCount() > 0){
+                    $horario = $horario->fetchAll();
+                    foreach($horario as $row){
+                      echo '
+                      <div class="form-check col-auto">
+                        <input class="form-check-input" type="checkbox" name="servicios[]" id="'.$row["servicio_id"].'" value="'.$row["servicio_id"].'">
+                        <label class="form-check-label" for="'.$row["servicio_id"].'">
+                        '.$row["servicio_nombre"].'
+                        </label>
+                      </div>
+                      ';
+                    }
+                  }
+                ?>
+            </div>
+          </div>
+          <select id="horario_disponible" name="horario" class="form-select mb-1" aria-label="Default select example" required>
             
 
           </select>
-          <select id="mimadito" name="mimadito" class="form-select" aria-label="Default select example" required>
-            <option selected>Seleccione un mimadito</option>
+          <select id="mimadito" name="mimadito" class="form-select mb-1" aria-label="Default select example" required>
+            <option value="">Seleccione un mimadito</option>
             <?php 
               require_once("./php/main.php");
               $id = $_SESSION["id"];
@@ -65,6 +85,16 @@
               }
             ?>
           </select>
+          <div class="d-flex align-items-center gap-3">
+            <div class="form-check form-check-reverse">
+              <input class="form-check-input" type="checkbox" id="reverseCheck1" name="transporte">
+              <label class="form-check-label" for="reverseCheck1">
+                Quiero transporte para mi mimadito 
+              </label>
+            </div>
+              <i tabindex="0" class="fa-regular fa-circle-question" type="button" data-bs-toggle="popover" data-bs-title="Solicitar Transporte"  data-bs-trigger="focus" data-bs-content="Dependiendo de nuestra disponibilidad, podemos transportar de manera segura a tu mimadito"></i>
+          </div>
+
           <div id="reservaDescripcion">
             <p id="reservaEstado"></p>
           </div>
@@ -72,10 +102,10 @@
           <input type="hidden" name="cliente" value="<?php echo $_SESSION["id"];?>" required >
           <input type="hidden" id="reservaFecha" name="fecha" value="" required >
 
-          <div class="form-rest"></div>
+          <div class="form-rest mb-6 mt-6"></div>
           <div class="col-12 text-center">
             <button id="solicitaReserva" type="submit" class="btn btn-primary">Solicitar</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           </div>
         </form>
       </div>
@@ -84,55 +114,10 @@
 </div>
 
 
+
 <script>
-    <?php
-        require_once('./js/calendarConfig.js');
-        require_once('./js/solicitaReserva.js');
-    ?>
-    function solicitaTurno(){
-      let servicio = document.getElementById('servicio').value;
-      let horario = document.getElementById('horario').value;
-      let mascota = document.getElementById('mimadito').value;
-
-      let turno = {
-        servicio: servicio,
-        horario: horario,
-        mascota: mascota
-      }
-            
-      console.log("solicita servicio", servicio);
-      console.log("solicita horario", horario);
-      console.log("solicita mascota", mascota);
-
-      function enviarForm (evt){
-        evt.preventDefault();
-
-        if(enviar){
-          let data = new FormData(this);
-
-          let method = this.getAttribute("method");
-          let action = this.getAttribute("action");
-
-          let encabezado= new Headers();
-
-          let config = {
-              method: method,
-              headers: encabezado,
-              mode: "cors",
-              cache: "no-cache",
-              body: data
-          }
-
-          fetch(action, config)
-          .then(response => response.text())
-          .then(response => {
-              let contenedor = this.querySelector(".form-rest");
-              contenedor.innerHTML = response;
-          } );
-        }
-
-      }
-  }
-
-
+  <?php
+      require_once('./js/calendarConfig.js');
+      require_once('./js/solicitaReserva.js');
+      ?>
 </script>

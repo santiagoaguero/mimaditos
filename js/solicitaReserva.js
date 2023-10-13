@@ -20,9 +20,14 @@ function enviarForm (evt){
 
     fetch(action, config)
     .then(response => response.text())
-    .then(response => {
-        let contenedor = this.querySelector(".form-rest");
-        contenedor.innerHTML = response;
+    .then(response => { 
+        if (response.includes("Reserva Solicitada")) {
+            window.location.href="index.php?vista=calendar";
+        } else {
+            let contenedor = this.querySelector(".form-rest");
+            contenedor.innerHTML = response;
+        }
+
     } );
 
 
