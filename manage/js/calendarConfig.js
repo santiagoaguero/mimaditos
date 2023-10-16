@@ -76,6 +76,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 modal.show();
             }
+        },
+        eventClick: function(info){
+            if(roleus >= 1 && roleus <= 3){
+
+                // Abre el modal utilizando las funciones de Bootstrap 5
+                let modal = new bootstrap.Modal(document.getElementById('calendarModalAd'));
+
+                // Actualiza el título del modal con la fecha seleccionada
+                let modalTitle = document.getElementById('reservaTitulo');
+                let modalDesc = document.getElementById('reservaDescripcion');
+                modalTitle.innerText = 'Servicio: ' + info.event.title;
+                modalDesc.innerText = 'Estado: ' + info.event.extendedProps.estado;//new prop goes here
+                modal.show();
+            }
         }
     });
     

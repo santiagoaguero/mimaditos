@@ -17,28 +17,9 @@
 
         require_once("./php/main.php");
 
-        $mascota=(isset($_GET["mascota"])) ? $_GET["mascota"] : 0;
-        $usuario=(isset($_GET["user"])) ? $_GET["user"] : 0;
+        $mascota_id=(isset($_GET["mascota_id"])) ? $_GET["mascota_id"] : 0;
 
-        //getting user and mascota id
-        $check_client = con();
-        $check_client = $check_client->query("SELECT cliente_id FROM cliente 
-            WHERE cliente_usuario = '$usuario'");
-
-        if($check_client->rowCount()>0){
-            $datos_cliente=$check_client->fetch();
-            $cliente_id = $datos_cliente["cliente_id"];
-
-            $check_mas = con();
-            $check_mas = $check_mas->query("SELECT mascota_id FROM mascota 
-                WHERE mascota_nombre = '$mascota' AND cliente_id = '$cliente_id' ");
-            if($check_mas->rowCount()>0){
-                $datos_mas = $check_mas->fetch();
-                $mascota_id = $datos_mas["mascota_id"];
-            }
-
-        }
-
+        $cliente_id=(isset($_GET["user_id"])) ? $_GET["user_id"] : 0;
 
         $check_mascota = con();
         $check_mascota = $check_mascota->query("SELECT mascota.*, cliente.cliente_nombre, cliente.cliente_apellido FROM mascota INNER JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.cliente_id = '$cliente_id' AND mascota.mascota_id = '$mascota_id'");

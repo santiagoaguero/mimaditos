@@ -3,6 +3,7 @@
         <div class="text-center" class="">
             <img src="./img/mimaditos-logo.png" alt="reservet"  class="w-50 img-fluid">
         </div>
+        <div class="form-rest mb-6 mt-6"></div>
         <h3 class="text-center">Bienvenido!</h3>
         <p class="text-center">Gracias por elegirnos para cuidar a tu mimado, por favor introduce tus datos para conocernos más</p>
         <h4 class="text-center text-secondary mb-0">Información Personal</h4>
@@ -91,7 +92,6 @@
             <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="[a-zA-Z0-9$@]{6,100}" required>
             <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
         </div>
-        <div class="form-rest mb-6 mt-6"></div>
         <div class="col-12 text-center">
             <button type="submit" class="btn btn-primary">Crear Cuenta</button>
         </div>

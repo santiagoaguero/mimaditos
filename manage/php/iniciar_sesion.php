@@ -35,21 +35,20 @@ if(verificar_datos("[a-zA-Z0-9$@.-]{6,100}",$clave)){
 
 //verificar en la bd
 $check_user=con();
-$check_user=$check_user->query("SELECT * from cliente WHERE 
-cliente_usuario='$usuario' OR cliente_email='$usuario'  ");
+$check_user=$check_user->query("SELECT * from empleado WHERE
+(empleado_usuario='$usuario' OR empleado_email='$usuario') AND empleado_estado = 1");
 
- if($check_user->rowCount()==1){//user found
+if($check_user->rowCount()==1){//user found
     $check_user=$check_user->fetch();//fetch only one user. fetchAll fetchs all users
-    if( ($check_user["cliente_usuario"] == $usuario && password_verify($clave, $check_user["cliente_clave"])) || ($check_user["cliente_email"] == $usuario && password_verify($clave, $check_user["cliente_clave"]))){//hashea y compara con las claves guardadas
+    if( ($check_user["empleado_usuario"] == $usuario && password_verify($clave, $check_user["empleado_clave"])) || ($check_user["empleado_email"] == $usuario && password_verify($clave, $check_user["empleado_clave"])) ){//hashea y compara con las claves guardadas
 
         //variables de sesion local
-            $_SESSION["id"]=$check_user["cliente_id"];
+            $_SESSION["id"]=$check_user["empleado_id"];
             $_SESSION["rol"]=$check_user["rol_id"];
-            $_SESSION["user"]= "cli";
-            $_SESSION["nombre"]=$check_user["cliente_nombre"];
-            $_SESSION["apellido"]=$check_user["cliente_apellido"];
-            $_SESSION["usuario"]=$check_user["cliente_usuario"];
-            $_SESSION["email"]=$check_user["cliente_email"];
+            $_SESSION["user"]= "emp";
+            $_SESSION["nombre"]=$check_user["empleado_nombre"];
+            $_SESSION["apellido"]=$check_user["empleado_apellido"];
+            $_SESSION["email"]=$check_user["empleado_email"];
             $_SESSION["cuenta"]="local";
             $_SESSION["signin"]= true;//
 
@@ -73,8 +72,7 @@ cliente_usuario='$usuario' OR cliente_email='$usuario'  ");
         </div>';
     }
 
- } 
-    else {
+} else {
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -83,4 +81,4 @@ cliente_usuario='$usuario' OR cliente_email='$usuario'  ");
 }
 
 
- $check_user=null;
+$check_user=null;

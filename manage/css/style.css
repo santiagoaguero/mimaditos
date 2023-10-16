@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz&display=swap');
+
+body,html{
+    height: 100%;
+    width: 100%;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 18px;
+}
+
+.img-404 {
+ display: grid;
+ place-items: center;
+ height: 100vh;
+}
+
+.container{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.container > .login{
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.container > .signup{
+    width: 100%;
+    max-width: 400px;
+    min-width: 800px;
+    border-radius: 20px;
+}
+.ingresa{
+    color: #77bbbe;
+   font-weight: bolder;
+    text-align: center;
+    margin: 15px 0;
+}
+.user-icon, .pass-icon, .google-icon{
+    height: 1.5rem;
+}
+
+.input-group-text{
+    background-color: #92E0E4;
+}
+
+.logo-login {
+    display: flex;
+    justify-content: center;
+}
+.logo-login img{
+    height: 200px
+}
+
+.forgot{
+    display: flex;
+    justify-content: space-around;
+
+    align-items: center; /* Centra verticalmente */
+}
+.remember{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.recover-pass{
+    display: flex; /* Establece el div como un contenedor flexible */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  }
+  .recover-pass a{
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bolder;
+    font-style: italic;
+    color: #77bbbe;
+  }
+  .forgot-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-info{
+    color: white;
+    width: 100%;
+}
+
+.create-account{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.create-account a{
+    color: #77bbbe;
+    text-decoration: none;
+    font-weight: bolder;
+
+}
+
+.btnGoogle{
+    display: flex;
+    gap: 15px;
+   justify-content: center;
+
+}
+  .btnGoogle a{
+    text-decoration: none;
+    font-weight: bolder;
+    color: #77bbbe;
+}
+
+.spinner-grow{
+    position: absolute;
+    display: none;
+}
+
+
+.carousel-item {
+    background-size:cover;
+    background-position: center;
+    height: 91vh;
+    
+}
+.carousel-item img {
+    display: none; /* Oculta las imágenes en el carrusel */
+}
+
+/*Fondo semitransparente para el texto
+#carouselAuto > div > div > div.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);  
+
+    border-radius: 5px;
+    font-size: 30px;
+}*/
+
+
+#carouselAuto > div > div > div.carousel-caption > h5 {
+    font-size: 50px;
+}
+
+/* borde texto carousel*/
+#carouselAuto > div > div > div.carousel-caption {
+text-shadow: 2px 2px 4px #000;
+}
+
+
+#carouselAuto > div > div > div.first{
+    position: relative;
+    left: 50%;
+    top: 40%;
+}
+
+#carouselAuto > div > div > div.first > h5{
+    font-size: 50px;
+    width: 40%;
+    text-align: center;
+
+}
+
+.w-header{
+    color: purple;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+
+.w-footer{
+    color: purple;
+    
+    font-weight: bold;
+}
+
+.middle{
+    height: 100%;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+
+.footer{
+    height: 100%;
+    background-color: cyan;
+    text-align: center;
+    display: grid;
+    place-items: center;
+}
+
+.m-contact img, .footer img{
+    width: 50px;
+}
+
+.m-contact a, .footer a {
+    text-decoration: none;
+    color: purple
+}
+
+.forms{
+    padding: 0 50px;
+    margin-top: 25px;
+}
+
+.is-required:after {
+    content: '*';
+    font-size: 15px;
+    margin-left: 3px;
+    color: red;
+    font-weight: bold;
+  }
+
+.signup-exito-container, .signup-error-container, .signup-error2-container{
+    height: 100vh;
+    display: grid;
+    place-items: center;
+}
+
+.signup-exito-container{
+    background-color: #77bbbe;
+}
+
+.signup-exito{
+    background-color: #77bbbe;
+}
+
+.signup-error-container{
+    background-color: #fc7c7c;
+}
+
+.signup-error2-container{
+    background-color: #947f7f;
+}
+
+
+.signup-exito, .signup-error, .signup-error2{animation:bounce-top .9s linear both} @keyframes bounce-top{0%{transform:translateY(-45px);animation-timing-function:ease-in;opacity:1}24%{opacity:1}40%{transform:translateY(-24px);animation-timing-function:ease-in}65%{transform:translateY(-12px);animation-timing-function:ease-in}82%{transform:translateY(-6px);animation-timing-function:ease-in}93%{transform:translateY(-4px);animation-timing-function:ease-in}25%,55%,75%,87%{transform:translateY(0);animation-timing-function:ease-out}100%{transform:translateY(0);animation-timing-function:ease-out;opacity:1}}
+
+
+
+
+/* carousel text */
+
+.carousel-caption{animation:jello-horizontal 1.2s linear both} @keyframes jello-horizontal{0%{transform:scale3d(1,1,1)}30%{transform:scale3d(1.25,.75,1)}40%{transform:scale3d(.75,1.25,1)}50%{transform:scale3d(1.15,.85,1)}65%{transform:scale3d(.95,1.05,1)}75%{transform:scale3d(1.05,.95,1)}100%{transform:scale3d(1,1,1)}}
+
+
+/* dog-look & bañando se cortan en pantallas grandes, se acomoda con esto*/
+@media (min-width: 1200px) {
+    #carouselAuto > div > div:nth-child(1), #carouselAuto > div > div:nth-child(3){
+        background-position: top center;
+    }
+}
+
+
+/* Estilo para pantallas medianas */
+@media (max-width: 620px) {
+
+
+    .w-header .fs-1 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-2 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-3 {
+        font-size: 20px !important;
+    }
+    .w-header .fs-4, p, .middle .btn {
+        font-size: 16px !important;
+    }
+    
+    .m-contact img, .footer img{
+        width: 25px;
+    }
+
+    #carouselAuto > div > div > div.carousel-caption > h5 {
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
+    
+    }
+    
+    #carouselAuto > div > div > div.first> h5 {
+        font-size: 50px;
+        width: 50%;
+        text-align: center;
+    
+    }
+    
+
+  }
+
+  
+
+
+/* Estilo para pantallas pequeñas */
+@media (max-width: 501px) {
+
+
+    .w-header .fs-1 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-2 {
+        font-size: 26px !important;
+    }
+    .w-header .fs-3 {
+        font-size: 20px !important;
+    }
+    .w-header .fs-4, p, .middle .btn {
+        font-size: 16px !important;
+    }
+    
+    .m-contact img, .footer img{
+        width: 25px;
+    }
+
+    #carouselAuto > div > div > div.carousel-caption > h5 {
+        font-size: 30px;
+        width: 100%;
+        text-align: center;
+    
+    }
+
+    
+    #carouselAuto > div > div > div.first> h5 {
+        font-size: 30px;
+        width: 50%;
+        text-align: center;
+    
+    }
+    
+
+  }
+
+  
+  
+  
+  
+  

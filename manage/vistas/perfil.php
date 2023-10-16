@@ -18,16 +18,16 @@
 
         require_once("./php/main.php");
 
-        $id=(isset($_GET["user"])) ? $_GET["user"] : 0;
+        $id=(isset($_GET["user_id"])) ? $_GET["user_id"] : 0;
         $id=limpiar_cadena($id);
 
-        if($id == $_SESSION["usuario"]){
+        if($id == $_SESSION["id"]){
 
             $check_client = con();
-            $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_usuario = '$id'");
+            $check_client = $check_client->query("SELECT * FROM cliente WHERE cliente_id = '$id'");
 
             if($check_client->rowCount()>0){
-                $datos_cliente=$check_client->fetch();
+                $datos=$check_client->fetch();
             }
     ?>
 
@@ -35,15 +35,15 @@
         <form class="formularioAjax row g-3 shadow" method="POST" action="./php/perfil_actualizar.php" autocomplete="off">
             <h2 class="subtitle text-center">Información Personal</h2>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos_cliente["cliente_nombre"];?>">
+                <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos["cliente_nombre"];?>">
                 <label for="inputName" class="is-required">Nombre</label>
             </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos_cliente["cliente_apellido"];?>">
+                <input type="text" class="form-control" id="inputApellido" name="apellido" placeholder="Apellido" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required value="<?php echo $datos["cliente_apellido"];?>">
                 <label for="inputApellido" class="is-required">Apellido</label>
             </div>
             <div class="col-md-12 form-floating">
-                <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos_cliente["cliente_usuario"];?>">
+                <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos["cliente_usuario"];?>">
                 <label for="inputUser" class="is-required">@ Usuario</label>
                 <div id="username-validation-message"></div>
                 <div class="col-auto">
@@ -53,19 +53,19 @@
                 </div>
             </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" required value="<?php echo $datos_cliente["cliente_telefono"];?>">
+                <input type="text" class="form-control" id="inputTelefono" name="telefono" placeholder="Telefono" required value="<?php echo $datos["cliente_telefono"];?>">
                 <label for="inputTelefono" class="is-required">Teléfono</label>
             </div>
             <div class="col-md-6 form-floating">
-                <input type="text" class="form-control" id="inputCiudad" name="ciudad" placeholder="Ciudad" value="<?php echo $datos_cliente["cliente_ciudad"];?>">
+                <input type="text" class="form-control" id="inputCiudad" name="ciudad" placeholder="Ciudad" value="<?php echo $datos["cliente_ciudad"];?>">
                 <label for="inputCiudad">Ciudad</label>
             </div>
             <div class="col-12 form-floating">
-                <input type="text" class="form-control" id="inputAddress" name="direccion" placeholder="Direccion" value="<?php echo $datos_cliente["cliente_direccion"];?>">
+                <input type="text" class="form-control" id="inputAddress" name="direccion" placeholder="Direccion" value="<?php echo $datos["cliente_direccion"];?>">
                 <label for="inputAddress" class="form-label">Dirección</label>
             </div>
             <div class="col-md-12 form-floating">
-                <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="name@example.com" required value="<?php echo $datos_cliente["cliente_email"];?>">
+                <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="name@example.com" required value="<?php echo $datos["cliente_email"];?>">
                 <label for="inputEmail4" class="is-required">Email</label>
             </div>
             <p class="text-body-secondary text-center fst-italic mt-4 mb-0">si no desea cambiar su contraseña, deje los campos vacíos
@@ -83,7 +83,7 @@
                 <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="^[a-zA-Z0-9$@.\-]{6,100}$" title="si no desea cambiar su contraseña, deje los campos vacíos">
                 <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
             </div>
-            <input type="hidden" name="cliente_id" value="<?php echo $datos_cliente["cliente_id"];?>" required >
+            <input type="hidden" name="cliente_id" value="<?php echo $datos["cliente_id"];?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
@@ -95,10 +95,10 @@
 
         <?php 
         $check_mascota = con();
-        $check_mascota = $check_mascota->query("SELECT mascota_id, mascota_nombre, mascota_estado FROM mascota WHERE cliente_id = '".$datos_cliente["cliente_id"]."' ORDER BY mascota_nombre");
+        $check_mascota = $check_mascota->query("SELECT mascota_id, mascota_nombre, mascota_estado FROM mascota WHERE cliente_id = '$id' ORDER BY mascota_nombre");
 
         if($check_mascota->rowCount()>0){
-            $mascotas=$check_mascota->fetchAll();
+            $datos=$check_mascota->fetchAll();
 
             echo '
             <p class="text-body-secondary fst-italic">
@@ -108,14 +108,14 @@
             <div class="list-group w-75 text-center mb-5">
             ';
 
-            foreach($mascotas as $mascota){
+            foreach($datos as $mascota){
                 if($mascota["mascota_estado"] == 'on'){
                     $activo = 'list-group-item-primary';
                 } else {
                     $activo = 'list-group-item-secondary';
                 }
                 echo '
-                    <a href="index.php?vista=mascota_update&mascota='.$mascota["mascota_nombre"].'&user='.$datos_cliente["cliente_usuario"].'" class="list-group-item list-group-item-action '.$activo.'">'.$mascota["mascota_nombre"].'</a>
+                    <a href="index.php?vista=mascota_update&mascota_id='.$mascota["mascota_id"].'&user_id='.$id.'" class="list-group-item list-group-item-action '.$activo.'">'.$mascota["mascota_nombre"].'</a>
                     ';
             }
             echo '</div>';
@@ -227,7 +227,7 @@
                 <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}"></textarea>
                 <label for="inputNotas">Notas de mimadito</label>
             </div>
-            <input type="hidden" name="user" value="<?php echo $datos_cliente["cliente_id"];?>" required >
+            <input type="hidden" name="user" value="<?php echo $id;?>" required >
             <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 text-center">
                 <button type="submit" class="btn btn-primary mb-3">Agregar</button>

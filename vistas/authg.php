@@ -41,6 +41,7 @@ if (isset($_GET['code'])) {
                     $_SESSION["id"] = $check_user["cliente_id"];
                     $_SESSION["gid"] = $check_user["google_id"];
                     $_SESSION["rol"]=$check_user["rol_id"];
+                    $_SESSION["user"]= "cli";
                     $_SESSION["nombre"] = $check_user["cliente_nombre"];
                     $_SESSION["apellido"] = $check_user["cliente_apellido"];
                     $_SESSION["email"] = $check_user["cliente_email"];

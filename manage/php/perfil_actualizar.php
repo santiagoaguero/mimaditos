@@ -1,6 +1,5 @@
 <?php
 require_once("main.php");
-require_once("../inc/session_start.php");
 
 $id = limpiar_cadena($_POST["cliente_id"]);//input hidden
 
@@ -23,7 +22,6 @@ $check_cliente=null;
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
-$usuario=limpiar_cadena($_POST["usuario"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
 $ciudad=limpiar_cadena($_POST["ciudad"]);
 $direccion=limpiar_cadena($_POST["direccion"]);
@@ -88,36 +86,6 @@ if($contraseña != "" || $contraseña2 != ""){
 }
 
 
-//verifica user
-if($usuario != "" && $usuario != $datos["cliente_usuario"]){
-    if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
-        echo '
-        <div class="alert alert-danger" role="alert">
-            <strong>¡Ocurrió un error inesperado!</strong><br>
-            El Usuario no coincide con el formato esperado.
-        </div>';
-        exit();
-    } else {
-        $check_user=con();
-        $check_user=$check_user->query("SELECT cliente_usuario FROM cliente 
-        WHERE cliente_usuario = '$usuario'");//checks if email exists
-        if($check_user->rowCount()>0){//email found and emails gotta be unique
-            echo '
-            <div class="alert alert-danger" role="alert">
-                <strong>¡Ocurrió un error inesperado!</strong><br>
-                El Usuario ya está registrado en la base de datos, por favor elija otro usuario.
-            </div>';
-            exit();
-        } else {
-                //actualiza el nuevo user, sino se queda con el anterior y da errores
-                unset($_SESSION["usuario"]);
-                $_SESSION["usuario"] = $usuario;
-        }
-        $check_user=null;//close db connection
-    }
-
-}
-
 //verifica email
 if($email != "" && $email != $datos["cliente_email"]){
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -146,11 +114,11 @@ if($email != "" && $email != $datos["cliente_email"]){
 //Actualizando datos
 $actualizar_cliente = con();
 $actualizar_cliente = $actualizar_cliente->prepare("UPDATE cliente SET 
-cliente_nombre = :nombre, cliente_apellido = :apellido, cliente_usuario = :usuario, cliente_clave = :clave, cliente_email = :email, cliente_telefono = :telefono, cliente_direccion = :direccion, cliente_ciudad = :ciudad, rol_id = :rol, cliente_estado = :estado WHERE cliente_id = :id");
+cliente_nombre = :nombre, cliente_apellido = :apellido, cliente_clave = :clave, cliente_email = :email, cliente_telefono = :telefono, cliente_direccion = :direccion, cliente_ciudad = :ciudad, rol_id = :rol, cliente_estado = :estado WHERE cliente_id = :id");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$usuario, ":clave"=>$contraseña, 
+    ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, 
     ":email"=>$email, ":telefono"=>$telefono, ":direccion"=>$direccion, 
     ":ciudad"=>$ciudad, ":rol"=> 4, ":estado"=> 1, "id" => $id];
 

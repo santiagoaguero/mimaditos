@@ -53,6 +53,7 @@ if(verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}",$apellido)){
     exit();
 }
 
+//verifica user
 if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -60,6 +61,19 @@ if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
         El Usuario no coincide con el formato esperado.
     </div>';
     exit();
+} else {
+    $check_user=con();
+    $check_user=$check_user->query("SELECT cliente_usuario FROM cliente 
+    WHERE cliente_usuario = '$usuario'");//checks if user exists
+    if($check_user->rowCount()>0){//user found and users gotta be unique
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            El Usuario ya está registrado en la base de datos, por favor elija otro usuario.
+        </div>';
+        exit();
+    }
+    $check_user=null;//close db connection
 }
 
 if(verificar_datos("[0-9]{1,11}",$edad)){
@@ -81,6 +95,8 @@ if(verificar_datos("[0-9- ]{6,100}",$telefono)){
     </div>';
     exit();
 }
+
+
 
 //verifica email
 if($email != ""){
@@ -163,6 +179,7 @@ if($guardar_cliente_query->rowCount()==1){// 1 usuario nuevo insertado
         $_SESSION["user"]= "cli";
         $_SESSION["nombre"]=$nombre;
         $_SESSION["apellido"]=$apellido;
+        $_SESSION["usuario"]=$usuario;
         $_SESSION["email"]=$email;
         $_SESSION["cuenta"]="local";
         $_SESSION["signup"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url
