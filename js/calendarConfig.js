@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(roleus >= 1 && roleus <= 3){
 
                 // Abre el modal utilizando las funciones de Bootstrap 5
-                let modal = new bootstrap.Modal(document.getElementById('calendarModal'));
+                let modal = new bootstrap.Modal(document.getElementById('calendarModalAd'));
 
                 // Actualiza el título del modal con la fecha seleccionada
                 let modalTitle = document.getElementById('reservaTitulo');

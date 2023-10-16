@@ -4,13 +4,13 @@ $reserva_id_con = limpiar_cadena($_POST["cancelar"]);
 
 //verifica cliente
 $check_reserva = con();
-$check_reserva=$check_reserva->query("SELECT * FROM reserva WHERE reserva_id = '$reserva_id_con' AND estado_reserva_id = 2");
+$check_reserva=$check_reserva->query("SELECT * FROM reserva WHERE reserva_id = '$reserva_id_con' AND reserva_estado = 1");
 
 if($check_reserva->rowCount()==1){
     $datos = $check_reserva->fetch();
 
     $cancelar_reserva = con();
-    $cancelar_reserva=$cancelar_reserva->prepare("UPDATE reserva SET estado_reserva_id = 1 WHERE reserva_id=:id");
+    $cancelar_reserva=$cancelar_reserva->prepare("UPDATE reserva SET reserva_estado = 0 WHERE reserva_id=:id");
     //filtro prepare para evitar inyecciones sql xss
 
     $cancelar_reserva->execute([":id"=> $reserva_id_con]);

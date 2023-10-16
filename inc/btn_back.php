@@ -1,4 +1,4 @@
-<p class="text-end pt-4 pb-4">
+<p class="text-end pb-4">
 		<a href="#" class="btn btn-secondary btn-back"><- Regresar atrás</a>
 	</p>
 	<script type="text/javascript">

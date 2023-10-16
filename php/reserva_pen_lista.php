@@ -8,9 +8,9 @@ if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
     $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
 
 } else {//busqueda total servicios
-    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, servicio.servicio_nombre, horario.*, estado_reserva.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN servicio ON reserva.servicio_id = servicio.servicio_id INNER JOIN horario ON reserva.horario_id = horario.horario_id INNER JOIN estado_reserva ON reserva.estado_reserva_id = estado_reserva.estado_reserva_id WHERE reserva.estado_reserva_id = 1 GROUP BY mascota.mascota_nombre, reserva.reserva_fecha DESC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_estado = 0 ORDER BY reserva.reserva_fecha DESC LIMIT $inicio, $registros";
 
-     $consulta_total = "SELECT COUNT(reserva_id) FROM reserva  WHERE estado_reserva_id = 1";
+     $consulta_total = "SELECT COUNT(reserva_id) FROM reserva  WHERE reserva_estado = 0";
 }
 
 $conexion=con();
@@ -31,12 +31,11 @@ $tabla.='
                 <th>#</th>
                 <th>Mimado</th>
                 <th>Dueño</th>
-                <th>Servicio</th>
                 <th>Fecha</th>
                 <th>Horario</th>
                 <th>Transporte</th>
                 <th>Estado</th>
-                <th colspan="2">Opciones</th>
+                <th colspan="3">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -49,14 +48,18 @@ if($total>=1 && $pagina <= $Npaginas){
     $pag_inicio=$inicio+1;//ej: mostrando usuario 1 al 7
 
     foreach($datos as $row){
+                        //cambiar formato fecha
+                        $timestamp = strtotime($row["reserva_fecha"]);
+                
+                        //formatea la fecha en el formato DD-MM-YYYY
+                        $fecha = date("d-m-Y", $timestamp);
         
         $tabla.='
             <tr class="text-center align-middle" >
                 <td>'.$contador.'</td>
                 <td>'.$row["mascota_nombre"].'</td>
                 <td><a href="index.php?vista=cliente_update&cliente_id_upd='.$row["cliente_id"].'" class="btn">'.$row["cliente_nombre"].' '.$row["cliente_apellido"].'</a></td>
-                <td>'.$row["servicio_nombre"].'</td>
-                <td>'.$row["reserva_fecha"].'</td>
+                <td>'.$fecha.'</td>
                 <td>'.$row["horario_inicio"].' - '.$row["horario_fin"].'</td>';
 
                 if($row["reserva_transporte"] == 1){
@@ -68,6 +71,7 @@ if($total>=1 && $pagina <= $Npaginas){
                 }
                 $tabla.='
                 <td><button type="button" class="btn btn-outline-warning" disabled>Pendiente</button></td>
+                <td><a href="index.php?vista=reserva_pen_det&det_id='.$row["reserva_id"].'" class="btn btn-outline-primary">Ver Detalle</a></td>
                 <td>
                     <form action="./php/reserva_pen_confirmar.php" method="POST" class="confirmarReserva">
                         <input type="hidden" name="confirmar" value="'.$row["reserva_id"].'">

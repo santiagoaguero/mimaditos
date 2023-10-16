@@ -2,7 +2,7 @@
 require_once("main.php");
 require_once("../inc/session_start.php");
 
-var_dump($_POST);
+$pdo = con();
 
 //almacenando datos
 $cliente=limpiar_cadena($_POST["cliente"]);
@@ -101,26 +101,37 @@ if($notas != ""){//al no ser obligatorio puede venir vacio
 
 
 //guardando datos
-$guarda = true;
-$guardar_reserva = con();
+$guarda = false;
 //prepare: prepara la consulta antes de insertar directo a la bd. variables sin comillas ni $
-$guardar_reserva = $guardar_reserva->prepare("INSERT INTO
-    reserva(cliente_id, mascota_id, servicio_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, estado_reserva_id)
-    VALUES(:cliente, :mascota, :servicio, :horario, :fecha, :transporte, :notas, :estado)");
+$guardar_reserva = $pdo->prepare("INSERT INTO
+    reserva(cliente_id, mascota_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, reserva_estado)
+    VALUES(:cliente, :mascota, :horario, :fecha, :transporte, :notas, :estado)");
 
-foreach($servicios as $s){
-    //evitando inyecciones sql xss
-    $marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":servicio"=> $s, ":horario"=>$horario, ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 1];
+$marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":horario"=>$horario,
+ ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 0];
 
-    $guardar_reserva->execute($marcadores);
+$guardar_reserva->execute($marcadores);
 
-    if($guardar_reserva->rowCount() !=1 ){// 1 prov nuevo insertado
-        $guarda = false;
-        break;
+if($guardar_reserva->rowCount() ==1 ){// 1 reserva nueva insertado
+    $last_id = $pdo->lastInsertId();
+    $guarda = true;
+
+    // inserta la mascota asociada al cliente
+    $guardar_reserva_det = $pdo->prepare("INSERT INTO reserva_detalle (reserva_id, servicio_id) VALUES (:reserva, :servicio)");
+                        
+    foreach($servicios as $s){
+        //evitando inyecciones sql xss
+        $marcadores=[":reserva"=>$last_id, ":servicio"=> $s];
+
+        if(!$guardar_reserva_det->execute($marcadores)){
+            $guarda = false;
+            break;
+        }
     }
+    $guardar_reserva_det = null;
+
 }
 $guardar_reserva=null; //cerrar conexion;
-
 
 if($guarda){
     //esto recibe ajax y verifica el texto para redireccionar

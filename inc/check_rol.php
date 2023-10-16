@@ -5,7 +5,7 @@ $roles = [
   1 => [], // admin
   2 => [], // encargado
   3 => [], // empleado
-  4 => ['servicio_new', 'servicio_list', 'servicio_search', 'servicio_update', 'horario_new', 'horario_list', 'horario_update', 'reserva_pen', 'reserva_con', 'reserva_new', 'reserva_search', 'reserva_update', 'cliente_new', 'cliente_list', 'cliente_search', 'cliente_update', 'mimadito_list', 'raza_new', 'raza_list', 'raza_search', 'raza_update', 'tipo_new', 'tipo_list', 'tipo_search', 'tipo_update', 'user', 'user_new', 'user_list', 'user_search', 'user_update']
+  4 => ['servicio_new', 'servicio_list', 'servicio_search', 'servicio_update', 'horario_new', 'horario_list', 'horario_update', 'reserva_pen', 'reserva_con', 'reserva_new', 'reserva_search', 'reserva_update', 'reserva_det', 'cliente_new', 'cliente_list', 'cliente_search', 'cliente_update', 'mimadito_list', 'raza_new', 'raza_list', 'raza_search', 'raza_update', 'tipo_new', 'tipo_list', 'tipo_search', 'tipo_update', 'user', 'user_new', 'user_list', 'user_search', 'user_update']
 ];
 
 //Verificar el acceso
