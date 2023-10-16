@@ -9,6 +9,7 @@ $pdo = con();
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
+$usuario=limpiar_cadena($_POST["usuario"]);
 $rol=limpiar_cadena($_POST["rol"]);
 $email=limpiar_cadena($_POST["email"]);
 $contraseña=limpiar_cadena($_POST["contraseña"]);
@@ -16,7 +17,7 @@ $contraseña2=limpiar_cadena($_POST["contraseña2"]);
 
 
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || 
+if($nombre == "" || $apellido == "" || $usuario == "" || $telefono == "" || 
     $contraseña == "" || $contraseña2 == "" || $email == ""){
     echo '
     <div class="alert alert-danger" role="alert">
@@ -54,6 +55,30 @@ if(verificar_datos("[0-9- ]{6,100}",$telefono)){
         Solo se reciben números, espacios y guión medio (-)
     </div>';
     exit();
+}
+
+//verifica user
+
+if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
+    echo '
+    <div class="alert alert-danger" role="alert">
+        <strong>¡Ocurrió un error inesperado!</strong><br>
+        El Usuario no coincide con el formato esperado.
+    </div>';
+    exit();
+} else {
+    $check_user=con();
+    $check_user=$check_user->query("SELECT empleado_usuario FROM empleado 
+    WHERE empleado_usuario = '$usuario'");//checks if email exists
+    if($check_user->rowCount()>0){//email found and emails gotta be unique
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            El Usuario ya está registrado en la base de datos, por favor elija otro usuario.
+        </div>';
+        exit();
+    }
+    $check_user=null;//close db connection
 }
 
 //verifica email
@@ -110,12 +135,12 @@ if($rol==0 || $rol > 4){
 
 //guardando datos
 $guardar_user = $pdo->prepare("INSERT INTO
-    empleado(empleado_nombre, empleado_apellido, empleado_clave, empleado_email, empleado_telefono, rol_id, empleado_estado)
-    VALUES(:nombre, :apellido, :clave, :email, :telefono, :rol, :estado)");
+    empleado(empleado_nombre, empleado_apellido, empleado_usuario, empleado_clave, empleado_email, empleado_telefono, rol_id, empleado_estado)
+    VALUES(:nombre, :apellido, :usuario, :clave, :email, :telefono, :rol, :estado)");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":rol"=> $rol, ":estado"=> 1];
+    ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$usuario, ":clave"=>$contraseña, ":email"=>$email, ":telefono"=>$telefono, ":rol"=> $rol, ":estado"=> 1];
 
 $guardar_user->execute($marcadores);
 

@@ -22,6 +22,7 @@ $check_empleado=null;
 //almacenando datos
 $nombre=limpiar_cadena($_POST["nombre"]);
 $apellido=limpiar_cadena($_POST["apellido"]);
+$usuario=limpiar_cadena($_POST["usuario"]);
 $telefono=limpiar_cadena($_POST["telefono"]);
 $rol=limpiar_cadena($_POST["rol"]);
 $email=limpiar_cadena($_POST["email"]);
@@ -34,7 +35,7 @@ $estado = isset($_POST["estado"]) ?
     (limpiar_cadena($_POST["estado"])) : 0;
 
 //verifica campos obligatorios
-if($nombre == "" || $apellido == "" || $telefono == "" || $email == "" || $rol == ""){
+if($nombre == "" || $apellido == "" || $usuario == "" || $telefono == "" || $email == "" || $rol == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -106,6 +107,30 @@ if($estado == 'on'){
     $estado = 1;
 }
 
+//verifica user unique
+if($usuario != "" && $usuario != $datos["empleado_usuario"]){
+    if(verificar_datos("^[a-zA-Z0-9$@._]{4,40}$",$usuario)){
+        echo '
+        <div class="alert alert-danger" role="alert">
+            <strong>¡Ocurrió un error inesperado!</strong><br>
+            El Usuario no coincide con el formato esperado.
+        </div>';
+        exit();
+    } else {
+        $check_user=con();
+        $check_user=$check_user->query("SELECT empleado_usuario FROM empleado 
+        WHERE empleado_usuario = '$usuario'");//checks if email exists
+        if($check_user->rowCount()>0){//email found and emails gotta be unique
+            echo '
+            <div class="alert alert-danger" role="alert">
+                <strong>¡Ocurrió un error inesperado!</strong><br>
+                El Usuario ya está registrado en la base de datos, por favor elija otro usuario.
+            </div>';
+            exit();
+        }
+        $check_user=null;//close db connection
+    }
+}
 
 //verifica email
 if($email != "" && $email != $datos["empleado_email"]){
@@ -135,11 +160,11 @@ if($email != "" && $email != $datos["empleado_email"]){
 //Actualizando datos
 $actualizar_empleado = con();
 $actualizar_empleado = $actualizar_empleado->prepare("UPDATE empleado SET 
-empleado_nombre = :nombre, empleado_apellido = :apellido, empleado_clave = :clave, empleado_email = :email, empleado_telefono = :telefono, rol_id = :rol, empleado_estado = :estado WHERE empleado_id = :id");
+empleado_nombre = :nombre, empleado_apellido = :apellido, empleado_usuario = :usuario, empleado_clave = :clave, empleado_email = :email, empleado_telefono = :telefono, rol_id = :rol, empleado_estado = :estado WHERE empleado_id = :id");
 
 //evitando inyecciones sql xss
 $marcadores=[
-    ":nombre"=>$nombre, ":apellido"=>$apellido, ":clave"=>$contraseña, 
+    ":nombre"=>$nombre, ":apellido"=>$apellido, ":usuario"=>$usuario, ":clave"=>$contraseña, 
     ":email"=>$email, ":telefono"=>$telefono, ":rol"=> $rol, ":estado"=> $estado, "id" => $id];
 
 if($actualizar_empleado->execute($marcadores)){

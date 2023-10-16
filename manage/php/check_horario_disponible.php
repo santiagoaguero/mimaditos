@@ -22,6 +22,6 @@
         // Genera una respuesta JSON válida
         echo json_encode($horarios_disponibles);
     } else {
-        // Si no hay horarios disponibles, puedes devolver un mensaje o un objeto JSON vacío
+        // Si no hay horarios disponibles devuelve un mensaje o un objeto JSON vacío
         echo json_encode(array());
     }

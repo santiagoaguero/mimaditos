@@ -2,6 +2,7 @@
 require("main.php");
 $reserva_id_del = limpiar_cadena($_POST["eliminar"]);
 
+$detalles = true;
 
 $check_detalle = con();
 $check_detalle=$check_detalle->query("SELECT * FROM reserva_detalle WHERE reserva_id = '$reserva_id_del'");

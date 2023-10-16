@@ -45,7 +45,7 @@
             <label for="inputApellido" class="is-required">Apellido</label>
         </div>
         <div class="col-md-12 form-floating">
-            <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos["empleado_apellido"];?>">
+            <input type="text" class="form-control " id="inputUser" name="usuario" placeholder="Nombre" pattern="^[a-zA-Z0-9$@._]{4,40}$" required value="<?php echo $datos["empleado_usuario"];?>">
             <label for="inputUser" class="is-required">@ Usuario</label>
             <div id="username-validation-message"></div>
             <div class="col-auto">
