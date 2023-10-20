@@ -53,7 +53,7 @@
           
           </div>
 
-          Notas:<textarea name="notas" class="input w-100"></textarea>
+          Notas:<textarea id="notas" class="input w-100" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,. ]{0,255}" readonly></textarea>
           <input type="hidden" name="cliente" value="<?php echo $_SESSION["id"];?>" required >
           <input type="hidden" id="reservaFecha" name="fecha" value="" required >
 

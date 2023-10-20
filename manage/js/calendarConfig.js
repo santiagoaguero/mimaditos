@@ -80,7 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
         eventClick: function(info){
             if(roleus >= 1 && roleus <= 3){
                 let modal = new bootstrap.Modal(document.getElementById('calendarModal'));
-   
+
+                //elimina el mensaje del rest anterior
+                let formrest = document.querySelector('.form-rest');
+                formrest.innerHTML = "";
+
                 let fecha = new Date(info.event.startStr);
 
                 // Obtener el día, mes y año
@@ -101,24 +105,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let modalMascota = document.getElementById('mimadito');
                 modalMascota.innerText = "Mimadito: " + info.event.title;
-                
-                console.log(info.event.extendedProps);
+
                 let cliente = document.getElementById('dueno');
                 cliente.innerText = "Dueño: " + info.event.extendedProps.cliente_nombre;
 
+                let notas = document.getElementById('notas');
+                if(info.event.extendedProps.notas != ""){
+                    notas.value = info.event.extendedProps.notas;
+                } else {
+                    notas.value = "";
+                }
                 
 
                 //transporte
+                let transporte = document.getElementById('transporte');
                 if(info.event.extendedProps.transporte == 1){
-                    transporte =  'Solicita Transporte';
-                    // Actualiza el título del modal con la fecha seleccionada
-                    let transporteText = document.getElementById('transporte');
-                    transporteText.classList.add("p-2", "bg-info", "bg-opacity-10", "border", "border-info", "rounded");
-                    transporteText.innerText = transporte ;
+                    text =  'Solicita Transporte';
+                    transporte.classList.add("p-2", "bg-info", "bg-opacity-10", "border", "border-info", "rounded");
+                    transporte.innerText = text;
+                } else {
+                    transporte.classList.remove("p-2", "bg-info", "bg-opacity-10", "border", "border-info", "rounded");
+                    transporte.innerText = "";
                 }
 
-                let iptConfirmar = document.getElementById('iptConfirmar');
-                iptConfirmar.value = info.event.id;
+                //forms y botones confirmacion/cancelar reseva modal
+                let formConfirmar = document.querySelector('.confirmarReserva');
+                let formCancelar = document.querySelector('.cancelarReserva');
+                if(info.event.extendedProps.estado == 0){
+                    formCancelar.style.display = "none";
+                    let iptConfirmar = document.getElementById('iptConfirmar');
+                    iptConfirmar.value = info.event.id;
+                    formConfirmar.style.display = "block";
+                } else {
+                    formConfirmar.style.display = "none";
+                    let iptCancelar = document.getElementById('iptCancelar');
+                    iptCancelar.value = info.event.id;
+                    formCancelar.style.display = "block";
+                }
+
+
+
                 let iptCancelar = document.getElementById('iptCancelar');
                 iptCancelar.value = info.event.id;
 

@@ -89,7 +89,7 @@ $transporte = (isset($_POST["transporte"]) && $_POST["transporte"] == 'on') ?
 
 
 if($notas != ""){//al no ser obligatorio puede venir vacio
-    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}",$notas)){
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,. ]{0,255}",$notas)){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -104,11 +104,11 @@ if($notas != ""){//al no ser obligatorio puede venir vacio
 $guarda = false;
 //prepare: prepara la consulta antes de insertar directo a la bd. variables sin comillas ni $
 $guardar_reserva = $pdo->prepare("INSERT INTO
-    reserva(cliente_id, mascota_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, reserva_estado)
-    VALUES(:cliente, :mascota, :horario, :fecha, :transporte, :notas, :estado)");
+    reserva(cliente_id, mascota_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, reserva_estado, reserva_aceptado)
+    VALUES(:cliente, :mascota, :horario, :fecha, :transporte, :notas, :estado, :aceptado)");
 
 $marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":horario"=>$horario,
- ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 0];
+ ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 0, ":aceptado"=> 0];
 
 $guardar_reserva->execute($marcadores);
 

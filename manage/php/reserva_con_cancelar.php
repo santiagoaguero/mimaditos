@@ -10,7 +10,7 @@ if($check_reserva->rowCount()==1){
     $datos = $check_reserva->fetch();
 
     $cancelar_reserva = con();
-    $cancelar_reserva=$cancelar_reserva->prepare("UPDATE reserva SET reserva_estado = 0 WHERE reserva_id=:id");
+    $cancelar_reserva=$cancelar_reserva->prepare("UPDATE reserva SET reserva_estado = 0, reserva_aceptado = 0 WHERE reserva_id=:id");
     //filtro prepare para evitar inyecciones sql xss
 
     $cancelar_reserva->execute([":id"=> $reserva_id_con]);

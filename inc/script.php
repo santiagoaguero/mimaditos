@@ -12,3 +12,4 @@
 
 <script src="./js/ajax.js"></script>
 <script src="./js/validateUser.js"></script>
+<script src="./js/aceptarReserva.js"></script>

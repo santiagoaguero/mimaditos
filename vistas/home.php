@@ -1,3 +1,43 @@
+<?php
+ /*   require_once("./php/main.php");
+    $check_reserva = con();
+    $check_reserva = $check_reserva->query("SELECT reserva_id, reserva_fecha FROM reserva 
+    WHERE cliente_id = '{$_SESSION['id']}' AND reserva_estado = 1 AND reserva_aceptado = 0");
+    $rowCount = $check_reserva->rowCount();
+// Recorre las filas y muestra un toast por cada fila
+
+if ($rowCount > 0) {
+    $datos = $check_reserva->fetchAll();
+    foreach($datos as $row){
+        //cambiar formato fecha
+        $timestamp = strtotime($row["reserva_fecha"]);
+
+        //formatea la fecha en el formato DD-MM-YYYY
+        $fecha = date("d-m-Y", $timestamp);
+        echo '
+        
+            <div id="notificaciones" class="alert alert-info alert-dismissible fade show" role="alert">
+                <div>
+                    <i class="fa-regular fa-bell fa-shake"></i><strong> Reserva Confirmada!</strong> Su reserva en fecha '.$fecha.' ha sido confirmada :)
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="text-center">
+                    <form action="./php/reserva_aceptar.php" method="POST" class="aceptarReserva">
+                        <input type="hidden" name="aceptar" value="'.$row["reserva_id"].'">
+                        <input type="hidden" name="id" value="'.$_SESSION["id"].'">
+                        <button type="submit" class="btn btn-sm btn-info w-25" class="btn-close" data-bs-dismiss="alert">Aceptar</button>
+                    </form>
+                </div>
+            </div>
+        
+    ';
+    }
+    $check_reserva = null;
+
+}
+*/
+?>
+
 <div class="welcome">
     <div id="carouselAuto" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner fw-bold mb-5 ">
@@ -58,7 +98,7 @@
         <p>Podes reservar un turno haciendo click abajo 😊</p>
         <a class="btn btn-primary btn-sm w-50" href="index.php?vista=calendar">Quiero reservar!</a>
 
-        <p class="fs-2 mt-5">Nuestro Contacto</p>
+        <p class="fs-1 mt-5">Nuestro Contacto</p>
         <p class="fs-4 w-50">Podes seguirnos en nuestras redes sociales para enterarte de más promociones y novedades</p>
         <div class="m-contact d-flex justify-content-center gap-5 mb-5">
             <div>
@@ -78,17 +118,61 @@
     </div>
 </div>
 
-<div class="footer">
-    <div class="w-header">
-        <p class="fs-1 pt-5">Nuestra Ubicación</p>
-        <p class="fs-4 w-75">Estamos ubicados en la ciudad de Asunción</p>
-        <p>Av. Bruno Guggiari casi Mayas</p>
 
-        <div>
-            <a href="https://maps.app.goo.gl/c2ucCAhb3BpKpjdn7" target="_blank">
-                <img src="./img/map-logo.png" alt="Mapa">
-                <p>Ver Mapa</p>
-            </a>
-        </div>
+<div class="footer pt-5">
+    <div class="w-header">
+        <p class="fs-1">Testimonios</p>
+        <p class="fs-6 w-75 text-center">Estos son algunos testimonios y opiniones que contentos recibimos de nuestros clientes 🤲</p>
     </div>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+
+            <?php
+           require_once("./php/main.php");
+            $check_testi = con();
+            $check_testi = $check_testi->query("SELECT testimonio.testimonio_desc, testimonio.testimonio_puntaje, cliente.cliente_nombre, cliente.cliente_apellido FROM testimonio INNER JOIN cliente ON testimonio.cliente_id = cliente.cliente_id");
+            $rowCount = $check_testi->rowCount();
+            // active solo debe tener el primero
+            $active = 'active';
+            if ($rowCount > 0) {
+                $datos = $check_testi->fetchAll();
+                foreach($datos as $row){
+                    //multiplica puntaje * estrellas
+                    $puntaje = str_repeat('⭐', $row["testimonio_puntaje"]);
+                    echo '
+                    <div class="carousel-item '.$active.'">
+                        <div class="testimonio">
+                            <i class="fa fa-quote-left fa-lg"></i>
+                            <h5>'.$row["testimonio_desc"].'</h5>
+                            <p>'.$puntaje.'</p>
+                            <p>'.$row["cliente_nombre"] .' '.$row["cliente_apellido"].'</p>
+                        </div>
+                    </div>
+
+            ';
+            $active ='';
+            }
+            $check_testi = null;
+        }
+        ?>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+    <p class="ubicacion w-header fs-5">Ubicación: Estamos ubicados en la ciudad de Asunción - Av. Bruno Guggiari c/ Mayas
+        <a href="https://maps.app.goo.gl/c2ucCAhb3BpKpjdn7" target="_blank">
+                <img src="./img/map-logo.png" alt="Mapa">
+        </a>
+    </p>
+
+
 </div>

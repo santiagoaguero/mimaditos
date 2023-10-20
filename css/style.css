@@ -185,13 +185,43 @@ text-shadow: 2px 2px 4px #000;
     place-items: center;
 }
 
+/*position relative para poder colocar la ubicacion abajo de todo*/
 .footer{
-    height: 100%;
+    height: 100vh;
     background-color: cyan;
-    text-align: center;
-    display: grid;
-    place-items: center;
+    position: relative;
 }
+
+#testimonialCarousel{
+    height: 250px;
+
+}
+
+#testimonialCarousel > .carousel-inner{
+    height: 250px;
+    position: absolute;
+}
+
+#testimonialCarousel > .carousel-inner > div > div.testimonio{
+    text-align: center;
+    width: 50%;
+    position: relative;
+    top: 10px;
+    left: 25%;
+}
+#testimonialCarousel > .carousel-inner > div > div.testimonio > h5{
+  line-height: 1.25rem;
+
+}
+
+/*position absolute para poder colocar la ubicacion abajo de todo con relacion a footer*/
+.ubicacion{
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    right: 20%;
+}
+
 
 .m-contact img, .footer img{
     width: 50px;
@@ -241,10 +271,45 @@ text-shadow: 2px 2px 4px #000;
 .signup-exito, .signup-error, .signup-error2{animation:bounce-top .9s linear both} @keyframes bounce-top{0%{transform:translateY(-45px);animation-timing-function:ease-in;opacity:1}24%{opacity:1}40%{transform:translateY(-24px);animation-timing-function:ease-in}65%{transform:translateY(-12px);animation-timing-function:ease-in}82%{transform:translateY(-6px);animation-timing-function:ease-in}93%{transform:translateY(-4px);animation-timing-function:ease-in}25%,55%,75%,87%{transform:translateY(0);animation-timing-function:ease-out}100%{transform:translateY(0);animation-timing-function:ease-out;opacity:1}}
 
 
+/* notificaciones */
+#notificaciones{
+    margin-left: 2px;
+    z-index: 100;
+    position: fixed;
+    right: 1px;
+    padding-bottom: 5px;
+}
+
+.noti-header{
+    background-color:#77bbbe;
+    padding: 5px;
+}
+
+/*sugerencias form*/
+body > div > div > form{
+    border-radius: 30px;
+    width: 75%;
+}
+body > div > div > form > h2{
+    margin-top: 0!important;
+    color: #FFF;
+    background-color: rgb(89, 119, 218);
+    padding: 20px;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+}
+.sugerencias-puntos{
+    margin-top: 0!important;
+    display: flex;
+    justify-content: space-evenly;
+}
+.sugerencias-puntos label{
+    border: 1px solid blue;
+    padding: 20px;
+}
 
 
 /* carousel text */
-
 .carousel-caption{animation:jello-horizontal 1.2s linear both} @keyframes jello-horizontal{0%{transform:scale3d(1,1,1)}30%{transform:scale3d(1.25,.75,1)}40%{transform:scale3d(.75,1.25,1)}50%{transform:scale3d(1.15,.85,1)}65%{transform:scale3d(.95,1.05,1)}75%{transform:scale3d(1.05,.95,1)}100%{transform:scale3d(1,1,1)}}
 
 
@@ -254,6 +319,10 @@ text-shadow: 2px 2px 4px #000;
         background-position: top center;
     }
 }
+
+
+
+
 
 
 /* Estilo para pantallas medianas */
@@ -269,12 +338,12 @@ text-shadow: 2px 2px 4px #000;
     .w-header .fs-3 {
         font-size: 20px !important;
     }
-    .w-header .fs-4, p, .middle .btn {
-        font-size: 16px !important;
+    .w-header .fs-4, p, .middle .btn .ubicacion{
+        font-size: 18px !important;
     }
     
     .m-contact img, .footer img{
-        width: 25px;
+        width: 40px;
     }
 
     #carouselAuto > div > div > div.carousel-caption > h5 {
@@ -300,7 +369,6 @@ text-shadow: 2px 2px 4px #000;
 /* Estilo para pantallas pequeñas */
 @media (max-width: 501px) {
 
-
     .w-header .fs-1 {
         font-size: 26px !important;
     }
@@ -324,7 +392,6 @@ text-shadow: 2px 2px 4px #000;
         text-align: center;
     
     }
-
     
     #carouselAuto > div > div > div.first> h5 {
         font-size: 30px;
@@ -336,8 +403,39 @@ text-shadow: 2px 2px 4px #000;
 
   }
 
+
   
+/* Estilo para pantallas muy pequeñas */
+@media (max-width: 361px) {
+    #testimonialCarousel > div > div.carousel-item.active > div > h5{
+      font-size: 1rem;
+    }
+    #testimonialCarousel > div > div.carousel-item.active > div > p:nth-child(3){
+      font-size: 13px!important; /*estrellas*/
+      }
+    body > div.footer.pt-5 > p{
+      font-size: 15px!important;/*ubicacion footer*/
+    }
+
+    body > div.footer.pt-5 > div.w-header > p.fs-6.w-75.text-center{
+        line-height: 15px!important;/*estos son algunos testimonios...*/
+    }
+    #testimonialCarousel > div > div.carousel-item.active > div > h5{
+        line-height: 15px!important;/* testimonios...*/
+    }
+    body > div.footer.pt-5 > p{
+        line-height: 15px!important;/*ubicacion footer*/
+    }
+  }
+
+@media (max-width: 391px) {
+    #testimonialCarousel > div > div.carousel-item.active > div > h5{
+      font-size: 1rem;
+    }
+    #testimonialCarousel > div > div.carousel-item.active > div > p:nth-child(3){
+        font-size: 13px!important; /*estrellas*/
+    }
   
-  
-  
-  
+  }
+
+

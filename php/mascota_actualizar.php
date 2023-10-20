@@ -79,7 +79,7 @@ if($tipo < 1 && $tipo > 4){
 }
 
 if($notas != ""){//al no ser obligatorio puede venir vacio
-    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}",$notas)){
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,. ]{0,255}",$notas)){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>

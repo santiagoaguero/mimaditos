@@ -142,7 +142,7 @@
                 <label for="floatingEdad">Edad</label>
             </div>
             <div class="col-md-4 form-floating">
-                <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" value="<?php echo $datos["mascota_notas"];?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}"></textarea>
+                <textarea type="text" class="form-control" id="inputNotas" name="notas" placeholder="Notas" value="<?php echo $datos["mascota_notas"];?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,. ]{0,255}"></textarea>
                 <label for="inputNotas">Notas de mimadito</label>
             </div>
             <div class="form-check form-switch">
