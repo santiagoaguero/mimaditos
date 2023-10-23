@@ -20,7 +20,7 @@
 <div class="forms">
 
     <form class="formularioAjax row g-3 shadow" method="POST" action="./php/usuario_guardar.php" autocomplete="off">
-        <h2 class="text-secondary text-center">Información Personal</h2>
+        <h2 class="text-center">Información Personal</h2>
         <div class="col-md-6 form-floating">
             <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required >
             <label for="inputName" class="is-required">Nombre</label>

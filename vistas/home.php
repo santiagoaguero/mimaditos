@@ -1,5 +1,5 @@
 <?php
- /*   require_once("./php/main.php");
+    require_once("./php/main.php");
     $check_reserva = con();
     $check_reserva = $check_reserva->query("SELECT reserva_id, reserva_fecha FROM reserva 
     WHERE cliente_id = '{$_SESSION['id']}' AND reserva_estado = 1 AND reserva_aceptado = 0");
@@ -35,7 +35,7 @@ if ($rowCount > 0) {
     $check_reserva = null;
 
 }
-*/
+
 ?>
 
 <div class="welcome">
@@ -98,7 +98,7 @@ if ($rowCount > 0) {
         <p>Podes reservar un turno haciendo click abajo 😊</p>
         <a class="btn btn-primary btn-sm w-50" href="index.php?vista=calendar">Quiero reservar!</a>
 
-        <p class="fs-1 mt-5">Nuestro Contacto</p>
+        <p class="fs-1 mt-4">Nuestro Contacto</p>
         <p class="fs-4 w-50">Podes seguirnos en nuestras redes sociales para enterarte de más promociones y novedades</p>
         <div class="m-contact d-flex justify-content-center gap-5 mb-5">
             <div>
@@ -131,7 +131,7 @@ if ($rowCount > 0) {
             <?php
            require_once("./php/main.php");
             $check_testi = con();
-            $check_testi = $check_testi->query("SELECT testimonio.testimonio_desc, testimonio.testimonio_puntaje, cliente.cliente_nombre, cliente.cliente_apellido FROM testimonio INNER JOIN cliente ON testimonio.cliente_id = cliente.cliente_id");
+            $check_testi = $check_testi->query("SELECT testimonio.testimonio_desc, testimonio.testimonio_puntaje, cliente.cliente_nombre, cliente.cliente_apellido FROM testimonio INNER JOIN cliente ON testimonio.cliente_id = cliente.cliente_id WHERE testimonio.testimonio_puntaje > 2 ORDER BY (SELECT RAND())");
             $rowCount = $check_testi->rowCount();
             // active solo debe tener el primero
             $active = 'active';
@@ -170,7 +170,7 @@ if ($rowCount > 0) {
 
     <p class="ubicacion w-header fs-5">Ubicación: Estamos ubicados en la ciudad de Asunción - Av. Bruno Guggiari c/ Mayas
         <a href="https://maps.app.goo.gl/c2ucCAhb3BpKpjdn7" target="_blank">
-                <img src="./img/map-logo.png" alt="Mapa">
+                <img src="./img/map-logo.png" alt="Mapa" title="Ver Ubicación en Google Maps">
         </a>
     </p>
 

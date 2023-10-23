@@ -390,14 +390,20 @@ body > div > div > form > h2{
         font-size: 30px;
         width: 100%;
         text-align: center;
-    
     }
     
     #carouselAuto > div > div > div.first> h5 {
         font-size: 30px;
         width: 50%;
         text-align: center;
-    
+    }
+
+    /*sugerencias form*/
+    body > div.forms{
+        padding: 0!important;
+    }
+    body > div > div > form{
+        width: 100%!important;
     }
     
 
@@ -438,4 +444,11 @@ body > div > div > form > h2{
   
   }
 
+  @media (max-width: 301px) {
+    /*sugerencias form*/
+    .sugerencias-puntos label{
 
+     padding: 15px!important;
+
+    }
+}

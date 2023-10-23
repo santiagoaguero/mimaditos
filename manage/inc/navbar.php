@@ -78,7 +78,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
-                        <li><a class="dropdown-item" href="index.php?vista=horario_list">Horarios</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=sugerencia_list">Sugerencias</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
                     </ul>
                 </li>

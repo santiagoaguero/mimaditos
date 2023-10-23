@@ -67,7 +67,7 @@ if(verificar_datos("[0-9- ]{6,100}",$telefono)){
 
 //claves coincidan
 if($contraseña != "" || $contraseña2 != ""){
-    if(verificar_datos("^[a-zA-Z0-9$@.\-]{6,100}$",$contraseña) || verificar_datos("^[a-zA-Z0-9$@.\-]{6,100}$",$contraseña2) ){
+    if(verificar_datos("^[a-zA-Z0-9$@]{6,100}$",$contraseña) || verificar_datos("^[a-zA-Z0-9$@]{6,100}$",$contraseña2) ){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>

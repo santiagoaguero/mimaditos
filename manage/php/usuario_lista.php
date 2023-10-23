@@ -31,6 +31,7 @@ $tabla.='
                 <th>#</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
+                <th>Usuario</th>
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Rol</th>
@@ -54,6 +55,7 @@ if($total>=1 && $pagina <= $Npaginas){
                 <td>'.$contador.'</td>
                 <td>'.$row["empleado_nombre"].'</td>
                 <td>'.$row["empleado_apellido"].'</td>
+                <td>'.$row["empleado_usuario"].'</td>
                 <td>'.$row["empleado_email"].'</td>
                 <td>'.$row["empleado_telefono"].'</td>
                 <td>'.$row["rol_nombre"].'</td>

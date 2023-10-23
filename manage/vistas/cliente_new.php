@@ -17,9 +17,8 @@
 </div>
 
 <div class="forms">
-
     <form class="formularioAjax row g-3 shadow" method="POST" action="./php/cliente_guardar.php" autocomplete="off">
-        <h2 class="text-secondary text-center">Información Personal</h2>
+        <h2 class="text-center">Información Personal</h2>
         <div class="col-md-6 form-floating">
             <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Nombre" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]{3,40}" required >
             <label for="inputName" class="is-required">Nombre</label>
@@ -68,7 +67,7 @@
             <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
         </div>
 
-        <h2 class="text-secondary text-center mt-5">Información de Mimadito</h2>
+        <p class="fs-2 text-secondary text-center mt-5">Información de Mimadito</p>
         <div class="col-md-3 form-floating">
             <input type="text" class="form-control" id="inputMascota" name="mascota" placeholder="Mimadito" required>
             <label for="inputMascota" class="is-required">Nombre de mimadito</label>

@@ -12,11 +12,6 @@
     }
 ?>
 
-<div class="container-fluid mb-6">
-	<h1 class="title">Usuarios</h1>
-	<h2 class="subtitle">Actualizar Usuario</h2>
-</div>
-
 <div class="forms">
     <?php 
         include("./inc/btn_back.php");
@@ -33,7 +28,7 @@
             $datos=$check_client->fetch();
             
     ?>
-
+<div class="container">
     <form class="formularioAjax row g-3 shadow" method="POST" action="./php/usuario_actualizar.php" autocomplete="off">
         <h2 class="subtitle text-center">Información Personal</h2>
         <div class="col-md-6 form-floating">
@@ -87,16 +82,16 @@
         <p class="text-body-secondary text-center fst-italic mt-4 mb-0">si no desea cambiar su contraseña, deje los campos vacíos
         </p>
         <div class="col-12 form-floating">
-            <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="^[a-zA-Z0-9$@.\-]{6,100}$" >
+            <input type="password" class="form-control" id="inputPassword" name="contraseña" placeholder="Password" pattern="^[a-zA-Z0-9$@]{6,100}$" >
             <label for="inputPassword" class="form-label is-required">Contraseña</label>
             <div class="col-auto">
                 <span id="passwordHelpInline" class="form-text">
-                La contraseña debe tener mínimo 6 carácteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @ - .
+                La contraseña debe tener mínimo 6 carácteres, puede contener letras y números, no debe contener espacios ni emojis. Se aceptan los símbolos $ @
                 </span>
             </div>
         </div>
         <div class="col-12 form-floating">
-            <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="^[a-zA-Z0-9$@.\-]{6,100}$" >
+            <input type="password" class="form-control" id="inputPassword2" name="contraseña2" placeholder="Password" pattern="^[a-zA-Z0-9$@]{6,100}$" >
             <label for="inputPassword2" class="form-label is-required">Confirme su contraseña</label>
         </div>
         <div class="form-check form-switch">
@@ -121,7 +116,7 @@
         </div>
     </form>
 
-    
+</div>
     <?php 
         } else {
             include("./inc/error_alert.php");
