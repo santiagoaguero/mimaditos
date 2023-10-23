@@ -4,7 +4,6 @@
             <img src="./img/mimaditos-logo.png" alt="reservet"  class="w-50 img-fluid">
         </div>
         <div class="form-rest mb-6 mt-6"></div>
-        <h3 class="text-center">Bienvenido!</h3>
         <p class="text-center">Gracias por elegirnos para cuidar a tu mimado, por favor introduce tus datos para conocernos más</p>
         <h4 class="text-center text-secondary mb-0">Información Personal</h4>
         <div class="col-md-6 form-floating">

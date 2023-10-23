@@ -45,6 +45,7 @@ if (isset($_GET['code'])) {
                     $_SESSION["nombre"] = $check_user["cliente_nombre"];
                     $_SESSION["apellido"] = $check_user["cliente_apellido"];
                     $_SESSION["email"] = $check_user["cliente_email"];
+                    $_SESSION["usuario"] = $check_user["cliente_usuario"];
                     $_SESSION["cuenta"]="google";
                     $_SESSION["token"]=$token['access_token'];
                     $_SESSION["signin"]= true;// para validar que solo los que crean una cuenta nueva puedan ver el mensaje de exito o error y no cualquiera que ingrese la url

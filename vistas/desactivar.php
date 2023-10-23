@@ -13,12 +13,22 @@
 
     include_once("./inc/btn_back.php");
     require_once("./php/main.php");
-    $id=(isset($_GET["id"])) ? $_GET["id"] : 0;
-    $id=limpiar_cadena($id);
 
-    if($id == $_SESSION["id"]){
+    $usuario=(isset($_GET["user"])) ? $_GET["user"] : 0;
+    $usuario=limpiar_cadena($usuario);
 
-    ?>
+    //getting user id
+    $check_client = con();
+    $check_client = $check_client->query("SELECT cliente_id FROM cliente 
+        WHERE cliente_usuario = '$usuario'");
+    
+        if($check_client->rowCount()>0){
+            $datos_cliente=$check_client->fetch();
+            $id = $datos_cliente["cliente_id"];
+
+            if($id == $_SESSION["id"]){
+
+?>
 <div class="forms">   
    <div class="card shadow " id="collapseDelete">
         <form class="" method="POST" action="" autocomplete="off">
@@ -30,7 +40,7 @@
             ?>
             <div class="card-body">
                 <h5 class="card-title">Esperamos que vuelvas pronto para brindarle la mejor atención a tu mimadito 🥰</h5>
-                <p class="card-text">Toda tu información y la de tus mimaditos se eliminarán.</p>
+                <p class="card-text">Toda tu información, la de tus mimaditos y reservas se eliminarán.</p>
                 <p class="card-text">Si realmente quieres desactivar tu cuenta, por favor introduce tu contraseña para confirmarlo.</p>
                 <div class="col-12 form-floating">
                     <input type="password" class="form-control" id="deletePassword" name="contraseña" placeholder="Password" pattern="[a-zA-Z0-9$@.-]{6,100}" required>
@@ -86,6 +96,9 @@
         </form>
     </div>
     <?php 
+            } else {
+                include("./inc/error_alert.php");
+            }
         } else {
             include("./inc/error_alert.php");
         }

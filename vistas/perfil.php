@@ -237,7 +237,7 @@
 
     <div class="d-grid gap-2 justify-content-center mt-5">
         <h2 class="fs-4 mt-5 text-secondary">Querés desactivar tu cuenta?</h2>
-        <a type="button" class="btn btn-outline-danger " href="index.php?vista=desactivar&id=<?php echo $id; ?>">
+        <a type="button" class="btn btn-outline-danger " href="index.php?vista=desactivar&user=<?php echo $id; ?>">
             <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
         </a>
     </div>
