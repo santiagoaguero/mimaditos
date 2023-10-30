@@ -23,6 +23,9 @@
             <li class="nav-item ">
                 <a class="nav-link active" aria-current="page" href="index.php?vista=sugerencias">Sugerencias</a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link active" aria-current="page" href="index.php?vista=reservas">Mis Reservas</a>
+            </li>
         </ul>
     <div class="d-flex">
         <a href="index.php?vista=perfil&user=<?php echo $_SESSION['usuario']?>" class="btn btn-outline-info">

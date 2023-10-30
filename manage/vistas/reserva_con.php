@@ -17,7 +17,7 @@
     <h2 class="subtitle">Reservas Confirmadas</h2>
 </div>
 
-<div class="forms">
+<div class="p-3">
 
 	<div class="form-rest mb-6 mt-6"></div>
     <?php 

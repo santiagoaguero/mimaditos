@@ -5,8 +5,8 @@ $tabla = "";
 
 $campos = "mascota.mascota_id, mascota.mascota_nombre, cliente.cliente_id, cliente.cliente_nombre, cliente.cliente_apellido";
 
-if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre cliente telefono
-    $consulta_datos = "SELECT $campos FROM mascota LEFT JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.mascota_nombre LIKE '%$busqueda%' ORDER BY mascota.mascota_nombre ASC LIMIT $inicio, $registros";
+if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre cliente mascota
+    $consulta_datos = "SELECT $campos FROM mascota LEFT JOIN cliente ON mascota.cliente_id = cliente.cliente_id WHERE mascota.mascota_nombre LIKE '%$busqueda%' OR cliente.cliente_nombre LIKE '%$busqueda%' OR cliente.cliente_apellido LIKE '%$busqueda%' ORDER BY mascota.mascota_nombre ASC LIMIT $inicio, $registros";
 
     $consulta_total = "SELECT COUNT(mascota_id) FROM mascota WHERE mascota_nombre LIKE '%$busqueda%'";
 }

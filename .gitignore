@@ -5,3 +5,8 @@ cs.json
 notas.txt
 000webhost.txt
 .verificaToken.php
+
+
+
+img/*.jpg
+img/*.png

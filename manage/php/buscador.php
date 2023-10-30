@@ -1,20 +1,15 @@
 <?php
     $modulo_buscador = limpiar_cadena($_POST["modulo_buscador"]);
 
-    $modulos=["servicio", "perfil", "proveedor", "cliente", "usuario", "factura_producto", "factura", "familia", "compra"];
+    $modulos=["servicio", "perfil", "cliente", "mascota"];
 
     if(in_array($modulo_buscador, $modulos)){
 
         $modulos_url=[
             "servicio"=>"servicio_search",
             "perfil"=>"perfil",
-            "proveedor"=>"provee_search",
-            "cliente"=>"client_search",
-            "usuario"=>"user_search",
-            "factura_producto"=>"factur_new",
-            "factura"=>"factur_search",
-            "familia"=>"family_search",
-            "compra"=>"compra_search"
+            "cliente"=>"cliente_search",
+            "mascota"=>"mascota_search"
         ];
 
         $modulos_url=$modulos_url[$modulo_buscador];

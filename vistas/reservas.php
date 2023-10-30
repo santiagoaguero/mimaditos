@@ -12,17 +12,12 @@
     }
 ?>
 
-<div class="container-fluid mb-6">
-	<h1 class="title">Reservas</h1>
-    <h2 class="subtitle">Reservas Pendientes</h2>
-</div>
-
-<div class="p-3">
+<div class="forms">
 
 	<div class="form-rest mb-6 mt-6"></div>
     <?php 
         require_once("./php/main.php");
-
+        
         if(!isset($_GET["page"])){
             $pagina = 1;
         } else {
@@ -33,10 +28,11 @@
         }
 
         $pagina = limpiar_cadena($pagina);
-        $url= "index.php?vista=reserva_pen&page=";
+        $id = $_SESSION["id"];
+        $url= "index.php?vista=reservas&page=";
         $registros=5;//cantidad de registros por pagina
-        $busqueda="";//de servicios
-        require_once("./php/reserva_pen_lista.php");
+        $busqueda="";//de reservas
+        require_once("./php/reservas_lista.php");
 
     ?>
 

@@ -54,6 +54,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="index.php?vista=mascota_list">Lista de Mimaditos</a></li>
+                        <li><a class="dropdown-item" href="index.php?vista=mascota_search">Buscar Mimadito</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="index.php?vista=raza">Nueva Raza de Mimaditos</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=raza_list">Lista de Razas de Mimaditos</a></li>

@@ -89,6 +89,7 @@ if (isset($_GET['code'])) {
                         $_SESSION["user"]= "cli";
                         $_SESSION["nombre"] = $nombre;
                         $_SESSION["apellido"] = $apellido;
+                        $_SESSION["usuario"] = $email;
                         $_SESSION["email"] = $email;
                         $_SESSION["cuenta"]="google";
                         $_SESSION["token"]=$token['access_token'];

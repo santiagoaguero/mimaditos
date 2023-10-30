@@ -233,7 +233,7 @@ text-shadow: 2px 2px 4px #000;
 }
 
 .forms{
-    padding: 0 70px;
+    padding: 0 200px;
     margin-top: 25px;
 }
 
@@ -312,6 +312,12 @@ text-shadow: 2px 2px 4px #000;
 .carousel-caption{animation:jello-horizontal 1.2s linear both} @keyframes jello-horizontal{0%{transform:scale3d(1,1,1)}30%{transform:scale3d(1.25,.75,1)}40%{transform:scale3d(.75,1.25,1)}50%{transform:scale3d(1.15,.85,1)}65%{transform:scale3d(.95,1.05,1)}75%{transform:scale3d(1.05,.95,1)}100%{transform:scale3d(1,1,1)}}
 
 
+
+
+
+
+/********* QUERIES *********/
+
 /* dog-look & bañando se cortan en pantallas grandes, se acomoda con esto*/
 @media (min-width: 1200px) {
     #carouselAuto > div > div:nth-child(1), #carouselAuto > div > div:nth-child(3){
@@ -319,11 +325,20 @@ text-shadow: 2px 2px 4px #000;
     }
 }
 
+@media (max-width: 1000px) {
+
+    .forms{
+        padding: 0 100px;
+    }
+
+
+}
+
 /*formularios con estilos de Sugerencias*/
 @media (max-width: 767px) {
     /*sugerencias form*/
     body > div.forms{
-        padding: 0!important;
+        padding: 0 20px!important;
     }
     body > div > div > form{
         width: 100%!important;
@@ -409,7 +424,7 @@ text-shadow: 2px 2px 4px #000;
 
     /*sugerencias form*/
     body > div.forms{
-        padding: 0!important;
+        padding: 0 20px!important;
     }
     body > div > div > form{
         width: 100%!important;

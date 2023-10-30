@@ -15,14 +15,16 @@
 <div class="forms">
     <?php 
         include("./inc/btn_back.php");
-
+        require_once("./inc/session_start.php");
         require_once("./php/main.php");
 
-        $id=(isset($_GET["det_id"])) ? $_GET["det_id"] : 0;
-        $id=limpiar_cadena($id);
+        //no mostrar otras reservas de otros usuarios
+        $reserva=(isset($_GET["r"])) ? $_GET["r"] : 0;
+        $reserva=limpiar_cadena($reserva);
+        $id=$_SESSION["id"];
 
         $check_reserva = con();
-        $check_reserva = $check_reserva->query("SELECT reserva.*, cliente.*, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_id = '$id'");
+        $check_reserva = $check_reserva->query("SELECT reserva.*, cliente.*, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_id = '$reserva' AND reserva.cliente_id = '$id'");
 
         if($check_reserva->rowCount()>0){
             $datos=$check_reserva->fetch();
@@ -30,10 +32,10 @@
     ?>
 
     <div class="container">
-        <form class="row g-3 shadow confirmarReserva" method="POST" action="./php/reserva_pen_confirmar.php" autocomplete="off"><div class="forms">
+        <form class="row g-3 shadow confirmarReserva" method="POST" action="./php/reserva_con_cancelar.php" autocomplete="off"><div class="forms">
         <?php 
             $badge = $datos["reserva_estado"] == 1 ?
-            '<span class="badge text-bg-primary">Confirmado</span>' :
+            '<span class="badge text-bg-success">Confirmado</span>' :
             '<span class="badge text-bg-warning">Pendiente</span>';
         ?>
             <h2 class="subtitle text-center">Información de Reserva <?php echo $badge?></h2>
@@ -70,7 +72,7 @@
                     <?php
                         require_once("./php/main.php");
                         $check_detalle = con();
-                        $check_detalle = $check_detalle->query("SELECT reserva_detalle.*, servicio.servicio_nombre FROM reserva_detalle INNER JOIN servicio ON reserva_detalle.servicio_id = servicio.servicio_id WHERE reserva_detalle.reserva_id = '$id'");
+                        $check_detalle = $check_detalle->query("SELECT reserva_detalle.*, servicio.servicio_nombre FROM reserva_detalle INNER JOIN servicio ON reserva_detalle.servicio_id = servicio.servicio_id WHERE reserva_detalle.reserva_id = '$reserva'");
                 
                         if($check_detalle->rowCount()>0){
                             $servicios=$check_detalle->fetchAll();
@@ -85,13 +87,9 @@
                 </ol>
             </div>
             <hr>
+            <div class="form-rest mb-6 mt-6"></div>
             <div class="col-12 d-flex justify-content-center gap-3 mb-3">
                        <strong>Notas:</strong> <?php echo $datos["reserva_notas"]?>
-            </div>
-            <input type="hidden" name="confirmar" value="<?php echo $id;?>" required >
-            <div class="form-rest mb-6 mt-6"></div>
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-success mb-3">Confirmar</button>
             </div>
         </form>
     </div>

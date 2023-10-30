@@ -84,7 +84,11 @@
                     ?>
                 </ol>
             </div>
+            <hr>
             <div class="form-rest mb-6 mt-6"></div>
+            <div class="col-12 d-flex justify-content-center gap-3 mb-3">
+                <strong>Notas:</strong> <?php echo $datos["reserva_notas"]?>
+            </div>
             <div class="col-12 d-flex justify-content-center gap-3 mb-3">
                 <form action="./php/reserva_con_cancelar.php" method="POST" class="cancelarReserva">
                     <input type="hidden" name="cancelar" value="<?php echo $id?>">

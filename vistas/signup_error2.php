@@ -9,7 +9,7 @@
                             <h5 class="card-title fs-1">Tu cuenta ha sido creada</h5>
                             <h6 class="card-subtitle mb-2 fs-3">Pero no pudimos registrar los datos de tu mimadito :(</h6>
                             <p class="card-text fs-5">Podes acceder a tu perfil y registrar sus datos</p>
-                            <a href="index.php?vista=perfil&user_id='.$_SESSION["id"].'" class="btn btn-outline-dark">Ir a mi perfil</a>
+                            <a href="index.php?vista=perfil&user='.$_SESSION["usuario"].'" class="btn btn-outline-dark">Ir a mi perfil</a>
                             <a href="index.php?vista=home" class="btn btn-outline-dark">Registrar más tarde</a>
                         </div>
                         <div class="card-footer text-body-secondary">
