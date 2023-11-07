@@ -3,11 +3,14 @@
 
     $data = json_decode(file_get_contents('php://input'), true);
 
-    // Obtén la fecha seleccionada del objeto JSON enviado desde JavaScript
-    $fechaSeleccionada = $data['fechaSeleccionada'];
+    // capturar la fecha seleccionada del objeto JSON enviado desde JavaScript
+    //cambiar formato fecha
+    $fechaSeleccionada = strtotime($data['fechaSeleccionada']);
+    //formatea la fecha en el formato DD-MM-YYYY
+    $fecha = date("Y-m-d", $fechaSeleccionada);
     
     $horario = con();
-    $horario = $horario->query("SELECT * FROM horario WHERE horario_id NOT IN (SELECT horario_id FROM reserva WHERE reserva_fecha = '$fechaSeleccionada') ORDER BY horario_posicion ASC");
+    $horario = $horario->query("SELECT * FROM horario WHERE horario_id NOT IN (SELECT horario_id FROM reserva WHERE reserva_fecha = '$fecha' AND reserva_estado = 1) ORDER BY horario_posicion ASC");
     if ($horario->rowCount() > 0) {
         $horarios_disponibles = array();
     

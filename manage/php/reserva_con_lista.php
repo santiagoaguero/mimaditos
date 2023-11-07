@@ -8,9 +8,9 @@ if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
     $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
 
 } else {//busqueda total servicios
-    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_estado = 1 ORDER BY reserva.reserva_fecha DESC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT turno.*, reserva.*, horario.*, mascota.mascota_nombre, cliente.cliente_nombre, cliente.cliente_apellido FROM turno INNER JOIN reserva ON turno.turno_id = reserva.turno_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON turno.horario_id = horario.horario_id INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id WHERE turno.turno_estado = 2 ORDER BY turno.turno_fecha DESC LIMIT $inicio, $registros";
 
-     $consulta_total = "SELECT COUNT(reserva_id) FROM reserva  WHERE reserva_estado = 1";
+     $consulta_total = "SELECT COUNT(turno_id) FROM turno  WHERE turno_estado = 2";
 }
 
 $conexion=con();
@@ -48,14 +48,14 @@ if($total>=1 && $pagina <= $Npaginas){
     $pag_inicio=$inicio+1;//ej: mostrando usuario 1 al 7
 
     foreach($datos as $row){
-        //cambiar formato fecha
-        $timestamp = strtotime($row["reserva_fecha"]);
-
-        //formatea la fecha en el formato DD-MM-YYYY
-        $fecha = date("d-m-Y", $timestamp);
+                        //cambiar formato fecha
+                        $timestamp = strtotime($row["turno_fecha"]);
+                
+                        //formatea la fecha en el formato DD-MM-YYYY
+                        $fecha = date("d-m-Y", $timestamp);
         
         $tabla.='
-            <tr class="text-center  align-middle">
+            <tr class="text-center align-middle" >
                 <td>'.$contador.'</td>
                 <td>'.$row["mascota_nombre"].'</td>
                 <td><a href="index.php?vista=cliente_update&cliente_id_upd='.$row["cliente_id"].'" class="btn">'.$row["cliente_nombre"].' '.$row["cliente_apellido"].'</a></td>
@@ -74,7 +74,7 @@ if($total>=1 && $pagina <= $Npaginas){
                 <td><a href="index.php?vista=reserva_con_det&det_id='.$row["reserva_id"].'" class="btn btn-outline-primary">Ver Detalle</a></td>
                 <td>
                     <form action="./php/reserva_con_cancelar.php" method="POST" class="cancelarReserva">
-                        <input type="hidden" name="cancelar" value="'.$row["reserva_id"].'">
+                        <input type="hidden" name="cancelar" value="'.$row["turno_id"].'">
                         <button type="submit" class="btn btn-warning">Cancelar</button>
                     </form>
                 </td>

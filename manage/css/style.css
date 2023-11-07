@@ -234,7 +234,10 @@ text-shadow: 2px 2px 4px #000;
 
 .forms{
     padding: 0 200px;
-    margin-top: 25px;
+}
+
+.turnos {
+    height: 90vh;
 }
 
 .is-required:after {
@@ -306,6 +309,11 @@ text-shadow: 2px 2px 4px #000;
     border: 1px solid blue;
     padding: 20px;
 }
+
+.evento-tachado {
+    text-decoration: line-through!important;
+}
+
 
 
 /* carousel text */

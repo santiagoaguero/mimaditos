@@ -112,9 +112,9 @@
 
 
     <div class="d-grid gap-2 justify-content-center">
-        <h2 class="subtitle mt-5">Tenes un nuevo mimadito?</h2>
+        <h2 class="subtitle mt-5">Tiene un nuevo mimadito?</h2>
         <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#collapseNew" aria-expanded="false" aria-controls="collapseNew">
-                <span><i class="bi bi-plus-circle mx-2"></i>Queremos conocerle !!</span>
+                <span><i class="bi bi-plus-circle mx-2"></i>Agregalo !!</span>
         </button>
     </div>
     <div class="container collapse mt-5" id="collapseNew">
@@ -217,12 +217,15 @@
             </div>
         </form>
     </div>
-    <div class="d-grid gap-2 justify-content-center mt-5">
+    <!-- 
+        admin no puede borrar cuentas
+        
+        <div class="d-grid gap-2 justify-content-center mt-5">
         <h2 class="fs-4 mt-5 text-secondary">Querés desactivar tu cuenta?</h2>
         <a type="button" class="btn btn-outline-danger " href="index.php?vista=desactivar&id=<?php echo $id; ?>">
             <span><i class="bi bi-x-circle mx-2"></i>desactivar cuenta</span>
         </a>
-    </div>
+    </div> -->
     
     <?php 
         } else {

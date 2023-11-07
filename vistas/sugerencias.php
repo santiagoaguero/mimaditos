@@ -17,7 +17,7 @@
                 <label class="btn" for="option5">5</label>
             </div>
             <div class="col-md-12 form-floating">
-                <textarea type="text" class="form-control" id="inputSugerencias" name="sugerencias" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.!¡?¿ ]{0,255}"></textarea>
+                <textarea type="text" class="form-control" id="inputSugerencias" name="sugerencias" placeholder="Notas" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.!¡?¿: ]{0,255}"></textarea>
                 <label for="inputSugerencias">Sugerencias</label>
             </div>
             <input type="hidden" name="user" value="<?php echo $_SESSION["id"];?>" required >

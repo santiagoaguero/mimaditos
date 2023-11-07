@@ -176,14 +176,15 @@ else if($_SESSION["cuenta"] == 'google'){
 }
 
 //verifica reservas
-$verifica_reservas = $pdo->query("SELECT reserva_id from reserva WHERE 
+$verifica_reservas = $pdo->query("SELECT turno_id, reserva_id from reserva WHERE 
     cliente_id = '".$datos["cliente_id"]."'");
 
 if($verifica_reservas->rowCount() >= 1){
     $reservas = $verifica_reservas->fetchAll();
 
     foreach($reservas as $res){
-        var_dump($res["reserva_id"]);
+
+        //elimina detalle reserva
         $eliminar_detalle = $pdo->prepare("DELETE FROM reserva_detalle WHERE reserva_id = :id");
         $marcadores = [
             ":id" => $res["reserva_id"]
@@ -191,6 +192,7 @@ if($verifica_reservas->rowCount() >= 1){
 
         $eliminar_detalle->execute($marcadores);
 
+        //elimina cabecera detalle
         if ($eliminar_detalle->rowCount() == 1){
             $eliminar_reserva = $pdo->prepare("DELETE FROM reserva WHERE reserva_id = :id");            
             $marcadores = [
@@ -200,12 +202,22 @@ if($verifica_reservas->rowCount() >= 1){
             $eliminar_reserva->execute($marcadores);
 
             $eliminar_reserva = null;
-
         }
+
+        //vuelve a habilitar turno
+        $habilita_turno = $pdo->prepare("UPDATE turno SET turno_estado = 0 WHERE turno_id = :id");
+        $marcadores = [
+            ":id" => $res["turno_id"]
+        ];
+
+        $habilita_turno->execute($marcadores);
+
+        $habilita_turno = null;
     }
 $eliminar_detalle = null;
 }
 $verifica_reservas=null;
+
 
 //verifica mascotas
 $verifica_mascota = $pdo->query("SELECT * from mascota WHERE 

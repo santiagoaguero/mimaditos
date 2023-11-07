@@ -4,12 +4,13 @@ $tabla = "";
 
 $campos = "cliente.cliente_id, cliente.cliente_nombre, cliente.cliente_apellido, cliente.cliente_telefono, cliente.cliente_ciudad, mascota.mascota_id, mascota.mascota_nombre";
 
-if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
-    $consulta_datos = "SELECT * FROM servicio WHERE servicio_nombre LIKE '%$busqueda%' ORDER BY servicio_nombre ASC LIMIT $inicio, $registros";
+if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre apellido telefono mimado
+    $consulta_datos = "SELECT $campos FROM cliente LEFT JOIN mascota ON cliente.cliente_id = mascota.cliente_id WHERE cliente.cliente_nombre LIKE '%$busqueda%' OR cliente.cliente_apellido LIKE '%$busqueda%' OR cliente.cliente_telefono LIKE '%$busqueda%' ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
 
-    $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
+    $consulta_total = "SELECT COUNT(cliente_id) FROM cliente WHERE cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE '%$busqueda%' OR cliente_telefono LIKE '%$busqueda%'";
+}
 
-} else {//busqueda total servicios
+else {//busqueda total productos
     $consulta_datos = "SELECT $campos FROM cliente LEFT JOIN mascota ON cliente.cliente_id = mascota.cliente_id ORDER BY cliente.cliente_nombre ASC LIMIT $inicio, $registros";
 
      $consulta_total = "SELECT COUNT(cliente_id) FROM cliente";
@@ -83,7 +84,7 @@ if($total>=1 && $pagina <= $Npaginas){
     } else {
         $tabla.='
             <tr class="text-center" >
-            <td colspan="9">
+            <td colspan="7">
                 No hay registros en el sistema
             </td>
         </tr>
@@ -101,7 +102,7 @@ $tabla.='
 
 if($total>=1 && $pagina <= $Npaginas){
     $tabla.='
-        <p class="text-end">Mostrando reservas <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong></p>
+        <p class="text-end">Mostrando clientes <strong>'.$pag_inicio.'</strong> al <strong>'.$pag_final.'</strong> de un <strong>total de '.$total.'</strong> clientes</p>
     ';
     }
 

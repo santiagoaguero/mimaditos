@@ -19,25 +19,52 @@ document.addEventListener('DOMContentLoaded', function() {
             endTime: '16:00', // an end time (3pm in this project)
         },
         nowIndicator: true,
-        events: './php/getReservas.php',
+        displayEventTime:false,
+        events: './php/getTurnos.php',
         selectOverlap: function(event) {
             return event.rendering === 'background';
-          },
-        dateClick: function(info) {
+        },
+        eventClassNames: function(arg) {
+            if (arg.event.extendedProps.estado != 0) {
+                return ['evento-tachado']; // Aplica una clase para eventos con estado 0
+            }
+            return ''; // No se aplica ninguna clase para otros eventos
+        },
+        eventClick: function(info) {
+            console.log(info.event._def.publicId);
             //checks roles of user prev setted on calendar
-            if(roleus == 4){
+            if(roleus == 4 && info.event.extendedProps.estado == 0){
             // Abre el modal utilizando las funciones de Bootstrap 5
                 let modal = new bootstrap.Modal(document.getElementById('calendarModal'));
 
                 // Actualiza el título del modal con la fecha seleccionada
                 let modalTitle = document.getElementById('reservaTitulo');
-                modalTitle.innerText = 'Reserva para el: ' + info.dateStr;
+                modalTitle.innerText = 'Fecha: ' + info.event.extendedProps.fecha;
+
+                let horaText = document.getElementById('reservaHora');
+                horaText.innerText = 'Hora: ' + info.event.title;
+
+                //llenando inputs hidden
+                let turnoInput = document.getElementById('turnoId');
+                turnoInput.value = info.event._def.publicId;
+
+                let horarioInput = document.getElementById('reservaHorario');
+                horarioInput.value = info.event.extendedProps.horario;
+
                 let fechaInput = document.getElementById('reservaFecha');
-                fechaInput.value = info.dateStr;
+                fechaInput.value = info.event.extendedProps.fecha;
 
-                let fechaSeleccionada = info.dateStr;
 
-                // Envía la fecha al servidor PHP utilizando una solicitud AJAX (por ejemplo, con Fetch API)
+
+
+                /*
+                //establece fecha para buscar horarios disponibles
+                let fechaInput = document.getElementById('reservaFecha');
+                fechaInput.value = info.event.extendedProps.fecha;
+
+                let fechaSeleccionada = info.event.extendedProps.fecha;
+
+                 //Envía la fecha al servidor PHP utilizando una solicitud AJAX
                 fetch('./php/check_horario_disponible.php', {
                     method: 'POST',
                     headers: {
@@ -72,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                });
+                });*/
 
                 modal.show();
             }

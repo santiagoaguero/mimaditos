@@ -24,7 +24,7 @@ function btnDelete (evt){
         fetch(action, config)
         .then(response => response.text())
         .then(response => {
-            let contenedor = document.querySelector(".form-rest");
+            let contenedor = this.querySelector(".form-rest");
             contenedor.innerHTML = response;
         } );
     }

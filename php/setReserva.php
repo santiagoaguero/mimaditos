@@ -5,11 +5,17 @@ require_once("../inc/session_start.php");
 $pdo = con();
 
 //almacenando datos
+$turno=limpiar_cadena($_POST["turno"]);
 $cliente=limpiar_cadena($_POST["cliente"]);
 $mascota=limpiar_cadena($_POST["mimadito"]);
 $horario=limpiar_cadena($_POST["horario"]);
 $fecha=limpiar_cadena($_POST["fecha"]);
 $notas=limpiar_cadena($_POST["notas"]);
+
+//cambiar formato fecha
+$fechaFormateada = strtotime($fecha);
+//formatea la fecha en el formato DD-MM-YYYY
+$fecha = date("Y-m-d", $fechaFormateada);
 
 if(isset($_POST["servicios"])){
     $servicios = $_POST["servicios"];
@@ -57,7 +63,7 @@ if($check_cliente->rowCount()==0){//cliente found
 $check_cliente=null;//close db connection
 
 //verifica campos obligatorios
-if($mascota == "" || $horario == "" || $fecha == ""){
+if($turno == "" || $mascota == "" || $horario == "" || $fecha == ""){
     echo '
     <div class="alert alert-danger" role="alert">
         <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -89,7 +95,7 @@ $transporte = (isset($_POST["transporte"]) && $_POST["transporte"] == 'on') ?
 
 
 if($notas != ""){//al no ser obligatorio puede venir vacio
-    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡! ]{0,255}",$notas)){
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡!: ]{0,255}",$notas)){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>
@@ -99,16 +105,17 @@ if($notas != ""){//al no ser obligatorio puede venir vacio
     }
 }
 
+var_dump($_POST);
+
 
 //guardando datos
 $guarda = false;
 //prepare: prepara la consulta antes de insertar directo a la bd. variables sin comillas ni $
 $guardar_reserva = $pdo->prepare("INSERT INTO
-    reserva(cliente_id, mascota_id, horario_id, reserva_fecha, reserva_transporte, reserva_notas, reserva_estado, reserva_aceptado)
-    VALUES(:cliente, :mascota, :horario, :fecha, :transporte, :notas, :estado, :aceptado)");
+    reserva(turno_id, cliente_id, mascota_id, reserva_transporte, reserva_notas, reserva_aceptado)
+    VALUES(:turno, :cliente, :mascota, :transporte, :notas, :aceptado)");
 
-$marcadores=[":cliente"=>$cliente, ":mascota"=> $mascota, ":horario"=>$horario,
- ":fecha"=> $fecha, ":transporte"=> $transporte, ":notas"=>$notas, ":estado"=> 0, ":aceptado"=> 0];
+$marcadores=[":turno"=>$turno, ":cliente"=>$cliente, ":mascota"=> $mascota, ":transporte"=> $transporte, ":notas"=>$notas, ":aceptado"=> 0];
 
 $guardar_reserva->execute($marcadores);
 
@@ -134,6 +141,12 @@ if($guardar_reserva->rowCount() ==1 ){// 1 reserva nueva insertado
 $guardar_reserva=null; //cerrar conexion;
 
 if($guarda){
+ 
+
+    // cambiar el estado del turno a pendiente/confirmado
+    $turno_estado = $pdo->query("UPDATE turno SET turno_estado = 1 WHERE turno_id = $turno");
+    $turno_estado == null;
+
     //esto recibe ajax y verifica el texto para redireccionar
     //esto para seguir mostrando las demas alertas en el modal
     echo'<strong>Reserva Solicitada!</strong>';
