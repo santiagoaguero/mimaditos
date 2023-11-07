@@ -1,8 +1,8 @@
 <?php
     require_once("./php/main.php");
     $check_reserva = con();
-    $check_reserva = $check_reserva->query("SELECT reserva_id, reserva_fecha FROM reserva 
-    WHERE cliente_id = '{$_SESSION['id']}' AND reserva_estado = 1 AND reserva_aceptado = 0");
+    $check_reserva = $check_reserva->query("SELECT turno.*, reserva.reserva_id, reserva.reserva_aceptado FROM turno INNER JOIN reserva ON turno.turno_id = reserva.turno_id 
+    WHERE cliente_id = '{$_SESSION['id']}' AND turno_estado = 2 AND reserva_aceptado = 0");
     $rowCount = $check_reserva->rowCount();
 // Recorre las filas y muestra un toast por cada fila
 
@@ -10,7 +10,7 @@ if ($rowCount > 0) {
     $datos = $check_reserva->fetchAll();
     foreach($datos as $row){
         //cambiar formato fecha
-        $timestamp = strtotime($row["reserva_fecha"]);
+        $timestamp = strtotime($row["turno_fecha"]);
 
         //formatea la fecha en el formato DD-MM-YYYY
         $fecha = date("d-m-Y", $timestamp);

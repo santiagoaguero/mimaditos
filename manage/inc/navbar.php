@@ -81,6 +81,8 @@
                         <li><a class="dropdown-item" href="index.php?vista=calendar">Calendario</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=sugerencia_list">Sugerencias</a></li>
                         <li><a class="dropdown-item" href="index.php?vista=wsp">Wasap</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="index.php?vista=turnos">Gestionar Turnos</a></li>
                     </ul>
                 </li>
             </ul>

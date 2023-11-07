@@ -8,9 +8,9 @@ if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
     $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
 
 } else {//busqueda total servicios
-    $consulta_datos = "SELECT reserva.*, cliente.cliente_nombre, cliente.cliente_apellido, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_estado = 0 ORDER BY reserva.reserva_fecha DESC LIMIT $inicio, $registros";
+    $consulta_datos = "SELECT turno.*, reserva.*, horario.*, mascota.mascota_nombre, cliente.cliente_nombre, cliente.cliente_apellido FROM turno INNER JOIN reserva ON turno.turno_id = reserva.turno_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON turno.horario_id = horario.horario_id INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id WHERE turno.turno_estado = 1 ORDER BY turno.turno_fecha DESC LIMIT $inicio, $registros";
 
-     $consulta_total = "SELECT COUNT(reserva_id) FROM reserva  WHERE reserva_estado = 0";
+     $consulta_total = "SELECT COUNT(turno_id) FROM turno  WHERE turno_estado = 1";
 }
 
 $conexion=con();
@@ -49,7 +49,7 @@ if($total>=1 && $pagina <= $Npaginas){
 
     foreach($datos as $row){
                         //cambiar formato fecha
-                        $timestamp = strtotime($row["reserva_fecha"]);
+                        $timestamp = strtotime($row["turno_fecha"]);
                 
                         //formatea la fecha en el formato DD-MM-YYYY
                         $fecha = date("d-m-Y", $timestamp);
@@ -74,7 +74,7 @@ if($total>=1 && $pagina <= $Npaginas){
                 <td><a href="index.php?vista=reserva_pen_det&det_id='.$row["reserva_id"].'" class="btn btn-outline-primary">Ver Detalle</a></td>
                 <td>
                     <form action="./php/reserva_pen_confirmar.php" method="POST" class="confirmarReserva">
-                        <input type="hidden" name="confirmar" value="'.$row["reserva_id"].'">
+                        <input type="hidden" name="confirmar" value="'.$row["turno_id"].'">
                         <button type="submit" class="btn btn-success">Confirmar</button>
                     </form>
                 </td>

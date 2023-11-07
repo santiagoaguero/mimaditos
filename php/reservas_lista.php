@@ -7,8 +7,8 @@ if(isset($busqueda) && $busqueda != ""){//busqueda especifica por nombre
 
     $consulta_total = "SELECT COUNT(servicio_id) FROM servicio WHERE servicio_nombre LIKE '%$busqueda%'";
 
-} else {//busqueda total servicios
-    $consulta_datos = "SELECT reserva.*, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.cliente_id = $id ORDER BY reserva.reserva_fecha DESC LIMIT $inicio, $registros";
+} else {//busqueda total reservas
+    $consulta_datos = "SELECT turno.*, reserva.*, mascota.mascota_nombre, horario.* FROM turno INNER JOIN reserva ON turno.turno_id = reserva.turno_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON turno.horario_id = horario.horario_id WHERE reserva.cliente_id = $id ORDER BY turno.turno_fecha DESC LIMIT $inicio, $registros";
 
      $consulta_total = "SELECT COUNT(reserva_id) FROM reserva WHERE reserva.cliente_id = $id";
 }
@@ -49,7 +49,7 @@ if($total>=1 && $pagina <= $Npaginas){
 
     foreach($datos as $row){
         //cambiar formato fecha
-        $timestamp = strtotime($row["reserva_fecha"]);
+        $timestamp = strtotime($row["turno_fecha"]);
 
         //formatea la fecha en el formato DD-MM-YYYY
         $fecha = date("d-m-Y", $timestamp);
@@ -67,7 +67,7 @@ if($total>=1 && $pagina <= $Npaginas){
                     $tabla.='
                     <td><button type="button" class="btn btn-outline-secondary" disabled>no</button></td>';
                 }
-                if($row["reserva_estado"] == 1){
+                if($row["turno_estado"] == 2){
                     $tabla.='
                     <td><button type="button" class="btn btn-outline-success" disabled>Confirmado</button></td>';
                 } else {

@@ -89,7 +89,7 @@ $transporte = (isset($_POST["transporte"]) && $_POST["transporte"] == 'on') ?
 
 
 if($notas != ""){//al no ser obligatorio puede venir vacio
-    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{0,255}",$notas)){
+    if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡!: ]{0,255}",$notas)){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>

@@ -20,8 +20,8 @@
 ?>
 
 <div class="d-flex gap-5 justify-content-center">
-  <span class="" style="color:orange; font-size: 15px;">Reservas Pendientes</span>
-  <span class="" style="color:blue; font-size: 15px;">Reservas Confirmadas</span>
+  <span class="" style="color:red; font-size: 15px;">Turno no disponible</span>
+  <span class="" style="color:green; font-size: 15px;">Turno Disponible</span>
 </div>
 <div id="calendar" class="mt-3 mx-5"></div>
 
@@ -53,7 +53,7 @@
           
           </div>
 
-          Notas:<textarea id="notas" class="input w-100" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,. ]{0,255}" readonly></textarea>
+          Notas:<textarea id="notas" class="input w-100" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡!: ]{0,255}" readonly></textarea>
           <input type="hidden" name="cliente" value="<?php echo $_SESSION["id"];?>" required >
           <input type="hidden" id="reservaFecha" name="fecha" value="" required >
 

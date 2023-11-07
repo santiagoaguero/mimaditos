@@ -53,7 +53,7 @@ if($total>=1 && $pagina <= $Npaginas){
                 <td><textarea class="w-100" readonly>'.$row["testimonio_desc"].'</textarea></td>
                 <td>'.$row["testimonio_puntaje"].'</td>
                 <td>
-                <form action="./php/testimonio_eliminar.php" method="POST" class="confirmarDelete">
+                <form action="./php/sugerencia_eliminar.php" method="POST" class="confirmarDelete">
                     <input type="hidden" name="eliminar" value="'.$row["testimonio_id"].'">
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>

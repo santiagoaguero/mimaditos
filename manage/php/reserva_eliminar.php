@@ -34,12 +34,20 @@ if($detalles){
     if($check_reserva->rowCount()==1){
         $datos = $check_reserva->fetch();
 
+        //get turno id for updating
+        $turno_id = $datos['turno_id'];
+
         $eliminar_reserva = con();
         $eliminar_reserva=$eliminar_reserva->prepare("DELETE FROM reserva WHERE reserva_id=:id");
         //filtro prepare para evitar inyecciones sql xss
 
         $eliminar_reserva->execute([":id"=> $reserva_id_del]);
         if($eliminar_reserva->rowCount()==1){
+
+            //volver a habilitar el turno
+            $habilitar_turno = con();
+            $habilitar_turno=$habilitar_turno->query("UPDATE turno SET turno_estado = 0 WHERE turno_id=$turno_id");
+            $habilitar_turno = null;
 
             echo '
             <div class="alert alert-success" role="alert">

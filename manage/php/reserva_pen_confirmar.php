@@ -1,19 +1,19 @@
 <?php
 require("main.php");
-$reserva_id_con = limpiar_cadena($_POST["confirmar"]);
+$turno_id = limpiar_cadena($_POST["confirmar"]);
 
 //verifica cliente
 $check_reserva = con();
-$check_reserva=$check_reserva->query("SELECT * FROM reserva WHERE reserva_id = '$reserva_id_con' AND reserva_estado = 0");
+$check_reserva=$check_reserva->query("SELECT * FROM turno WHERE turno_id = '$turno_id' AND turno_estado = 1");
 
 if($check_reserva->rowCount()==1){
     $datos = $check_reserva->fetch();
 
     $confirmar_reserva = con();
-    $confirmar_reserva=$confirmar_reserva->prepare("UPDATE reserva SET reserva_estado = 1 WHERE reserva_id=:id");
+    $confirmar_reserva=$confirmar_reserva->prepare("UPDATE turno SET turno_estado = 2 WHERE turno_id=:id");
     //filtro prepare para evitar inyecciones sql xss
 
-    $confirmar_reserva->execute([":id"=> $reserva_id_con]);
+    $confirmar_reserva->execute([":id"=> $turno_id]);
     if($confirmar_reserva->rowCount()==1){
 
         echo '

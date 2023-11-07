@@ -5,7 +5,7 @@ $sugerencia=limpiar_cadena($_POST["sugerencias"]);
 $cliente_id=limpiar_cadena($_POST["user"]);
 
 if($sugerencia != ""){//al no ser obligatorio puede venir vacio
-        if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.!¡?¿ ]{0,255}",$sugerencia)){
+        if(verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.!¡?¿: ]{0,255}",$sugerencia)){
         echo '
         <div class="alert alert-danger" role="alert">
             <strong>¡Ocurrió un error inesperado!</strong><br>

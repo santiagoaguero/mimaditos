@@ -24,7 +24,7 @@
         $id=$_SESSION["id"];
 
         $check_reserva = con();
-        $check_reserva = $check_reserva->query("SELECT reserva.*, cliente.*, mascota.mascota_nombre, horario.* FROM reserva INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON reserva.horario_id = horario.horario_id WHERE reserva.reserva_id = '$reserva' AND reserva.cliente_id = '$id'");
+        $check_reserva = $check_reserva->query("SELECT turno.*, reserva.*, cliente.*, mascota.mascota_nombre, horario.* FROM turno INNER JOIN reserva ON turno.turno_id = reserva.turno_id INNER JOIN cliente ON reserva.cliente_id = cliente.cliente_id INNER JOIN mascota ON reserva.mascota_id = mascota.mascota_id INNER JOIN horario ON turno.horario_id = horario.horario_id WHERE reserva.reserva_id = '$reserva' AND reserva.cliente_id = '$id'");
 
         if($check_reserva->rowCount()>0){
             $datos=$check_reserva->fetch();
@@ -34,7 +34,7 @@
     <div class="container">
         <form class="row g-3 shadow confirmarReserva" method="POST" action="./php/reserva_con_cancelar.php" autocomplete="off"><div class="forms">
         <?php 
-            $badge = $datos["reserva_estado"] == 1 ?
+            $badge = $datos["turno_estado"] == 2 ?
             '<span class="badge text-bg-success">Confirmado</span>' :
             '<span class="badge text-bg-warning">Pendiente</span>';
         ?>
@@ -43,7 +43,7 @@
                 <div class="col-auto">
                     <?php        
                     //cambiar formato fecha
-                    $timestamp = strtotime($datos["reserva_fecha"]);
+                    $timestamp = strtotime($datos["turno_fecha"]);
                     
                     //formatea la fecha en el formato DD-MM-YYYY
                     $fecha = date("d-m-Y", $timestamp);

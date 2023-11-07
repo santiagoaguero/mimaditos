@@ -20,8 +20,8 @@
 ?>
 
 <div class="d-flex gap-5 justify-content-center">
-  <span class="" style="color:orange; font-size: 15px;">Reservas Pendientes</span>
-  <span class="" style="color:blue; font-size: 15px;">Reservas Confirmadas</span>
+  <span class="" style="color:red; font-size: 15px;">Turno no disponible</span>
+  <span class="" style="color:green; font-size: 15px;">Turno Disponible</span>
 </div>
 <div id="calendar" class="mt-3 mx-5"></div>
 
@@ -34,11 +34,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="reservaTitulo">Modal title</h1>
+        <h1 class="modal-title fs-5 text-center">Solicitud de Reserva</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form class="reserva" method="POST" action="./php/setReserva.php">
+          <p class="mb-1 text-secondary" id="reservaTitulo"></p>
+          <p class="mb-1 text-secondary" id="reservaHora"></p>
           <p class="mb-1 text-secondary">Dueño: <?php echo $_SESSION["nombre"] ." ". $_SESSION["apellido"]?></p>
           <div class="container mb-2">
             <p class="mb-1 text-secondary">Servicios Disponibles</p>
@@ -64,11 +66,9 @@
                 ?>
             </div>
           </div>
-          <select id="horario_disponible" name="horario" class="form-select mb-1" aria-label="Default select example" required>
-            
 
           </select>
-          <select id="mimadito" name="mimadito" class="form-select mb-1" aria-label="Default select example" required>
+          <select id="mimadito" name="mimadito" class="form-select my-3" aria-label="Default select example" required>
             <option value="">Seleccione un mimadito</option>
             <?php 
               require_once("./php/main.php");
@@ -95,12 +95,11 @@
               <i tabindex="0" class="fa-regular fa-circle-question" type="button" data-bs-toggle="popover" data-bs-title="Solicitar Transporte"  data-bs-trigger="focus" data-bs-content="Dependiendo de nuestra disponibilidad, podemos transportar de manera segura a tu mimadito"></i>
           </div>
 
-          <div id="reservaDescripcion">
-            <p id="reservaEstado"></p>
-          </div>
-          Notas:<textarea name="notas" class="input w-100" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡! ]{0,255}"></textarea>
+          Notas:<textarea name="notas" class="input w-100" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ,.¿?¡!: ]{0,255}"></textarea>
+          <input type="hidden" id="turnoId" name="turno" value="" required >
           <input type="hidden" name="cliente" value="<?php echo $_SESSION["id"];?>" required >
           <input type="hidden" id="reservaFecha" name="fecha" value="" required >
+          <input type="hidden" id="reservaHorario" name="horario" value="" required >
 
           <div class="form-rest mb-6 mt-6"></div>
           <div class="col-12 text-center">
